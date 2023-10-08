@@ -14,7 +14,7 @@ class QuotesCard extends StatelessWidget {
     required QuotesController quotesController,
     required this.deviceScreenHeight,
     required this.deviceScreenWidth,
-    required this.index,
+    required this.index, this.category, this.quotesLength, this.categoryAuthor,
     // required this.imageUrl,
   }) : _quotesController = quotesController;
 
@@ -23,6 +23,10 @@ class QuotesCard extends StatelessWidget {
   final QuotesController _quotesController;
   final double deviceScreenHeight;
   final double deviceScreenWidth;
+  final String? category;
+  final String? categoryAuthor;
+  final int? quotesLength;
+
   // final String imageUrl;
 
   @override
@@ -134,11 +138,11 @@ class QuotesCard extends StatelessWidget {
                         height: deviceScreenHeight * 0.20,
                         width: deviceScreenWidth * 0.95,
                         alignment: Alignment.center,
-                        padding: EdgeInsets.only(left: 16, right: 25, top: 5),
+                        padding: const EdgeInsets.only(left: 16, right: 25, top: 5),
                         child: Obx(
                           () => !imageController.isLoading.value
                               ? AutoSizeText(
-                                  " \"${_quotesController.quotes[index].quoteText}\" ",
+                                  " \"$category\" ",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium
@@ -156,7 +160,7 @@ class QuotesCard extends StatelessWidget {
                       child: Obx(
                         () => !imageController.isLoading.value
                             ? Text(
-                                " by- ${_quotesController.quotes[index].quoteAuther} ",
+                                " - $categoryAuthor ",
                                 style:
                                     Theme.of(context).textTheme.headlineSmall,
                                 maxLines: 1,

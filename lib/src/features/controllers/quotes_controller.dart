@@ -5,6 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/scheduler/ticker.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:oraah_app/src/common_widgets/api_address.dart';
+import 'package:oraah_app/src/features/model/quotes/authorsModel.dart';
+import 'package:oraah_app/src/repository/quotes_repo/quotes_repo.dart';
 import 'package:screenshot/screenshot.dart';
 import '../model/quotes/quotesModel.dart';
 
@@ -12,14 +15,19 @@ class QuotesController extends GetxController {
   static QuotesController get instance => Get.find();
   // final BuildContext context;
   RxList<QuoteModel> quotes = <QuoteModel>[].obs;
+  RxList<QuoteModel> quotesByCategory = <QuoteModel>[].obs;
+  RxList<QuoteModel> quotesByAuthor = <QuoteModel>[].obs;
+  RxList<AuthorsModel> listOfAuthors = <AuthorsModel>[].obs;
+  RxString authorName = ''.obs ;
   RxBool isCardClicked = false.obs;
+  RxBool isLoading = true.obs;
+  RxBool isAuthersLoading = false.obs;
   final random = Random();
   RxList<RxBool> isIconVisibleList = <RxBool>[].obs;
   RxList<GlobalKey> containerKeys = <GlobalKey>[].obs;
   RxDouble deviceWidth = 0.0.obs;
   RxDouble deviceHeight = 0.0.obs;
-  final String EthIpV4 = "192.168.189.62";
-  final String WIpV4 = "192.168.100.7";
+  var repository = QuotesRepository();
   RxInt quotesList = 0.obs;
   List<String> tabs = [
     "All",
@@ -28,71 +36,87 @@ class QuotesController extends GetxController {
     "Latest",
   ].obs;
 
-  // QuotesController(this.context);
 
-
-/* Controll quotes icon visibilty */
+  /* Controll quotes icon visibilty */
   void IconsVisibilityState(int itemCount) {
     isIconVisibleList.assignAll(List.generate(itemCount, (index) => false.obs));
   }
-
-
   /* Fetch quotes text from backend database from the server */
   Future<void> fetchQuotes() async {
-    final url = "http://" + EthIpV4 + ":5005/xikmado/quotes";
-
-    try {
-      final response = await http.get(Uri.parse(url));
-
-      if (response.statusCode == 200) {
-        List<Map<String, dynamic>> jsonData =
-            List<Map<String, dynamic>>.from(json.decode(response.body));
-        quotes.assignAll(jsonData.map((item) => QuoteModel.fromJson(item)));
-        print("Quotes data is : ${jsonData}");
-      } else {
-        print('Request failed with status code: ${response.statusCode}');
-      }
-
+    
+    try{
+      isLoading.value = true;
+      quotes.value = await repository.fetchQuotes();
       IconsVisibilityState(quotes.length);
-    } catch (error) {
-      print("Error: ${error}");
+    } catch(err){
+      print("Error: $err");
     }
+    isLoading.value = false;
   }
 
-  /* Copy quotes as a text into your clipboard */
+  Future<void> fetchQuotesByCategory(String category) async {
+    isLoading.value = true;
+    try{
+      quotesByCategory.value = await repository.byCategory(category);
+    }
+    catch(error) {
+      print("Error $error");
+    }
+    isLoading.value = false;
+  }
+
+  Future<void> fetchListOfAuthers() async{
+    isLoading.value = true;
+    try{
+      listOfAuthors.value = await repository.authorsList();
+      print("Authers Fetched successfully");
+    }
+    catch(err) {
+      print("Error $err");
+    }
+
+     isLoading.value = false;
+  }
+  Future<void> fetchByAuthor(String authorName) async {
+    isLoading.value = true;
+    try{
+      quotesByAuthor.value = await repository.byAuthor(authorName);
+      print("Successfully fetched autherName: $authorName by quotes");
+    }
+    catch(err){
+      print("Error: $err");
+    }
+    isLoading.value = false;
+  }
+
+  
   void copyTextToClipboard(String quote) {
-  Clipboard.setData(ClipboardData(text: quote));
+    Clipboard.setData(ClipboardData(text: quote));
 
-  Get.snackbar(
-    "",
-    "",
-    snackPosition: SnackPosition.BOTTOM, 
-    backgroundColor: Colors.transparent, 
-    colorText: Colors.white, 
-    duration: Duration(seconds: 3), 
-    barBlur: 0.0,
-    snackStyle: SnackStyle.GROUNDED,
-    margin: EdgeInsets.all(16.0),
-    messageText: Text(
-      "Copied to Clipboard",
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        color: Colors.white,
-        
-      ),
-    )
-  );
-}
-
-
-
+    Get.snackbar("", "",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.transparent,
+        colorText: Colors.white,
+        duration: Duration(seconds: 3),
+        barBlur: 0.0,
+        snackStyle: SnackStyle.GROUNDED,
+        margin: const EdgeInsets.all(16.0),
+        messageText: const Text(
+          "Copied to Clipboard",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ));
+  }
 
   @override
   void onInit() {
     super.onInit();
     fetchQuotes();
-    // quotesList =  quotes.length as RxInt ;
-    // containerKeys = List.generate(quotes.length, (index) => GlobalKey());
+    fetchQuotesByCategory("general");
+    fetchListOfAuthers();
+    // fetchByAuthor(authorName.value);
   }
 
   @override
@@ -100,16 +124,6 @@ class QuotesController extends GetxController {
     super.dispose();
     fetchQuotes();
   }
-
-  /* Function for fetching local data */
-  // Future<void> loadQuotes() async {
-  //   String data = await rootBundle.loadString('assets/data/oraahyo.json');
-  //   List<Map<String, dynamic>> jsonData =
-  //       List<Map<String, dynamic>>.from(json.decode(data)['quotes']);
-  //   quotes.assignAll(jsonData.map((item) => QuoteModel.fromJson(item)));
-
-  //   IconsVisibilityState(quotes.length);
-  // }
 
   Color randomColor(Brightness brightness) {
     final random = Random();
@@ -132,10 +146,10 @@ class QuotesController extends GetxController {
     const lightBrightnessThreshold = 0.6;
 
     if (brightness == Brightness.dark) {
-      // For dark mode, avoid generating white or closely related colors
+      //? For dark mode, avoid generating white or closely related colors
       return colorBrightness > lightBrightnessThreshold;
     } else {
-      // For light mode, avoid generating black or closely related colors
+      //? For light mode, avoid generating black or closely related colors
       return colorBrightness > darkBrightnessThreshold;
     }
   }

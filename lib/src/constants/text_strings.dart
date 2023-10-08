@@ -6,4 +6,5 @@ const oXigashoyinka = "Xigashooyinka Malinlaha";
 const oCategories = "Categories";
 
 
-//
+//AuthorsView
+const outhorPageTitle = "Authors";

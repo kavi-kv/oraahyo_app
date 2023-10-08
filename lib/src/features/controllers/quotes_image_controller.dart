@@ -21,13 +21,33 @@ class QuotesImageController extends GetxController {
   RxString queryType = "nature,dark nature, waterfalls, deep sorrow".obs;
   RxString apikey = "higK4AkKDQaXPNjFwUPY5yKHH-IEG8KVc1n3yD9v9QM".obs;
   var selectedIndex = 0.obs;
-  // late List<GlobalKey> containerKeys = List.generate(photos.length, (index) => GlobalKey());
+  var repository = RepositoryApi();
   List<String> orders = [
     "latest",
     "popular",
     "oldest",
     "views",
   ];
+
+  //?-> Get Pictures
+  Future<void> getPictureData({void Function(String, dynamic)? action}) async {
+    try{
+      isLoading.value = true;
+      photos.value = await repository.getImages(queryType.value);
+    } catch(e) {
+      print("error us $e");
+    }
+    isLoading.value = false;
+    // log("Status Code is "+response.statusCode.toString());
+  }
+
+  /// changing order value
+  ordersFunc(String newVal) {
+    orderBy.value = newVal;
+    getPictureData();
+  }
+
+
 
   void saveImgToGalary(ScreenshotController screenshotController) async {
     Uint8List? image = await screenshotController.capture();
@@ -84,38 +104,7 @@ class QuotesImageController extends GetxController {
     return false;
   }
 
-
-
-
-  //   Get.snackbar(
-  //     'Download Success',
-  //     'Image and quote text downloaded successfully!',
-  //     backgroundColor: Colors.green,
-  //     colorText: Colors.white,
-  //   );
-
-
-  /// Get Picture
-  Future<void> getPictureData({void Function(String, dynamic)? action}) async {
-    isLoading.value = true;
-    var response = await DioService().getMethod(
-        "https://api.unsplash.com/search/photos?per_page=17&client_id=higK4AkKDQaXPNjFwUPY5yKHH-IEG8KVc1n3yD9v9QM&query=${queryType.value}&urls=small");
-    photos = RxList();
-    if (response.statusCode == 200) {
-      response.data['results'].forEach((element) {
-        photos.add(PhotosModel.fromJson(element));
-      });
-      isLoading.value = false;
-    }
-
-    // log("Status Code is "+response.statusCode.toString());
-  }
-
-  /// changing order value
-  ordersFunc(String newVal) {
-    orderBy.value = newVal;
-    getPictureData();
-  }
+  
 
   @override
   void onInit() {

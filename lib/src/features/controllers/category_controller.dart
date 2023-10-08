@@ -3,15 +3,15 @@ import 'package:get/get.dart';
 
 class CategoriesController extends GetxController{
   List<String> categoriesList = [
-      "Authers",
-      "Happy",
-      "Strugle",
+      "Qoraayasha",
+      "Farxada",
+      "Halgan",
       "Mood",
-      "Life",
-      "Motivations",
-      "Graduations",
-      "Wisdoms",
-      "Travel",
-      "War"
+      "Nolosha",
+      "Dhiirigalin",
+      "Qalin Jabinta",
+      "Xikmad",
+      "Safarka",
+      "Dagaal"
     ].obs;
 }

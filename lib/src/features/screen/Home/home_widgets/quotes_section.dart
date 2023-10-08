@@ -23,7 +23,7 @@ class QuotesSection extends StatelessWidget {
   final QuotesController _quotesController;
   final Brightness brightness;
   final QuotesImageController imageController;
-
+  
   @override
   Widget build(BuildContext context) {
 
@@ -105,7 +105,7 @@ class QuotesSection extends StatelessWidget {
                                                   child: Obx(
                                                         () => !imageController.isLoading.value
                                                         ? AutoSizeText(
-                                                      " \"${_quotesController.quotes[index].quoteText}\" ",
+                                                      " \" ${_quotesController.quotes[index].quoteText}\" ",
                                                       style: Theme.of(context)
                                                           .textTheme
                                                           .bodyMedium
@@ -122,7 +122,7 @@ class QuotesSection extends StatelessWidget {
                                                   child: Obx(
                                                         () => !imageController.isLoading.value
                                                         ? Text(
-                                                      " by- ${_quotesController.quotes[index].quoteAuther} ",
+                                                      " - ${_quotesController.quotes[index].quoteAuther} ",
                                                       style: Theme.of(context)
                                                           .textTheme
                                                           .headlineSmall,

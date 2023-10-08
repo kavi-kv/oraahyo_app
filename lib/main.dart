@@ -12,6 +12,7 @@ void main() async {
   Get.put<NavigationController>(NavigationController());
   Get.put<QuotesController>(QuotesController());
   Get.put<QuotesImageController>(QuotesImageController());
+  
 
   runApp(const MyApp());
 }
