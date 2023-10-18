@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../constants/text_strings.dart';
 import '../../controllers/deviceSpecController.dart';
-import '../../controllers/quotes_controller.dart';
-import '../../controllers/quotes_image_controller.dart';
-import '../../controllers/tab_controllers.dart';
+import '../../controllers/quotes/quotes_controller.dart';
+import '../../controllers/quotes/quotes_image_controller.dart';
+import '../../controllers/others/tab_controllers.dart';
 import 'home_widgets/home_tab_bar.dart';
 import 'home_widgets/quotes_of_the_day.dart';
 

@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:oraah_app/src/features/screen/Home/home_widgets/quotes_page_view.dart';
 
 
-import '../../../controllers/quotes_controller.dart';
+import '../../../controllers/quotes/quotes_controller.dart';
 
 class QuotesOfTheDay extends StatelessWidget {
   

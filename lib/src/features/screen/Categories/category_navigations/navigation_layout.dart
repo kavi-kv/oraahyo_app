@@ -5,10 +5,12 @@ import 'package:oraah_app/src/features/screen/Categories/widgets/authors.dart';
 import 'package:oraah_app/src/features/screen/Categories/widgets/quotes_page.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../../controllers/deviceSpecController.dart';
-import '../../../controllers/navigation_controller.dart';
-import '../../../controllers/quotes_controller.dart';
-import '../../../controllers/quotes_image_controller.dart';
+import '../../../controllers/others/navigation_controller.dart';
+import '../../../controllers/quotes/quotes_controller.dart';
+import '../../../controllers/quotes/quotes_image_controller.dart';
 import '../../Home/home_widgets/quotes_card.dart';
+import 'package:lottie/lottie.dart';
+import 'package:screenshot/screenshot.dart';
 
 class NavigationLayout extends StatelessWidget {
   NavigationLayout({super.key});
@@ -55,43 +57,150 @@ class NavigationLayout extends StatelessWidget {
                         ),
                       ));
               case "Farxada":
+                final isExisted = _quotesController.isCategoryValid.value;
+                final isVisible = isExisted ? true : false;
                 _quotesController.fetchQuotesByCategory("Farxada");
-                return Obx(
-                  () => SizedBox(
-                    height: deviceSpacController.deviceHeight * 0.95,
-                    // width: deviceSpacController.deiceWidth * 0.85,
-                    child: ListView.builder(
-                      itemCount: _quotesController.quotesByCategory.length,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index) => GestureDetector(
-                          onTap: () {},
-                          child: Center(
-                            child: Container(
-                              width: width,
-                              child: QuotesCard(
-                                index: index,
-                                imageController: _quotesImageController,
-                                quotesController: _quotesController,
-                                deviceScreenHeight: height,
-                                deviceScreenWidth: width,
-                                categoryAuthor: _quotesController.quotesByCategory[index].quoteAuther,
-                                category: _quotesController
-                                    .quotesByCategory[index].quoteText,
-                              ),
-                            ),
-                          )),
-                    ),
-                  ),
-                );
+                return isExisted
+                    ? Visibility(
+                        visible: isVisible,
+                        child: SizedBox(
+                          height: deviceSpacController.deviceHeight * 0.95,
+                          child: ListView.builder(
+                            itemCount:
+                                _quotesController.quotesByCategory.length,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemBuilder: (context, index) {
+                              ScreenshotController screenshotController =
+                                  ScreenshotController();
+                              return SizedBox(
+                                height: 250,
+                                width: 150,
+                                child: Center(
+                                  child: Container(
+                                    width: width,
+                                    child: QuotesCard(
+                                      index: index,
+                                      imageController: _quotesImageController,
+                                      quotesController: _quotesController,
+                                      deviceScreenHeight: height,
+                                      deviceScreenWidth: width,
+                                      categoryAuthor: _quotesController
+                                          .quotesByCategory[index].quoteAuther,
+                                      category: _quotesController
+                                          .quotesByCategory[index].quoteText,
+                                      screenshotController:
+                                          screenshotController,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      )
+                    : Container(
+                        child: Center(
+                            child:
+                                Lottie.asset('assets/lottie/sorry-404.json')),
+                      ); //
               case "Halgan":
-                return Container(
-                  child: Text("Strugle Page"),
-                );
-              case "Mood":
-                return Container(
-                  child: Text("Mood Page"),
-                );
+                final isExisted = _quotesController.isCategoryValid.value;
+                final isVisible = isExisted ? true : false;
+                _quotesController.fetchQuotesByCategory("Halgan");
+                return isExisted
+                    ? Visibility(
+                        visible: isVisible,
+                        child: SizedBox(
+                          height: deviceSpacController.deviceHeight * 0.95,
+                          child: ListView.builder(
+                              itemCount:
+                                  _quotesController.quotesByCategory.length,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemBuilder: (context, index) {
+                                ScreenshotController screenshotController =
+                                    ScreenshotController();
+                                return SizedBox(
+                                  height: 250,
+                                  width: 150,
+                                  child: Center(
+                                    child: Container(
+                                      width: width,
+                                      child: QuotesCard(
+                                        index: index,
+                                        imageController: _quotesImageController,
+                                        quotesController: _quotesController,
+                                        deviceScreenHeight: height,
+                                        deviceScreenWidth: width,
+                                        categoryAuthor: _quotesController
+                                            .quotesByCategory[index]
+                                            .quoteAuther,
+                                        category: _quotesController
+                                            .quotesByCategory[index].quoteText,
+                                        screenshotController:
+                                            screenshotController,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                        ),
+                      )
+                    : Container(
+                        child: Center(
+                            child:
+                                Lottie.asset('assets/lottie/sorry-404.json')),
+                      ); // Return an empty container when isExisted is false
+
+              case "Cabsida":
+                final isExisted = _quotesController.isCategoryValid.value;
+                final isVisible = isExisted ? true : false;
+                _quotesController.fetchQuotesByCategory("Cabsi");
+                return isExisted
+                    ? Visibility(
+                        visible: isVisible,
+                        child: SizedBox(
+                          height: deviceSpacController.deviceHeight * 0.95,
+                          child: ListView.builder(
+                              itemCount:
+                                  _quotesController.quotesByCategory.length,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemBuilder: (context, index) {
+                                ScreenshotController screenshotController =
+                                    ScreenshotController();
+                                return SizedBox(
+                                  height: 250,
+                                  width: 150,
+                                  child: Center(
+                                    child: Container(
+                                      width: width,
+                                      child: QuotesCard(
+                                        index: index,
+                                        imageController: _quotesImageController,
+                                        quotesController: _quotesController,
+                                        deviceScreenHeight: height,
+                                        deviceScreenWidth: width,
+                                        categoryAuthor: _quotesController
+                                            .quotesByCategory[index]
+                                            .quoteAuther,
+                                        category: _quotesController
+                                            .quotesByCategory[index].quoteText,
+                                        screenshotController:
+                                            screenshotController,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                        ),
+                      )
+                    : Container(
+                        child: Center(
+                            child:
+                                Lottie.asset('assets/lottie/sorry-404.json')),
+                      );
               case "Nolosha":
                 _quotesController.fetchQuotesByCategory("Nolosha");
                 return Obx(
@@ -99,37 +208,126 @@ class NavigationLayout extends StatelessWidget {
                     height: deviceSpacController.deviceHeight * 0.95,
                     // width: deviceSpacController.deiceWidth * 0.85,
                     child: ListView.builder(
-                      itemCount: _quotesController.quotesByCategory.length,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index) => GestureDetector(
-                          onTap: () {},
-                          child: Center(
-                            child: Container(
-                              width: width,
-                              child: QuotesCard(
-                                index: index,
-                                imageController: _quotesImageController,
-                                quotesController: _quotesController,
-                                deviceScreenHeight: height,
-                                deviceScreenWidth: width,
-                                categoryAuthor: _quotesController.quotesByCategory[index].quoteAuther,
-                                category: _quotesController
-                                    .quotesByCategory[index].quoteText,
+                        itemCount: _quotesController.quotesByCategory.length,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) {
+                          ScreenshotController screenshotController =
+                              ScreenshotController();
+                          return SizedBox(
+                            child: Center(
+                              child: Container(
+                                width: width,
+                                child: QuotesCard(
+                                  index: index,
+                                  imageController: _quotesImageController,
+                                  quotesController: _quotesController,
+                                  deviceScreenHeight: height,
+                                  deviceScreenWidth: width,
+                                  categoryAuthor: _quotesController
+                                      .quotesByCategory[index].quoteAuther,
+                                  category: _quotesController
+                                      .quotesByCategory[index].quoteText,
+                                  screenshotController: screenshotController,
+                                ),
                               ),
                             ),
-                          )),
-                    ),
+                          );
+                        }),
                   ),
                 );
               case "Dhiirigalin":
-                return Container(
-                  child: Center(child: Text("Motivations Page, Coming Soon")),
-                );
+                final isExisted = _quotesController.isCategoryValid.value;
+                final isVisible = isExisted ? true : false;
+                _quotesController.fetchQuotesByCategory("Dhiirigalin");
+                return isExisted
+                    ? Visibility(
+                        visible: isVisible,
+                        child: SizedBox(
+                          height: deviceSpacController.deviceHeight * 0.95,
+                          child: ListView.builder(
+                              itemCount:
+                                  _quotesController.quotesByCategory.length,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemBuilder: (context, index) {
+                                ScreenshotController screenshotController =
+                                    ScreenshotController();
+                                return SizedBox(
+                                  child: Center(
+                                    child: Container(
+                                      width: width,
+                                      child: QuotesCard(
+                                        index: index,
+                                        imageController: _quotesImageController,
+                                        quotesController: _quotesController,
+                                        deviceScreenHeight: height,
+                                        deviceScreenWidth: width,
+                                        categoryAuthor: _quotesController
+                                            .quotesByCategory[index]
+                                            .quoteAuther,
+                                        category: _quotesController
+                                            .quotesByCategory[index].quoteText,
+                                        screenshotController:
+                                            screenshotController,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                        ),
+                      )
+                    : Container(
+                        child: Center(
+                            child:
+                                Lottie.asset('assets/lottie/sorry-404.json')),
+                      );
               case "Qalin Jabinta":
-                return Container(
-                  child: Center(child: Text("Graduations Page, Coming Soon")),
-                );
+                final isExisted = _quotesController.isCategoryValid.value;
+                final isVisible = isExisted ? true : false;
+                _quotesController.fetchQuotesByCategory("Qalin Jabinta");
+                return isExisted
+                    ? Visibility(
+                        visible: isVisible,
+                        child: SizedBox(
+                          height: deviceSpacController.deviceHeight * 0.95,
+                          child: ListView.builder(
+                              itemCount:
+                                  _quotesController.quotesByCategory.length,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemBuilder: (context, index) {
+                                ScreenshotController screenshotController =
+                                    ScreenshotController();
+                                return SizedBox(
+                                  child: Center(
+                                    child: Container(
+                                      width: width,
+                                      child: QuotesCard(
+                                        index: index,
+                                        imageController: _quotesImageController,
+                                        quotesController: _quotesController,
+                                        deviceScreenHeight: height,
+                                        deviceScreenWidth: width,
+                                        categoryAuthor: _quotesController
+                                            .quotesByCategory[index]
+                                            .quoteAuther,
+                                        category: _quotesController
+                                            .quotesByCategory[index].quoteText,
+                                        screenshotController:
+                                            screenshotController,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                        ),
+                      )
+                    : Container(
+                        child: Center(
+                            child:
+                                Lottie.asset('assets/lottie/sorry-404.json')),
+                      );
               case "Xikmad":
                 _quotesController.fetchQuotesByCategory("Xikmad");
                 return Obx(
@@ -137,27 +335,32 @@ class NavigationLayout extends StatelessWidget {
                     height: deviceSpacController.deviceHeight * 0.95,
                     // width: deviceSpacController.deiceWidth * 0.85,
                     child: ListView.builder(
-                      itemCount: _quotesController.quotesByCategory.length,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index) => GestureDetector(
-                          onTap: () {},
-                          child: Center(
-                            child: Container(
-                              width: width,
-                              child: QuotesCard(
-                                index: index,
-                                imageController: _quotesImageController,
-                                quotesController: _quotesController,
-                                deviceScreenHeight: height,
-                                deviceScreenWidth: width,
-                                categoryAuthor: _quotesController.quotesByCategory[index].quoteAuther,
-                                category: _quotesController
-                                    .quotesByCategory[index].quoteText,
+                        itemCount: _quotesController.quotesByCategory.length,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) {
+                          ScreenshotController screenshotController =
+                              ScreenshotController();
+                          return SizedBox(
+                            child: Center(
+                              child: Container(
+                                width: width,
+                                child: QuotesCard(
+                                  index: index,
+                                  imageController: _quotesImageController,
+                                  quotesController: _quotesController,
+                                  deviceScreenHeight: height,
+                                  deviceScreenWidth: width,
+                                  categoryAuthor: _quotesController
+                                      .quotesByCategory[index].quoteAuther,
+                                  category: _quotesController
+                                      .quotesByCategory[index].quoteText,
+                                  screenshotController: screenshotController,
+                                ),
                               ),
                             ),
-                          )),
-                    ),
+                          );
+                        }),
                   ),
                 );
               case "Safarka":
@@ -167,27 +370,32 @@ class NavigationLayout extends StatelessWidget {
                     height: deviceSpacController.deviceHeight * 0.95,
                     // width: deviceSpacController.deiceWidth * 0.85,
                     child: ListView.builder(
-                      itemCount: _quotesController.quotesByCategory.length,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index) => GestureDetector(
-                          onTap: () {},
-                          child: Center(
-                            child: Container(
-                              width: width,
-                              child: QuotesCard(
-                                index: index,
-                                imageController: _quotesImageController,
-                                quotesController: _quotesController,
-                                deviceScreenHeight: height,
-                                deviceScreenWidth: width,
-                                categoryAuthor: _quotesController.quotesByCategory[index].quoteAuther,
-                                category: _quotesController
-                                    .quotesByCategory[index].quoteText,
+                        itemCount: _quotesController.quotesByCategory.length,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) {
+                          ScreenshotController screenshotController =
+                              ScreenshotController();
+                          return SizedBox(
+                            child: Center(
+                              child: Container(
+                                width: width,
+                                child: QuotesCard(
+                                  index: index,
+                                  imageController: _quotesImageController,
+                                  quotesController: _quotesController,
+                                  deviceScreenHeight: height,
+                                  deviceScreenWidth: width,
+                                  categoryAuthor: _quotesController
+                                      .quotesByCategory[index].quoteAuther,
+                                  category: _quotesController
+                                      .quotesByCategory[index].quoteText,
+                                  screenshotController: screenshotController,
+                                ),
                               ),
                             ),
-                          )),
-                    ),
+                          );
+                        }),
                   ),
                 );
               case "Dagaal":
@@ -197,27 +405,33 @@ class NavigationLayout extends StatelessWidget {
                     height: deviceSpacController.deviceHeight * 0.95,
                     // width: deviceSpacController.deiceWidth * 0.85,
                     child: ListView.builder(
-                      itemCount: _quotesController.quotesByCategory.length,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index) => GestureDetector(
-                          onTap: () {},
-                          child: Center(
-                            child: Container(
-                              width: width,
-                              child: QuotesCard(
-                                index: index,
-                                imageController: _quotesImageController,
-                                quotesController: _quotesController,
-                                deviceScreenHeight: height,
-                                deviceScreenWidth: width,
-                                categoryAuthor: _quotesController.quotesByCategory[index].quoteAuther,
-                                category: _quotesController
-                                    .quotesByCategory[index].quoteText,
+                        itemCount: _quotesController.quotesByCategory.length,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) {
+                          ScreenshotController screenshotController =
+                              ScreenshotController();
+                          return SizedBox(
+                            height: 250,
+                            child: Center(
+                              child: Container(
+                                width: width,
+                                child: QuotesCard(
+                                  index: index,
+                                  imageController: _quotesImageController,
+                                  quotesController: _quotesController,
+                                  deviceScreenHeight: height,
+                                  deviceScreenWidth: width,
+                                  categoryAuthor: _quotesController
+                                      .quotesByCategory[index].quoteAuther,
+                                  category: _quotesController
+                                      .quotesByCategory[index].quoteText,
+                                  screenshotController: screenshotController,
+                                ),
                               ),
                             ),
-                          )),
-                    ),
+                          );
+                        }),
                   ),
                 );
               default:

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +10,7 @@ import 'package:oraah_app/src/common_widgets/api_address.dart';
 import 'package:oraah_app/src/features/model/quotes/authorsModel.dart';
 import 'package:oraah_app/src/repository/quotes_repo/quotes_repo.dart';
 import 'package:screenshot/screenshot.dart';
-import '../model/quotes/quotesModel.dart';
+import '../../model/quotes/quotesModel.dart';
 
 class QuotesController extends GetxController {
   static QuotesController get instance => Get.find();
@@ -18,6 +19,7 @@ class QuotesController extends GetxController {
   RxList<QuoteModel> quotesByCategory = <QuoteModel>[].obs;
   RxList<QuoteModel> quotesByAuthor = <QuoteModel>[].obs;
   RxList<AuthorsModel> listOfAuthors = <AuthorsModel>[].obs;
+  RxBool isCategoryValid = false.obs;
   RxString authorName = ''.obs ;
   RxBool isCardClicked = false.obs;
   RxBool isLoading = true.obs;
@@ -89,6 +91,15 @@ class QuotesController extends GetxController {
     isLoading.value = false;
   }
 
+  Future<void> isCategoryExists() async {
+    isLoading.value = true;
+    try{
+      isCategoryValid.value = await repository.isCategoryExists();
+    }
+    catch(err){
+      print("Error: $err");
+    }
+  }
   
   void copyTextToClipboard(String quote) {
     Clipboard.setData(ClipboardData(text: quote));
@@ -114,7 +125,6 @@ class QuotesController extends GetxController {
   void onInit() {
     super.onInit();
     fetchQuotes();
-    fetchQuotesByCategory("general");
     fetchListOfAuthers();
     // fetchByAuthor(authorName.value);
   }

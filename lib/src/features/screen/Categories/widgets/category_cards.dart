@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:oraah_app/src/features/controllers/deviceSpecController.dart';
 
 
-import '../../../controllers/navigation_controller.dart';
+import '../../../controllers/others/navigation_controller.dart';
 
 class CategoryCards extends StatelessWidget {
   const CategoryCards({

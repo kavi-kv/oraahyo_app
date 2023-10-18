@@ -5,14 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:oraah_app/src/common_widgets/api_address.dart';
 import 'package:oraah_app/src/features/model/quotes/authorsModel.dart';
 import 'package:oraah_app/src/features/model/quotes/quotesModel.dart';
+import 'package:oraah_app/src/repository/DI/dependancy_injection.dart';
+import 'package:get/get.dart';
 
 class QuotesRepository {
   final dio = Dio();
+  // final DependencyInjection depIn;
+  // QuotesRepository() : depIn = Get.find<DependencyInjection>();
+  // final urlEndPoints = WIpV4;
+  final urlEndPoints = EthIpV4;
 
   Future<List<QuoteModel>> fetchQuotes() async {
     List<QuoteModel> quotes = [];
     try {
-      var response = await dio.get("http://$EthIpV4:5005/xikmado/quotes");
+      var response = await dio.get("http://$urlEndPoints:5005/xikmado/quotes");
 
       if (response.statusCode != 200) {
         Future.error({
@@ -26,7 +32,7 @@ class QuotesRepository {
       }).toList();
 
       // print("Data is: ${quotes}");
-
+      // print("The Connection Type is ${depIn}");
       return quotes;
     } on DioException catch (err) {
       return Future.error({
@@ -40,7 +46,7 @@ class QuotesRepository {
     List<QuoteModel> quotes = [];
     try {
       var response =
-          await dio.get("http://$EthIpV4:5005/xikmado/byCategory/$category");
+          await dio.get("http://$urlEndPoints:5005/xikmado/byCategory/$category");
       if (response.statusCode != 200) {
         Future.error({
           "error": "Something went unexpected ${response.statusCode}",
@@ -65,7 +71,7 @@ class QuotesRepository {
   Future<List<QuoteModel>> byAuthor(String author) async {
     List<QuoteModel> quotes = [];
     try{
-      var response = await dio.get("http://$EthIpV4:5005/xikmado/byAuther/$author");
+      var response = await dio.get("http://$urlEndPoints:5005/xikmado/byAuther/$author");
       if(response.statusCode != 200) {
         return Future.error({
           "error": "Error: ${response.statusCode}",
@@ -90,9 +96,8 @@ class QuotesRepository {
 
   Future<List<AuthorsModel>> authorsList() async {
     List<AuthorsModel> authors = [];
-    List<AuthorsModel> validAuthors = [];
     try{
-      final response = await dio.get("http://$EthIpV4:5005/xikmado/authorsList");
+      final response = await dio.get("http://$urlEndPoints:5005/xikmado/authorsList");
       if(response.statusCode != 200) {
         return Future.error({
           "error": "Internal error occured ${response.statusCode}" ,
@@ -112,4 +117,36 @@ class QuotesRepository {
       });
     }
   }
+
+  Future<bool> isCategoryExists() async {
+    final bool isExist ;
+    try{
+      final response = await dio.get("http://$urlEndPoints:5005/xikmado/isCatExist/Farxad");
+      if(response.statusCode != 200){
+        return Future.error({
+          "error": "Internal error occured ${response.statusCode}" ,
+          "description": "Unknown fatal external error!"
+        });
+      }
+      else{
+        final responseData = response.data;
+
+        if(responseData["Exists"] == true){
+          isExist = true;
+        }
+        else{
+          isExist = false;
+        }
+      }
+
+      return isExist;
+    }
+    on DioException catch(er){
+      return Future.error({
+        "error": "Error is $er.response",
+        "description": "Unknown erros"
+      });
+    }
+  }
+
 }

@@ -2,9 +2,9 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:oraah_app/src/features/controllers/quotes_controller.dart';
+import 'package:oraah_app/src/features/controllers/quotes/quotes_controller.dart';
 import 'package:screenshot/screenshot.dart';
-import '../../../controllers/quotes_image_controller.dart';
+import '../../../controllers/quotes/quotes_image_controller.dart';
 
 class QuotesPage extends StatelessWidget {
   const QuotesPage({

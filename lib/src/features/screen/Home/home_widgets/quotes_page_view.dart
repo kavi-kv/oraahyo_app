@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
-import '../../../controllers/quotes_controller.dart';
+import '../../../controllers/quotes/quotes_controller.dart';
 import '../../../model/quotes/quotesModel.dart';
 
 

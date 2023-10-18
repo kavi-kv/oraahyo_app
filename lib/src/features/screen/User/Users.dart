@@ -1,15 +1,13 @@
-
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:oraah_app/src/features/controllers/deviceSpecController.dart';
 
-
-class CreateOraah extends StatelessWidget {
-  const CreateOraah({super.key});
+class User extends StatelessWidget {
+  const User({super.key});
 
   @override
   Widget build(BuildContext context) {
-     final deviceController = DeviceSpacController(context);
+    final deviceController = DeviceSpacController(context);
     bool isDarkMode = deviceController.brightnessLight == Brightness.dark;
     return Scaffold(
       body: Column(

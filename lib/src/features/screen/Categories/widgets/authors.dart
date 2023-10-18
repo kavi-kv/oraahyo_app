@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:oraah_app/src/constants/text_strings.dart';
-import 'package:oraah_app/src/features/controllers/navigation_controller.dart';
-import 'package:oraah_app/src/features/controllers/quotes_controller.dart';
+import 'package:oraah_app/src/features/controllers/others/navigation_controller.dart';
+import 'package:oraah_app/src/features/controllers/quotes/quotes_controller.dart';
 import 'package:get/get.dart';
 import 'package:oraah_app/src/features/model/quotes/authorsModel.dart';
 import 'package:oraah_app/src/features/screen/Categories/widgets/byAuthors.dart';
@@ -37,10 +37,6 @@ class ListOfAuthers extends StatelessWidget {
 
 Widget authersView(
     BuildContext context, QuotesController quotesController, authorsModel) {
-  List<AuthorsModel> autherCount = quotesController.listOfAuthors
-      .where((count) => count.count > 3)
-      .toList();
-
   return ListView.builder(
       itemCount: quotesController.listOfAuthors.length,
       shrinkWrap: true,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:oraah_app/src/features/screen/Home/home_widgets/quotes_section.dart';
-import '../../../controllers/quotes_controller.dart';
-import '../../../controllers/quotes_image_controller.dart';
+import '../../../controllers/quotes/quotes_controller.dart';
+import '../../../controllers/quotes/quotes_image_controller.dart';
 
 
 class HomeTabBar extends StatelessWidget {

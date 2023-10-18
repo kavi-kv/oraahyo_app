@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:oraah_app/src/features/controllers/deviceSpecController.dart';
-import 'package:oraah_app/src/features/controllers/quotes_controller.dart';
-import 'package:oraah_app/src/features/controllers/quotes_image_controller.dart';
+import 'package:oraah_app/src/features/controllers/quotes/quotes_controller.dart';
+import 'package:oraah_app/src/features/controllers/quotes/quotes_image_controller.dart';
 import 'package:oraah_app/src/features/model/quotes/authorsModel.dart';
 import 'package:oraah_app/src/features/model/quotes/quotesModel.dart';
 import 'package:oraah_app/src/features/screen/Home/home_widgets/quotes_card.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:screenshot/screenshot.dart';
 
 class ByAuthors extends StatefulWidget {
   const ByAuthors({super.key, required this.name});
@@ -55,10 +56,13 @@ class _ByAuthorsState extends State<ByAuthors> {
         centerTitle: true,
       ),
       body: Obx(() => SizedBox(
+            height: height * 0.88,
             child: ListView.builder(
                 itemCount: quotesController.quotesByAuthor.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
+                  ScreenshotController screenshotController =
+                      ScreenshotController();
                   return quotesController.isLoading.value
                       ? Center(
                           child: LoadingAnimationWidget.flickr(
@@ -76,9 +80,11 @@ class _ByAuthorsState extends State<ByAuthors> {
                               quotesController: quotesController,
                               deviceScreenHeight: height,
                               deviceScreenWidth: width,
-                              categoryAuthor: quotesController.quotesByAuthor[index].quoteAuther,
+                              categoryAuthor: quotesController
+                                  .quotesByAuthor[index].quoteAuther,
                               category: quotesController
                                   .quotesByAuthor[index].quoteText,
+                              screenshotController: screenshotController,
                             ),
                           ),
                         );

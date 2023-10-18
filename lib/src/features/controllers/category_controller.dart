@@ -6,7 +6,7 @@ class CategoriesController extends GetxController{
       "Qoraayasha",
       "Farxada",
       "Halgan",
-      "Mood",
+      "Cabsida",
       "Nolosha",
       "Dhiirigalin",
       "Qalin Jabinta",

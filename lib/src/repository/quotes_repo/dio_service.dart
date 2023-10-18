@@ -6,11 +6,11 @@ import 'package:oraah_app/src/features/model/image/image_model.dart';
 class RepositoryApi {
   final dio = Dio();
 
-  Future<List<PhotosModel>> getImages(String queryType) async {
+  Future<List<PhotosModel>> getImages(String queryType,int pageNum) async {
     List<PhotosModel> images = [];
     try {
       var response = await dio.get(
-          "https://api.unsplash.com/search/photos?per_page=25&client_id=higK4AkKDQaXPNjFwUPY5yKHH-IEG8KVc1n3yD9v9QM&query=$queryType&urls=small");
+          "https://api.unsplash.com/search/photos?per_page=$pageNum&client_id=higK4AkKDQaXPNjFwUPY5yKHH-IEG8KVc1n3yD9v9QM&query=$queryType&urls=small");
       if (response.statusCode != 200) {
         Future.error({
           "error": "Something is wrong from the request ${response.statusCode}",
