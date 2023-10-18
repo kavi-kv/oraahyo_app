@@ -9,7 +9,7 @@ class PageTabControllers extends GetxController with GetSingleTickerProviderStat
     "All",
     "Newest",
     "Popular",
-    "Latest",
+    
   ];
 
   @override

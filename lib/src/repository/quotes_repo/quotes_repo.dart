@@ -12,8 +12,8 @@ class QuotesRepository {
   final dio = Dio();
   // final DependencyInjection depIn;
   // QuotesRepository() : depIn = Get.find<DependencyInjection>();
-  // final urlEndPoints = WIpV4;
-  final urlEndPoints = EthIpV4;
+  final urlEndPoints = WIpV4;
+  // final urlEndPoints = EthIpV4;
 
   Future<List<QuoteModel>> fetchQuotes() async {
     List<QuoteModel> quotes = [];

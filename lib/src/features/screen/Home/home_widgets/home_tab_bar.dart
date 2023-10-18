@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:oraah_app/src/features/screen/Home/home_widgets/quotes_section.dart';
 import '../../../controllers/quotes/quotes_controller.dart';
 import '../../../controllers/quotes/quotes_image_controller.dart';
-
+import 'package:lottie/lottie.dart';
 
 class HomeTabBar extends StatelessWidget {
   const HomeTabBar({
@@ -47,16 +47,13 @@ class HomeTabBar extends StatelessWidget {
                 ),
                 Card(
                   margin: const EdgeInsets.all(16.0),
-                  child: Center(child: Text(' Overview tab')),
+                  child: Center(child: Lottie.asset("assets/lottie/not_ready.json")),
                 ),
                 Card(
                   margin: const EdgeInsets.all(16.0),
-                  child: Center(child: Text(' Overview tab')),
+                  child: Center(child: Lottie.asset("assets/lottie/not_ready.json")),
                 ),
-                Card(
-                  margin: const EdgeInsets.all(16.0),
-                  child: Center(child: Text(' Overview tab')),
-                ),
+                
               ],
             ),
           ),
