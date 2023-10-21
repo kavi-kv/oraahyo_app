@@ -12,8 +12,10 @@ class HomeTabBar extends StatelessWidget {
     required this.deviceScreenWidth,
     required QuotesController quotesController,
     required this.brightness,
-    required this.imageController, required this.tabsList,
-  }) : _tabController = tabController, _quotesController = quotesController;
+    required this.imageController,
+    required this.tabsList,
+  })  : _tabController = tabController,
+        _quotesController = quotesController;
 
   final TabController _tabController;
   final double deviceScreenHeight;
@@ -21,17 +23,16 @@ class HomeTabBar extends StatelessWidget {
   final QuotesController _quotesController;
   final Brightness brightness;
   final QuotesImageController imageController;
-  final List<String> tabsList ;
+  final List<String> tabsList;
   @override
   Widget build(BuildContext context) {
-    
     return Flexible(
       child: Column(
         children: <Widget>[
           TabBar.secondary(
             controller: _tabController,
             tabs: tabsList.map((String tabName) {
-              return Tab(text: tabName);  
+              return Tab(text: tabName);
             }).toList(),
           ),
           Expanded(
@@ -47,13 +48,16 @@ class HomeTabBar extends StatelessWidget {
                 ),
                 Card(
                   margin: const EdgeInsets.all(16.0),
-                  child: Center(child: Lottie.asset("assets/lottie/not_ready.json")),
+                  child: Center(
+                    // child: Lottie.asset("assets/lottie/not_ready.json"),
+                    child: Lottie.asset("assets/lottie/not_ready.json"),
+                  ),
                 ),
                 Card(
                   margin: const EdgeInsets.all(16.0),
-                  child: Center(child: Lottie.asset("assets/lottie/not_ready.json")),
+                  child: Center(
+                      child: Lottie.asset("assets/lottie/not_ready.json")),
                 ),
-                
               ],
             ),
           ),

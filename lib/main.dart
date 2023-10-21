@@ -6,6 +6,7 @@ import 'package:oraah_app/src/features/controllers/quotes/quotes_controller.dart
 import 'package:oraah_app/src/features/controllers/quotes/quotes_image_controller.dart';
 import 'package:oraah_app/src/features/screen/Categories/category_navigations/navigation_layout.dart';
 import 'package:oraah_app/src/features/screen/MainScreen.dart';
+import 'package:oraah_app/src/features/screen/splash_screen.dart';
 import 'package:oraah_app/src/repository/DI/dependancy_injection.dart';
 import 'src/utils/theme/theme.dart';
 
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
       
       darkTheme: TAppTheme.darkTheme,
       debugShowCheckedModeBanner: false,
-      home: const MainScreen(),
+      home: const Splash(),
     );
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:oraah_app/src/common_widgets/api_address.dart';
@@ -13,7 +11,7 @@ class QuotesRepository {
   // final DependencyInjection depIn;
   // QuotesRepository() : depIn = Get.find<DependencyInjection>();
   final urlEndPoints = WIpV4;
-  // final urlEndPoints = EthIpV4;
+  // final urlEndPoints = EthIpV4;sss
 
   Future<List<QuoteModel>> fetchQuotes() async {
     List<QuoteModel> quotes = [];

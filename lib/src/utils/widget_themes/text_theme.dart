@@ -41,6 +41,10 @@ class TTextTheme {
     fontWeight: FontWeight.w100,
     fontSize: 12
   ),
+  titleLarge : GoogleFonts.poppins(
+    color: Colors.black,
+    fontWeight: FontWeight.w400
+  ),
   );
   
   static TextTheme darkTextTheme = TextTheme(
@@ -86,7 +90,7 @@ class TTextTheme {
   
     titleLarge : GoogleFonts.poppins(
     color: Colors.white,
-    fontWeight: FontWeight.w100
+    fontWeight: FontWeight.w400
   ),
   );
 }
