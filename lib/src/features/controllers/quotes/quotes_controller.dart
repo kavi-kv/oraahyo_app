@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:oraah_app/src/common_widgets/api_address.dart';
 import 'package:oraah_app/src/features/model/quotes/authorsModel.dart';
 import 'package:oraah_app/src/repository/quotes_repo/quotes_repo.dart';
-import 'package:screenshot/screenshot.dart';
+// import 'package:screenshot/screenshot.dart';
 import '../../model/quotes/quotesModel.dart';
 
 class QuotesController extends GetxController {

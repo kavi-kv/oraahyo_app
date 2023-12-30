@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:oraah_app/src/constants/color.dart';
 import '../widget_themes/elevated_button_themes.dart';
 import '../widget_themes/ouline_button_theme.dart';
 import '../widget_themes/text_field_theme.dart';
 import '../widget_themes/text_theme.dart';
+import '../../constants/color.dart';
 
 class TAppTheme {
 
@@ -17,7 +19,7 @@ class TAppTheme {
     inputDecorationTheme: TTextFormFieldFieldTheme.lightInputDecorationTheme
   );
   static ThemeData darkTheme = ThemeData(
-    primarySwatch: Colors.yellow,
+    primarySwatch:  Colors.yellow,
     brightness: Brightness.dark,
     textTheme: TTextTheme.darkTextTheme,
     elevatedButtonTheme: TElevatedButtonTheme.darkElevatedButtonTheme,

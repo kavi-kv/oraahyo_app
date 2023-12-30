@@ -8,6 +8,7 @@ const tDarkBlue = Color(0xFF322653); //: Primary
 const tDarkPurple = Color(0xFF171123);
 const tBabbyPowder = Color(0xFFFDFFF7);
 const tWhiteSnow= Color(0xFFF5F5F5);
+const tGreySnow= Color(0xFF8B889B);
 
 
 

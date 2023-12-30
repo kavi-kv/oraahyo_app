@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:oraah_app/src/features/controllers/quotes/quotes_controller.dart';
-import 'package:screenshot/screenshot.dart';
+// import 'package:screenshot/screenshot.dart';
 import '../../../controllers/quotes/quotes_image_controller.dart';
 
 class QuotesPage extends StatelessWidget {
@@ -34,8 +34,8 @@ class QuotesPage extends StatelessWidget {
             shrinkWrap: true,
             scrollDirection: Axis.vertical,
             itemBuilder: (context, index) {
-              ScreenshotController screenshotController =
-                  ScreenshotController();
+              // ScreenshotController screenshotController =
+              //     ScreenshotController();
               return SizedBox(
                   height: 250,
                   width: 150,
@@ -63,9 +63,9 @@ class QuotesPage extends StatelessWidget {
                                   elevation: 2,
                                   child: Stack(
                                     children: [
-                                      Screenshot(
-                                        controller: screenshotController,
-                                        child: Stack(
+                                      // Screenshot(
+                                      //   controller: screenshotController,
+                                         Stack(
                                           children: [
                                             Container(
                                               height: deviceScreenHeight * 0.30,
@@ -160,7 +160,7 @@ class QuotesPage extends StatelessWidget {
                                             ),
                                           ],
                                         ),
-                                      ),
+                                      // ),
                                       _quotesController
                                               .isIconVisibleList[index].value
                                           ? Positioned(
@@ -175,10 +175,11 @@ class QuotesPage extends StatelessWidget {
                                                   ),
                                                   IconButton(
                                                     onPressed: () {
+                                                      //!:
                                                       // imageController.saveImgToGalary(context);
-                                                      imageController
-                                                          .saveImgToGalary(
-                                                              screenshotController);
+                                                      // imageController
+                                                      //     .saveImgToGalary(
+                                                      //         screenshotController);
                                                     },
                                                     icon: const Icon(
                                                         Icons.download,

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-import 'package:screenshot/screenshot.dart';
+// import 'package:screenshot/screenshot.dart';
 import '../../../controllers/quotes/quotes_controller.dart';
 import '../../../controllers/quotes/quotes_image_controller.dart';
 
@@ -18,7 +18,7 @@ class QuotesCard extends StatelessWidget {
     this.category,
     this.quotesLength,
     this.categoryAuthor,
-    required this.screenshotController,
+    // required this.screenshotController,
     // required this.imageUrl,
   }) : _quotesController = quotesController;
 
@@ -30,7 +30,7 @@ class QuotesCard extends StatelessWidget {
   final String? category;
   final String? categoryAuthor;
   final int? quotesLength;
-  final ScreenshotController screenshotController;
+  // final ScreenshotController screenshotController;
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +58,9 @@ class QuotesCard extends StatelessWidget {
                         elevation: 2,
                         child: Stack(
                           children: [ 
-                            Screenshot(
-                              controller: screenshotController,
-                              child: Stack(
+                            // Screenshot(
+                            //   controller: screenshotController,
+                               Stack(
                                 children: [
                                   Container(
                                     height: deviceScreenHeight * 0.30,
@@ -138,7 +138,7 @@ class QuotesCard extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                            ),
+                            // ),
                             _quotesController.isIconVisibleList[index].value
                                 ? Positioned(
                                     bottom: 0,
@@ -153,8 +153,8 @@ class QuotesCard extends StatelessWidget {
                                         IconButton(
                                           onPressed: () {
                                             // imageController.saveImgToGalary(context);
-                                            imageController.saveImgToGalary(
-                                                screenshotController);
+                                            // imageController.saveImgToGalary(
+                                            //     screenshotController);
                                           },
                                           icon: const Icon(Icons.download,
                                               color: Colors.white),

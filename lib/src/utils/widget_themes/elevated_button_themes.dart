@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 
+import '../../constants/color.dart';
 import '../../constants/colors.dart';
 import '../../constants/sizes.dart';
 
@@ -14,8 +15,8 @@ class TElevatedButtonTheme {
     style: ElevatedButton.styleFrom(
       elevation: 0,
       foregroundColor: tWhiteColor,
-      backgroundColor: tSecondaryColor,
-      side: const BorderSide(color: tSecondaryColor),
+      backgroundColor: tDarkBlue,
+      side: const BorderSide(color: tDarkBlue),
       shape: const RoundedRectangleBorder(),
       padding: const EdgeInsets.symmetric(vertical: tButtonHeight),
     )
@@ -25,9 +26,9 @@ class TElevatedButtonTheme {
   static final darkElevatedButtonTheme = ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
         elevation: 0,
-        foregroundColor: tSecondaryColor,
-        backgroundColor: tWhiteColor,
-        side: const BorderSide(color: tWhiteColor),
+        foregroundColor: tWhiteColor,
+        backgroundColor: tYellowish,
+        side: const BorderSide(color: tYellowish),
         padding: const EdgeInsets.symmetric(vertical: tButtonHeight),
         shape: const RoundedRectangleBorder(),
 

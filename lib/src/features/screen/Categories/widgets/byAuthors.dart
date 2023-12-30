@@ -8,7 +8,7 @@ import 'package:oraah_app/src/features/model/quotes/authorsModel.dart';
 import 'package:oraah_app/src/features/model/quotes/quotesModel.dart';
 import 'package:oraah_app/src/features/screen/Home/home_widgets/quotes_card.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:screenshot/screenshot.dart';
+// import 'package:screenshot/screenshot.dart';
 
 class ByAuthors extends StatefulWidget {
   const ByAuthors({super.key, required this.name});
@@ -61,8 +61,9 @@ class _ByAuthorsState extends State<ByAuthors> {
                 itemCount: quotesController.quotesByAuthor.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  ScreenshotController screenshotController =
-                      ScreenshotController();
+                  //!:
+                  // ScreenshotController screenshotController =
+                  //     ScreenshotController();
                   return quotesController.isLoading.value
                       ? Center(
                           child: LoadingAnimationWidget.flickr(
@@ -84,7 +85,8 @@ class _ByAuthorsState extends State<ByAuthors> {
                                   .quotesByAuthor[index].quoteAuther,
                               category: quotesController
                                   .quotesByAuthor[index].quoteText,
-                              screenshotController: screenshotController,
+                              //!:
+                              // screenshotController: screenshotController,
                             ),
                           ),
                         );

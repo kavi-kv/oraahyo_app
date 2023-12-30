@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import '../../../repository/quotes_repo/dio_service.dart';
 import '../../model/image/image_model.dart';
-import 'package:screenshot/screenshot.dart';
+// import 'package:screenshot/screenshot.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -46,63 +46,63 @@ class QuotesImageController extends GetxController {
     orderBy.value = newVal;
     getPictureData();
   }
+  //!:
+  // void saveImgToGalary(ScreenshotController screenshotController) async {
+  //   try {
+  //     Uint8List? image = await screenshotController.capture();
+  //
+  //     if (image != null) {
+  //       saveImg(image);
+  //     }
+  //   } catch (err) {
+  //     print("The error is $err");
+  //   }
+  // }
 
-  void saveImgToGalary(ScreenshotController screenshotController) async {
-    try {
-      Uint8List? image = await screenshotController.capture();
-
-      if (image != null) {
-        saveImg(image);
-      }
-    } catch (err) {
-      print("The error is $err");
-    }
-  }
-
-  saveImg(Uint8List bytes) async {
-    final time = DateTime.now()
-        .toIso8601String()
-        .replaceAll('.', '-')
-        .replaceAll(':', '-');
-    final name = 'orahyo_$time';
-    await requestPermission(Permission.storage);
-    final result = await ImageGallerySaver.saveImage(bytes, name: name);
-    if (result["isSuccess"]) {
-      print("Successfully captured");
-      Get.snackbar("", "",
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.transparent,
-          colorText: Colors.white,
-          duration: Duration(seconds: 3),
-          barBlur: 0.0,
-          snackStyle: SnackStyle.GROUNDED,
-          margin: EdgeInsets.all(16.0),
-          messageText: const Text(
-            "image saved to gallary",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ));
-    } else {
-      print("Error for capturing image");
-      Get.snackbar("", "",
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.transparent,
-          colorText: Colors.white,
-          duration: Duration(seconds: 3),
-          barBlur: 0.0,
-          snackStyle: SnackStyle.GROUNDED,
-          margin: EdgeInsets.all(16.0),
-          messageText: const Text(
-            "Error",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ));
-    }
-  }
+  // saveImg(Uint8List bytes) async {
+  //   final time = DateTime.now()
+  //       .toIso8601String()
+  //       .replaceAll('.', '-')
+  //       .replaceAll(':', '-');
+  //   final name = 'orahyo_$time';
+  //   await requestPermission(Permission.storage);
+  //   final result = await ImageGallerySaver.saveImage(bytes, name: name);
+  //   if (result["isSuccess"]) {
+  //     print("Successfully captured");
+  //     Get.snackbar("", "",
+  //         snackPosition: SnackPosition.TOP,
+  //         backgroundColor: Colors.transparent,
+  //         colorText: Colors.white,
+  //         duration: Duration(seconds: 3),
+  //         barBlur: 0.0,
+  //         snackStyle: SnackStyle.GROUNDED,
+  //         margin: EdgeInsets.all(16.0),
+  //         messageText: const Text(
+  //           "image saved to gallary",
+  //           textAlign: TextAlign.center,
+  //           style: TextStyle(
+  //             color: Colors.white,
+  //           ),
+  //         ));
+  //   } else {
+  //     print("Error for capturing image");
+  //     Get.snackbar("", "",
+  //         snackPosition: SnackPosition.TOP,
+  //         backgroundColor: Colors.transparent,
+  //         colorText: Colors.white,
+  //         duration: Duration(seconds: 3),
+  //         barBlur: 0.0,
+  //         snackStyle: SnackStyle.GROUNDED,
+  //         margin: EdgeInsets.all(16.0),
+  //         messageText: const Text(
+  //           "Error",
+  //           textAlign: TextAlign.center,
+  //           style: TextStyle(
+  //             color: Colors.white,
+  //           ),
+  //         ));
+  //   }
+  // }
 
   Future<bool> requestPermission(Permission permission) async {
     if (await permission.isGranted) {

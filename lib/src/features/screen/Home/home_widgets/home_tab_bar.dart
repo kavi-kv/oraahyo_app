@@ -32,7 +32,7 @@ class HomeTabBar extends StatelessWidget {
           TabBar.secondary(
             controller: _tabController,
             tabs: tabsList.map((String tabName) {
-              return Tab(text: tabName);
+              return Tab(child: Text(tabName,style: Theme.of(context).textTheme.bodyMedium,),);
             }).toList(),
           ),
           Expanded(

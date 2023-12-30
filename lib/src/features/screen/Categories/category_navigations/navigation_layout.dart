@@ -10,7 +10,7 @@ import '../../../controllers/quotes/quotes_controller.dart';
 import '../../../controllers/quotes/quotes_image_controller.dart';
 import '../../Home/home_widgets/quotes_card.dart';
 import 'package:lottie/lottie.dart';
-import 'package:screenshot/screenshot.dart';
+// import 'package:screenshot/screenshot.dart';
 
 class NavigationLayout extends StatelessWidget {
   NavigationLayout({super.key});
@@ -71,8 +71,8 @@ class NavigationLayout extends StatelessWidget {
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
                             itemBuilder: (context, index) {
-                              ScreenshotController screenshotController =
-                                  ScreenshotController();
+                              // ScreenshotController screenshotController =
+                              //     ScreenshotController();
                               return SizedBox(
                                 height: 250,
                                 width: 150,
@@ -89,8 +89,8 @@ class NavigationLayout extends StatelessWidget {
                                           .quotesByCategory[index].quoteAuther,
                                       category: _quotesController
                                           .quotesByCategory[index].quoteText,
-                                      screenshotController:
-                                          screenshotController,
+                                      // screenshotController:
+                                      //     screenshotController,
                                     ),
                                   ),
                                 ),
@@ -119,8 +119,8 @@ class NavigationLayout extends StatelessWidget {
                               shrinkWrap: true,
                               scrollDirection: Axis.vertical,
                               itemBuilder: (context, index) {
-                                ScreenshotController screenshotController =
-                                    ScreenshotController();
+                                // ScreenshotController screenshotController =
+                                //     ScreenshotController();
                                 return SizedBox(
                                   height: 250,
                                   width: 150,
@@ -138,8 +138,8 @@ class NavigationLayout extends StatelessWidget {
                                             .quoteAuther,
                                         category: _quotesController
                                             .quotesByCategory[index].quoteText,
-                                        screenshotController:
-                                            screenshotController,
+                                        // screenshotController:
+                                        //     screenshotController,
                                       ),
                                     ),
                                   ),
@@ -168,8 +168,8 @@ class NavigationLayout extends StatelessWidget {
                               shrinkWrap: true,
                               scrollDirection: Axis.vertical,
                               itemBuilder: (context, index) {
-                                ScreenshotController screenshotController =
-                                    ScreenshotController();
+                                // ScreenshotController screenshotController =
+                                //     ScreenshotController();
                                 return SizedBox(
                                   height: 250,
                                   width: 150,
@@ -187,8 +187,8 @@ class NavigationLayout extends StatelessWidget {
                                             .quoteAuther,
                                         category: _quotesController
                                             .quotesByCategory[index].quoteText,
-                                        screenshotController:
-                                            screenshotController,
+                                        // screenshotController:
+                                        //     screenshotController,
                                       ),
                                     ),
                                   ),
@@ -212,8 +212,8 @@ class NavigationLayout extends StatelessWidget {
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         itemBuilder: (context, index) {
-                          ScreenshotController screenshotController =
-                              ScreenshotController();
+                          // ScreenshotController screenshotController =
+                          //     ScreenshotController();
                           return SizedBox(
                             child: Center(
                               child: Container(
@@ -228,7 +228,7 @@ class NavigationLayout extends StatelessWidget {
                                       .quotesByCategory[index].quoteAuther,
                                   category: _quotesController
                                       .quotesByCategory[index].quoteText,
-                                  screenshotController: screenshotController,
+                                  // screenshotController: screenshotController,
                                 ),
                               ),
                             ),
@@ -251,8 +251,8 @@ class NavigationLayout extends StatelessWidget {
                               shrinkWrap: true,
                               scrollDirection: Axis.vertical,
                               itemBuilder: (context, index) {
-                                ScreenshotController screenshotController =
-                                    ScreenshotController();
+                                // ScreenshotController screenshotController =
+                                //     ScreenshotController();
                                 return SizedBox(
                                   child: Center(
                                     child: Container(
@@ -268,8 +268,8 @@ class NavigationLayout extends StatelessWidget {
                                             .quoteAuther,
                                         category: _quotesController
                                             .quotesByCategory[index].quoteText,
-                                        screenshotController:
-                                            screenshotController,
+                                        // screenshotController:
+                                        //     screenshotController,
                                       ),
                                     ),
                                   ),
@@ -297,8 +297,8 @@ class NavigationLayout extends StatelessWidget {
                               shrinkWrap: true,
                               scrollDirection: Axis.vertical,
                               itemBuilder: (context, index) {
-                                ScreenshotController screenshotController =
-                                    ScreenshotController();
+                                // ScreenshotController screenshotController =
+                                //     ScreenshotController();
                                 return SizedBox(
                                   child: Center(
                                     child: Container(
@@ -314,8 +314,8 @@ class NavigationLayout extends StatelessWidget {
                                             .quoteAuther,
                                         category: _quotesController
                                             .quotesByCategory[index].quoteText,
-                                        screenshotController:
-                                            screenshotController,
+                                        // screenshotController:
+                                        //     screenshotController,
                                       ),
                                     ),
                                   ),
@@ -339,8 +339,8 @@ class NavigationLayout extends StatelessWidget {
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         itemBuilder: (context, index) {
-                          ScreenshotController screenshotController =
-                              ScreenshotController();
+                          // ScreenshotController screenshotController =
+                          //     ScreenshotController();
                           return SizedBox(
                             child: Center(
                               child: Container(
@@ -355,7 +355,7 @@ class NavigationLayout extends StatelessWidget {
                                       .quotesByCategory[index].quoteAuther,
                                   category: _quotesController
                                       .quotesByCategory[index].quoteText,
-                                  screenshotController: screenshotController,
+                                  // screenshotController: screenshotController,
                                 ),
                               ),
                             ),
@@ -374,8 +374,8 @@ class NavigationLayout extends StatelessWidget {
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         itemBuilder: (context, index) {
-                          ScreenshotController screenshotController =
-                              ScreenshotController();
+                          // ScreenshotController screenshotController =
+                          //     ScreenshotController();
                           return SizedBox(
                             child: Center(
                               child: Container(
@@ -390,7 +390,7 @@ class NavigationLayout extends StatelessWidget {
                                       .quotesByCategory[index].quoteAuther,
                                   category: _quotesController
                                       .quotesByCategory[index].quoteText,
-                                  screenshotController: screenshotController,
+                                  // screenshotController: screenshotController,
                                 ),
                               ),
                             ),
@@ -409,8 +409,8 @@ class NavigationLayout extends StatelessWidget {
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         itemBuilder: (context, index) {
-                          ScreenshotController screenshotController =
-                              ScreenshotController();
+                          // ScreenshotController screenshotController =
+                          //     ScreenshotController();
                           return SizedBox(
                             height: 250,
                             child: Center(
@@ -426,7 +426,7 @@ class NavigationLayout extends StatelessWidget {
                                       .quotesByCategory[index].quoteAuther,
                                   category: _quotesController
                                       .quotesByCategory[index].quoteText,
-                                  screenshotController: screenshotController,
+                                  // screenshotController: screenshotController,
                                 ),
                               ),
                             ),

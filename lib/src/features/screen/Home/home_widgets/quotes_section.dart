@@ -1,11 +1,11 @@
-import 'package:auto_size_text/auto_size_text.dart';
+// import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:oraah_app/src/features/controllers/deviceSpecController.dart';
 import 'package:oraah_app/src/features/controllers/quotes/quotes_controller.dart';
 import 'package:oraah_app/src/features/screen/Home/home_widgets/quotes_card.dart';
-import 'package:screenshot/screenshot.dart';
+// import 'package:screenshot/screenshot.dart';
 import '../../../controllers/quotes/quotes_image_controller.dart';
 
 class QuotesSection extends StatelessWidget {
@@ -42,7 +42,7 @@ class QuotesSection extends StatelessWidget {
           shrinkWrap: true,
           scrollDirection: Axis.vertical,
           itemBuilder: (context, index) {
-            ScreenshotController screenshotController = ScreenshotController();
+            // ScreenshotController screenshotController = ScreenshotController();
             return SizedBox(
               height: 250,
               width: 150,
@@ -58,7 +58,7 @@ class QuotesSection extends StatelessWidget {
                     categoryAuthor: _quotesController.quotes[index].quoteAuther,
                     category: _quotesController.quotes[index].quoteText,
                     // quotesLength: _quotesController.quotes.length,
-                    screenshotController: screenshotController,
+                    // screenshotController: screenshotController,
                   ),
                 ),
               ),
