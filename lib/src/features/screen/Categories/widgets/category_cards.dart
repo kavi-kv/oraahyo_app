@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:oraah_app/src/features/controllers/deviceSpecController.dart';
+import 'package:oraah_app/src/features/controllers/others/deviceSpecController.dart';
 
 
 import '../../../controllers/others/navigation_controller.dart';

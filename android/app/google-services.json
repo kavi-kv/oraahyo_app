@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "46976545365",
+    "project_id": "oraahyo-outh",
+    "storage_bucket": "oraahyo-outh.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:46976545365:android:15c98a3202e0cda9911adc",
+        "android_client_info": {
+          "package_name": "com.example.oraah_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCM1BG-8INzKlpZulm7a5W3WDUFUQ2mCa0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

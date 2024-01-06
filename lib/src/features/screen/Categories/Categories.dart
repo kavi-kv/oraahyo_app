@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:oraah_app/src/features/screen/Categories/widgets/category_cards.dart';
 
 
-import '../../controllers/category_controller.dart';
-import '../../controllers/deviceSpecController.dart';
+import '../../controllers/others/category_controller.dart';
+import '../../controllers/others/deviceSpecController.dart';
 
 class Categories extends StatelessWidget {
   const Categories({super.key});

@@ -21,27 +21,34 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 16,right: 16),
+      padding: EdgeInsets.only(left: 16, right: 16),
       child: TextField(
         controller: controller,
-        obscureText: true,
+        obscureText: obscureText,
+        style: TextStyle(
+          color: Colors.grey[400],
+        ),
         decoration: InputDecoration(
           filled: true,
-          fillColor: const Color(0xFFE7EDEB),
+          fillColor: Color.fromARGB(255, 237, 231, 231),
           hintText: hintText,
           hintStyle: const TextStyle(color: tGreySnow),
           prefixIcon: Icon(
             prefixIcon,
             color: Colors.grey[600],
           ),
-          suffixIcon: Icon(
-            suffixIcon,
-            color: Colors.grey[600],
-          ),
+          suffixIcon: suffixIcon != null
+              ? Icon(
+                  suffixIcon,
+                  color: Colors.grey[600],
+                )
+              : null,
+              
           border: OutlineInputBorder(
             borderSide: BorderSide.none,
             borderRadius: BorderRadius.circular(8.0),
           ),
+          
         ),
       ),
     );

@@ -55,7 +55,7 @@ class TTextTheme {
 
       ),
       titleSmall: GoogleFonts.poppins(
-          color: Colors.white60,
+          color: Colors.white,
           fontSize: 24
       ),
     bodyLarge: GoogleFonts.poppins(

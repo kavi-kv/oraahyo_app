@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:oraah_app/src/features/model/quotes/authorsModel.dart';
 import 'package:oraah_app/src/features/screen/Categories/widgets/byAuthors.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:oraah_app/src/features/controllers/deviceSpecController.dart';
+import 'package:oraah_app/src/features/controllers/others/deviceSpecController.dart';
 
 class ListOfAuthers extends StatelessWidget {
   const ListOfAuthers({

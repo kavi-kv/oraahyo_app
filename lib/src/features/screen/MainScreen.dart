@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:oraah_app/src/features/controllers/deviceSpecController.dart';
+import 'package:oraah_app/src/features/controllers/User/user_controller.dart';
+import 'package:oraah_app/src/features/controllers/others/deviceSpecController.dart';
 import 'package:oraah_app/src/features/controllers/others/themeController.dart';
+import 'package:oraah_app/src/services/api/auth_services.dart';
 import 'package:oraah_app/src/utils/theme/theme.dart';
 import 'package:get/get.dart';
 import '../../constants/text_strings.dart';
@@ -22,6 +24,12 @@ class _MainScreenState extends State<MainScreen> {
   int index = 0;
   final Screens = const [Home(), Categories(), CreateOraah(), User()];
   final ThemeController themeController = Get.put(ThemeController());
+  final  authService  = AuthService();
+  @override
+  void initState() {
+    super.initState();
+    authService.getUser(context: context);
+  }
 
   bool isDark = false;
 
@@ -56,7 +64,7 @@ class _MainScreenState extends State<MainScreen> {
               )
             ],
           ),
-          drawer: NavigationsDrawer(),
+          drawer: const NavigationsDrawer(),
           body: Screens[index],
           bottomNavigationBar: NavigationBarTheme(
             data: NavigationBarThemeData(

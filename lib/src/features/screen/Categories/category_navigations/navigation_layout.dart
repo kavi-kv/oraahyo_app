@@ -4,7 +4,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:oraah_app/src/features/screen/Categories/widgets/authors.dart';
 import 'package:oraah_app/src/features/screen/Categories/widgets/quotes_page.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import '../../../controllers/deviceSpecController.dart';
+import '../../../controllers/others/deviceSpecController.dart';
 import '../../../controllers/others/navigation_controller.dart';
 import '../../../controllers/quotes/quotes_controller.dart';
 import '../../../controllers/quotes/quotes_image_controller.dart';

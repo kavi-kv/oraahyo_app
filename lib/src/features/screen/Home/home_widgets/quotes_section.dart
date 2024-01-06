@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:oraah_app/src/features/controllers/deviceSpecController.dart';
+import 'package:oraah_app/src/features/controllers/others/deviceSpecController.dart';
 import 'package:oraah_app/src/features/controllers/quotes/quotes_controller.dart';
 import 'package:oraah_app/src/features/screen/Home/home_widgets/quotes_card.dart';
 // import 'package:screenshot/screenshot.dart';

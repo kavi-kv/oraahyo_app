@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../constants/text_strings.dart';
-import '../../controllers/deviceSpecController.dart';
+import '../../controllers/others/deviceSpecController.dart';
 import '../../controllers/quotes/quotes_controller.dart';
 import '../../controllers/quotes/quotes_image_controller.dart';
 import '../../controllers/others/tab_controllers.dart';

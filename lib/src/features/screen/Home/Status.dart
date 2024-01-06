@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:oraah_app/src/features/controllers/deviceSpecController.dart';
+import 'package:oraah_app/src/features/controllers/others/deviceSpecController.dart';
 
 
 class CreateOraah extends StatelessWidget {

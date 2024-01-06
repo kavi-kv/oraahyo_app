@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
-import 'package:oraah_app/src/features/controllers/deviceSpecController.dart';
+import 'package:oraah_app/src/features/controllers/others/deviceSpecController.dart';
 import 'package:oraah_app/src/features/controllers/quotes/quotes_controller.dart';
 import 'package:oraah_app/src/features/controllers/quotes/quotes_image_controller.dart';
 import 'package:oraah_app/src/features/model/quotes/authorsModel.dart';

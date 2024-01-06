@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:oraah_app/src/features/controllers/User/user_controller.dart';
 import 'package:oraah_app/src/features/controllers/others/navigation_controller.dart';
 import 'package:oraah_app/src/features/controllers/others/themeController.dart';
 import 'package:oraah_app/src/features/controllers/quotes/quotes_controller.dart';
@@ -11,6 +12,8 @@ import 'package:oraah_app/src/repository/DI/dependancy_injection.dart';
 import 'src/utils/theme/theme.dart';
 
 void main() async {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   WidgetsFlutterBinding.ensureInitialized();
   DependencyInjection.setUp();
   DependencyInjection.init();
@@ -18,6 +21,7 @@ void main() async {
   Get.put<QuotesController>(QuotesController());
   Get.put<QuotesImageController>(QuotesImageController());
   Get.put<ThemeController>(ThemeController());
+  Get.put<UserController>(UserController());
   
   runApp(const MyApp());
 }
