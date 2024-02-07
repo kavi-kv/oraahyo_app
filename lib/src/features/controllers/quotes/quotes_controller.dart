@@ -38,12 +38,15 @@ class QuotesController extends GetxController {
     "Latest",
   ].obs;
 
+  
 
   /* Controll quotes icon visibilty */
   void IconsVisibilityState(int itemCount) {
     isIconVisibleList.assignAll(List.generate(itemCount, (index) => false.obs));
   }
-  /* Fetch quotes text from backend database from the server */
+
+  
+  
   Future<void> fetchQuotes() async {
     
     try{
@@ -55,6 +58,8 @@ class QuotesController extends GetxController {
     }
     isLoading.value = false;
   }
+
+  // bool isFavorite()
 
   Future<void> fetchQuotesByCategory(String category) async {
     isLoading.value = true;

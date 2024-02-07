@@ -24,7 +24,7 @@ class TTextTheme {
     ),
     bodySmall: GoogleFonts.poppins(
         color: Colors.black,
-        fontSize: 4
+        fontSize: 12
     ),
 
     //?: Headline light
@@ -68,7 +68,7 @@ class TTextTheme {
     ),
     bodySmall: GoogleFonts.poppins(
         color: Colors.white,
-        fontSize: 4
+        fontSize: 12
     ),
    
 

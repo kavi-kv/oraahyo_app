@@ -9,7 +9,7 @@ class CustomTextField extends StatelessWidget {
     required this.obscureText,
     required this.prefixIcon,
     this.suffixIcon,
-    required this.controller,
+    required this.controller, this.validator,
   });
 
   final String hintText;
@@ -17,22 +17,29 @@ class CustomTextField extends StatelessWidget {
   final IconData prefixIcon;
   final IconData? suffixIcon;
   final TextEditingController controller;
+  final FormFieldValidator<String>? validator;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 16, right: 16),
-      child: TextField(
+      padding: const EdgeInsets.only(left: 16, right: 16),
+      child: TextFormField(
+        validator: validator,
         controller: controller,
         obscureText: obscureText,
+        
         style: TextStyle(
           color: Colors.grey[400],
+          fontSize: 20
         ),
         decoration: InputDecoration(
           filled: true,
-          fillColor: Color.fromARGB(255, 237, 231, 231),
+          fillColor: const Color.fromARGB(255, 237, 231, 231),
           hintText: hintText,
           hintStyle: const TextStyle(color: tGreySnow),
+          errorStyle: const TextStyle(
+            fontSize: 10.0
+          ),
           prefixIcon: Icon(
             prefixIcon,
             color: Colors.grey[600],
@@ -50,6 +57,7 @@ class CustomTextField extends StatelessWidget {
           ),
           
         ),
+        
       ),
     );
   }

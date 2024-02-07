@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:oraah_app/src/features/controllers/quotes/favorite_controller.dart';
 import '../../../constants/text_strings.dart';
 import '../../controllers/others/deviceSpecController.dart';
 import '../../controllers/quotes/quotes_controller.dart';
@@ -14,11 +15,12 @@ class Home extends StatelessWidget {
   @override
   
   Widget build(BuildContext context) {
-     final _quotesController = Get.put(QuotesController());
+     final quotesController = Get.put(QuotesController());
      final imageController = Get.put(QuotesImageController());
-      final _tabController = Get.put(PageTabControllers());
+      final tabController = Get.put(PageTabControllers());
+      Get.lazyPut(()=> FavoriteController());
 
-     final _deviceController = Get.put(DeviceSpacController(context));
+     final deviceController = Get.put(DeviceSpacController(context));
     final mediaQuey = MediaQuery.of(context);
     final deviceScreenWidth = mediaQuey.size.width;
     final deviceScreenHeight = mediaQuey.size.height;
@@ -41,13 +43,13 @@ class Home extends StatelessWidget {
       ),
 
       QuotesOfTheDay(
-          quotesController: _quotesController, brightness: _deviceController.brightness),
+          quotesController: quotesController, brightness: deviceController.brightness),
       // SizedBox(
       //   height: 3,
       // ),
 
       Divider(),
-      HomeTabBar(tabController: _tabController.tabController, deviceScreenHeight: deviceScreenHeight, deviceScreenWidth: deviceScreenWidth, quotesController: _quotesController, brightness: _deviceController.brightness, imageController: imageController,tabsList: _tabController.tabs,),
+      HomeTabBar(tabController: tabController.tabController, deviceScreenHeight: deviceScreenHeight, deviceScreenWidth: deviceScreenWidth, quotesController: quotesController, brightness: deviceController.brightness, imageController: imageController,tabsList: tabController.tabs,),
       SizedBox(
         height: 5,
       ),

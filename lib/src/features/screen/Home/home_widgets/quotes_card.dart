@@ -1,7 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:oraah_app/src/features/controllers/User/user_controller.dart';
+import 'package:oraah_app/src/features/controllers/quotes/favorite_controller.dart';
 
 // import 'package:screenshot/screenshot.dart';
 import '../../../controllers/quotes/quotes_controller.dart';
@@ -32,8 +37,14 @@ class QuotesCard extends StatelessWidget {
   final int? quotesLength;
   // final ScreenshotController screenshotController;
 
+  UserController get userController => Get.find<UserController>();
+  FavoriteController get favoriteController => Get.find<FavoriteController>();
+
   @override
   Widget build(BuildContext context) {
+    // final favoriteController = Get.find<FavoriteController>();
+    final GlobalKey repaintBoundaryKey = GlobalKey();
+
     return SizedBox(
         height: 250,
         width: 150,
@@ -54,15 +65,18 @@ class QuotesCard extends StatelessWidget {
                             !_quotesController.isIconVisibleList[index].value
                       },
                       child: Card(
-                        margin: EdgeInsets.only(left: 10, top: 20, right: 10),
+                        margin:
+                            const EdgeInsets.only(left: 10, top: 20, right: 10),
                         elevation: 2,
                         child: Stack(
-                          children: [ 
+                          children: [
                             // Screenshot(
                             //   controller: screenshotController,
-                               Stack(
+                            RepaintBoundary(
+                              key: repaintBoundaryKey,
+                              child: Stack(
                                 children: [
-                                  Container(
+                                  SizedBox(
                                     height: deviceScreenHeight * 0.30,
                                     width: deviceScreenWidth * 0.98,
                                     // decoration: BoxDecoration(color: Colors.redAccent),
@@ -70,7 +84,7 @@ class QuotesCard extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(5),
                                       child: ColorFiltered(
                                         colorFilter: ColorFilter.mode(
-                                            Colors.black.withOpacity(0.5),
+                                            const Color(0xFF000000).withOpacity(0.5),
                                             BlendMode.darken),
                                         child: Image.network(
                                           imageController
@@ -85,11 +99,11 @@ class QuotesCard extends StatelessWidget {
                                   Positioned(
                                     left: 16,
                                     top: 0,
-                                    child: SizedBox(
-                                      width: deviceScreenWidth * 0.95,
-                                      child: Column(
-                                        children: [
-                                          Container(
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          width: deviceScreenWidth * 0.95,
+                                          child: Container(
                                             height: deviceScreenHeight * 0.20,
                                             width: deviceScreenWidth * 0.95,
                                             alignment: Alignment.center,
@@ -113,31 +127,33 @@ class QuotesCard extends StatelessWidget {
                                                   : Container(),
                                             ),
                                           ),
-                                          Container(
-                                            padding: EdgeInsets.only(
-                                                left: 20, top: 10),
-                                            alignment: Alignment.bottomLeft,
-                                            child: Obx(
-                                              () => !imageController
-                                                      .isLoading.value
-                                                  ? Text(
-                                                      " - $categoryAuthor ",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .headlineSmall,
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                    )
-                                                  : Text(""),
-                                            ),
-                                          )
-                                        ],
-                                      ),
+                                        ),
+                                        Container(
+                                          width: deviceScreenWidth * 0.90,
+                                          padding: const EdgeInsets.only(
+                                              left: 10, top: 5),
+                                          alignment: Alignment.bottomLeft,
+                                          child: Obx(
+                                            () =>
+                                                !imageController.isLoading.value
+                                                    ? Text(
+                                                        " - $categoryAuthor ",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .headlineSmall,
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      )
+                                                    : const Text(""),
+                                          ),
+                                        )
+                                      ],
                                     ),
                                   ),
                                 ],
                               ),
+                            ),
                             // ),
                             _quotesController.isIconVisibleList[index].value
                                 ? Positioned(
@@ -147,7 +163,7 @@ class QuotesCard extends StatelessWidget {
                                       children: [
                                         IconButton(
                                           onPressed: () {},
-                                          icon: Icon(Icons.share,
+                                          icon: const Icon(Icons.share,
                                               color: Colors.white),
                                         ),
                                         IconButton(
@@ -155,14 +171,48 @@ class QuotesCard extends StatelessWidget {
                                             // imageController.saveImgToGalary(context);
                                             // imageController.saveImgToGalary(
                                             //     screenshotController);
+                                            imageController.captureAndSaveImage(
+                                                repaintBoundaryKey);
                                           },
                                           icon: const Icon(Icons.download,
                                               color: Colors.white),
                                         ),
                                         IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(Icons.favorite,
-                                              color: Colors.white),
+                                          onPressed: () {
+                                            var quoteId = _quotesController.quotes[index].quoteId;
+                                            if(favoriteController.isFavorite(_quotesController.quotes[index].quoteId)){
+                                              print("Quote With the Id: $quoteId already exists.");
+                                              return;
+                                            }
+                                            else{
+                                              favoriteController.addQuotesToFav(
+                                                _quotesController
+                                                    .quotes[index].quoteId,
+                                                userController.user.id,
+                                                _quotesController
+                                                    .quotes[index].quoteText,
+                                                imageController.photos[index]
+                                                    .urls?["small"],
+                                                _quotesController.quotes[index]
+                                                        .quoteAuther ??
+                                                    "Unknown");
+                                            }
+                                            
+                                            print(
+                                                'Quote ID: ${_quotesController.quotes[index].quoteId}');
+                                            print(
+                                                'User Id Saved: ${userController.user.id}');
+                                            print(
+                                                'Quote Text: ${_quotesController.quotes[index].quoteText} \n Author: ${_quotesController.quotes[index].quoteAuther}');
+                                          },
+                                          icon: Icon(Icons.favorite,
+                                              color:
+                                                  favoriteController.isFavorite(
+                                                          _quotesController
+                                                              .quotes[index]
+                                                              .quoteId)
+                                                      ? Colors.red
+                                                      : Colors.white),
                                         ),
                                         IconButton(
                                           onPressed: () {
@@ -171,6 +221,13 @@ class QuotesCard extends StatelessWidget {
                                                     _quotesController
                                                         .quotes[index]
                                                         .quoteText);
+
+                                            // favoriteController.readFav(
+                                            //     userController.user.id);
+                                            // print(
+                                            //     "Favorite Data: ${favoriteController.favorites[index].quoteTxt}");
+                                            // print(
+                                            //     "UserId In Quotes Card: ${userController.user.id}");
                                           },
                                           icon: const Icon(Icons.copy,
                                               color: Colors.white),
@@ -178,7 +235,7 @@ class QuotesCard extends StatelessWidget {
                                       ],
                                     ),
                                   )
-                                : SizedBox.shrink(),
+                                : const SizedBox.shrink(),
                           ],
                         ),
                       ),

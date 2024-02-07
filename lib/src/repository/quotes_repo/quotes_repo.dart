@@ -1,17 +1,19 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:oraah_app/src/common_widgets/api_address.dart';
+import 'package:oraah_app/src/constants/constant.dart';
 import 'package:oraah_app/src/features/model/quotes/authorsModel.dart';
+import 'package:oraah_app/src/features/model/quotes/favoriteModel.dart';
 import 'package:oraah_app/src/features/model/quotes/quotesModel.dart';
-import 'package:oraah_app/src/repository/DI/dependancy_injection.dart';
+// import 'package:oraah_app/src/repository/DI/dependancy_injection.dart';
 import 'package:get/get.dart';
 
 class QuotesRepository {
   final dio = Dio();
-  // final DependencyInjection depIn;
-  // QuotesRepository() : depIn = Get.find<DependencyInjection>();
+
   final urlEndPoints = WIpV4;
-  // final urlEndPoints = EthIpV4;sss
+  // final urlEndPoints = EthIpV4;
 
   Future<List<QuoteModel>> fetchQuotes() async {
     List<QuoteModel> quotes = [];
@@ -43,8 +45,8 @@ class QuotesRepository {
   Future<List<QuoteModel>> byCategory(String category) async {
     List<QuoteModel> quotes = [];
     try {
-      var response =
-          await dio.get("http://$urlEndPoints:5005/xikmado/byCategory/$category");
+      var response = await dio
+          .get("http://$urlEndPoints:5005/xikmado/byCategory/$category");
       if (response.statusCode != 200) {
         Future.error({
           "error": "Something went unexpected ${response.statusCode}",
@@ -57,7 +59,6 @@ class QuotesRepository {
       }).toList();
 
       return quotes;
-
     } on DioException catch (error) {
       return Future.error({
         "error": "Error is ${error.response}",
@@ -68,23 +69,21 @@ class QuotesRepository {
 
   Future<List<QuoteModel>> byAuthor(String author) async {
     List<QuoteModel> quotes = [];
-    try{
-      var response = await dio.get("http://$urlEndPoints:5005/xikmado/byAuther/$author");
-      if(response.statusCode != 200) {
+    try {
+      var response =
+          await dio.get("http://$urlEndPoints:5005/xikmado/byAuther/$author");
+      if (response.statusCode != 200) {
         return Future.error({
           "error": "Error: ${response.statusCode}",
           "description": "Unknown error occured"
         });
-
       }
       quotes = (response.data as List).map((quote) {
         return QuoteModel.fromJson(quote);
       }).toList();
 
-      
       return quotes;
-    }
-    on DioException catch(error) {
+    } on DioException catch (error) {
       return Future.error({
         "error": "Error is ${error.response}",
         "description": "Unknown fatal error"
@@ -94,11 +93,12 @@ class QuotesRepository {
 
   Future<List<AuthorsModel>> authorsList() async {
     List<AuthorsModel> authors = [];
-    try{
-      final response = await dio.get("http://$urlEndPoints:5005/xikmado/authorsList");
-      if(response.statusCode != 200) {
+    try {
+      final response =
+          await dio.get("http://$urlEndPoints:5005/xikmado/authorsList");
+      if (response.statusCode != 200) {
         return Future.error({
-          "error": "Internal error occured ${response.statusCode}" ,
+          "error": "Internal error occured ${response.statusCode}",
           "description": "Unknown fatal external error!"
         });
       }
@@ -107,44 +107,107 @@ class QuotesRepository {
         return AuthorsModel.fromJson(data);
       }).toList();
       return authors;
-    }
-    on DioException catch(err) {
-      return Future.error({
-        "error": "Error is $err.response",
-        "description": "Unknown erros"
-      });
+    } on DioException catch (err) {
+      return Future.error(
+          {"error": "Error is $err.response", "description": "Unknown erros"});
     }
   }
 
   Future<bool> isCategoryExists() async {
-    final bool isExist ;
-    try{
-      final response = await dio.get("http://$urlEndPoints:5005/xikmado/isCatExist/Farxad");
-      if(response.statusCode != 200){
+    final bool isExist;
+    try {
+      final response =
+          await dio.get("http://$urlEndPoints:5005/xikmado/isCatExist/Farxad");
+      if (response.statusCode != 200) {
         return Future.error({
-          "error": "Internal error occured ${response.statusCode}" ,
+          "error": "Internal error occured ${response.statusCode}",
           "description": "Unknown fatal external error!"
         });
-      }
-      else{
+      } else {
         final responseData = response.data;
 
-        if(responseData["Exists"] == true){
+        if (responseData["Exists"] == true) {
           isExist = true;
-        }
-        else{
+        } else {
           isExist = false;
         }
       }
 
       return isExist;
-    }
-    on DioException catch(er){
-      return Future.error({
-        "error": "Error is $er.response",
-        "description": "Unknown erros"
-      });
+    } on DioException catch (er) {
+      return Future.error(
+          {"error": "Error is $er.response", "description": "Unknown erros"});
     }
   }
 
+  //? : Favorite
+
+  Future<void> removeFromFav(quoteId, userId) async {
+    try {
+      var response =
+          await dio.delete('${Constants.uri}/api/removeFav/$quoteId/$userId');
+      if (response.statusCode != 200) {
+        throw Exception(
+            'Error from removing favorites: ${response.statusCode}');
+      }
+      return response.data;
+    } catch (error) {
+      if (kDebugMode) {
+        print('Error: ${error.toString()}');
+      }
+    }
+  }
+
+  Future<List<FavoriteModel>> getFavorites(String userId) async {
+    try {
+      var response = await dio.get('${Constants.uri}/api/readFav/$userId');
+      if (response.statusCode != 200) {
+        throw Exception('Error fetching favorites: ${response.statusCode}');
+      }
+      List<dynamic> responseData = response.data;
+
+      // List<Map<String, dynamic>> favQuotesAsJson = responseData.map((quoteData) {
+      //   return FavoriteModel.fromJson(Map<String, dynamic>.from(quoteData)).toJson();
+      // }).toList();
+
+      List<FavoriteModel> favQuotes = responseData.map((quoteData) {
+        return FavoriteModel.fromJson(Map<String, dynamic>.from(quoteData));
+      }).toList();
+
+      return favQuotes;
+    } on DioException catch (error) {
+      throw Exception('Dio error: ${error.message}');
+    }
+  }
+
+  Future<FavoriteModel> addToFav({
+    required String quoteId,
+    required String userId,
+    required String quoteTxt,
+    required String imgUrl,
+    required String author,
+  }) async {
+    try {
+      FavoriteModel fav = FavoriteModel(
+          id: '', quoteTxt: quoteTxt, imgUrl: imgUrl, author: author, quoteId: quoteId);
+
+      var response = await dio.post(
+        '${Constants.uri}/api/addfav',
+        data: {'quoteId': quoteId, 'userId': userId, ...fav.toJson()},
+        options: Options(contentType: Headers.jsonContentType),
+      );
+
+      if (response.statusCode == 200) {
+        return FavoriteModel.fromJson(response.data);
+      } else {
+        throw Exception('Error on adding to favorites: ${response.statusCode}');
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print('Error: ${error.toString()}');
+      }
+
+      throw Exception('Error on Adding quote to fav');
+    }
+  }
 }

@@ -12,11 +12,13 @@ import '../../model/image/image_model.dart';
 // import 'package:screenshot/screenshot.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'dart:ui' as ui;
+import 'dart:typed_data';
 
 class QuotesImageController extends GetxController {
   QuotesController quotesController = Get.find<QuotesController>();
   RxList<PhotosModel> photos = RxList();
-  late final int imagesLength ;
+  late final int imagesLength;
   RxBool isLoading = true.obs;
   RxString orderBy = "popular".obs;
   RxString queryType = "nature,dark nature, waterfalls, deep sorrow".obs;
@@ -46,64 +48,59 @@ class QuotesImageController extends GetxController {
     orderBy.value = newVal;
     getPictureData();
   }
-  //!:
-  // void saveImgToGalary(ScreenshotController screenshotController) async {
-  //   try {
-  //     Uint8List? image = await screenshotController.capture();
-  //
-  //     if (image != null) {
-  //       saveImg(image);
-  //     }
-  //   } catch (err) {
-  //     print("The error is $err");
-  //   }
-  // }
 
-  // saveImg(Uint8List bytes) async {
-  //   final time = DateTime.now()
-  //       .toIso8601String()
-  //       .replaceAll('.', '-')
-  //       .replaceAll(':', '-');
-  //   final name = 'orahyo_$time';
-  //   await requestPermission(Permission.storage);
-  //   final result = await ImageGallerySaver.saveImage(bytes, name: name);
-  //   if (result["isSuccess"]) {
-  //     print("Successfully captured");
-  //     Get.snackbar("", "",
-  //         snackPosition: SnackPosition.TOP,
-  //         backgroundColor: Colors.transparent,
-  //         colorText: Colors.white,
-  //         duration: Duration(seconds: 3),
-  //         barBlur: 0.0,
-  //         snackStyle: SnackStyle.GROUNDED,
-  //         margin: EdgeInsets.all(16.0),
-  //         messageText: const Text(
-  //           "image saved to gallary",
-  //           textAlign: TextAlign.center,
-  //           style: TextStyle(
-  //             color: Colors.white,
-  //           ),
-  //         ));
-  //   } else {
-  //     print("Error for capturing image");
-  //     Get.snackbar("", "",
-  //         snackPosition: SnackPosition.TOP,
-  //         backgroundColor: Colors.transparent,
-  //         colorText: Colors.white,
-  //         duration: Duration(seconds: 3),
-  //         barBlur: 0.0,
-  //         snackStyle: SnackStyle.GROUNDED,
-  //         margin: EdgeInsets.all(16.0),
-  //         messageText: const Text(
-  //           "Error",
-  //           textAlign: TextAlign.center,
-  //           style: TextStyle(
-  //             color: Colors.white,
-  //           ),
-  //         ));
-  //   }
-  // }
+  Future<void> captureAndSaveImage(GlobalKey key) async {
+    RenderRepaintBoundary? boundary =
+        key.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+    if (boundary != null) {
+      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+      ByteData? byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
+      if (byteData != null) {
+        Uint8List pngBytes = byteData.buffer.asUint8List();
 
+        if (await requestPermission(Permission.storage)) {
+          final result = await ImageGallerySaver.saveImage(pngBytes);
+          if (result['isSuccess']) {
+            Get.snackbar("", "",
+                snackPosition: SnackPosition.TOP,
+                backgroundColor: Colors.transparent,
+                colorText: Colors.white,
+                duration: Duration(seconds: 3),
+                barBlur: 0.0,
+                snackStyle: SnackStyle.GROUNDED,
+                margin: EdgeInsets.all(16.0),
+                messageText: const Text(
+                  "Successfully image saved to gallary",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ));
+          }
+          else{
+            Get.snackbar("", "",
+                snackPosition: SnackPosition.TOP,
+                backgroundColor: Colors.transparent,
+                colorText: Colors.white,
+                duration: Duration(seconds: 3),
+                barBlur: 0.0,
+                snackStyle: SnackStyle.GROUNDED,
+                margin: EdgeInsets.all(16.0),
+                messageText: const Text(
+                  "Error!!!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ));
+          }
+        }
+      }
+    }
+  }
+
+  
   Future<bool> requestPermission(Permission permission) async {
     if (await permission.isGranted) {
       return true;

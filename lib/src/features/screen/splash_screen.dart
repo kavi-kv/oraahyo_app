@@ -5,7 +5,7 @@ import 'package:oraah_app/src/features/controllers/User/user_controller.dart';
 import 'package:oraah_app/src/features/model/user/user.dart';
 import 'package:oraah_app/src/features/screen/Auth/login_screen.dart';
 import 'package:oraah_app/src/features/screen/Auth/registration.dart';
-import 'package:oraah_app/src/services/api/auth_services.dart';
+import 'package:oraah_app/src/repository/services/api/auth_services.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:oraah_app/src/features/screen/MainScreen.dart';
 import 'package:lottie/lottie.dart';
@@ -16,8 +16,7 @@ class Splash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
-    var userController = Get.find<UserController>();
-    var authService = AuthService();
+    
 
     return AnimatedSplashScreen(
       splash: Column(
@@ -35,37 +34,7 @@ class Splash extends StatelessWidget {
       splashTransition: SplashTransition.rotationTransition,
       pageTransitionType: PageTransitionType.leftToRight,
       backgroundColor: isDark ? Colors.black : Colors.white,
-      nextScreen: FutureBuilder<bool>(
-        future: authService.validateToken(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: SizedBox(
-                width:
-                    50.0, 
-                height:
-                    50.0,
-                child: CircularProgressIndicator(
-                  backgroundColor: Colors.grey,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                  strokeWidth: 5.0,
-                ),
-              ),
-            );
-          }
-
-          if (snapshot.hasError) {
-            print('Error validating token: ${snapshot.error}');
-            return const LoginScreen(); // or some error screen
-          }
-
-          if (snapshot.data == true) {
-            return const MainScreen();
-          } else {
-            return const LoginScreen();
-          }
-        },
-      ),
+      nextScreen: const MainScreen()
     );
   }
 }

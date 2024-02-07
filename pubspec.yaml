@@ -29,13 +29,12 @@ flutter_native_splash:
   android: true
   ios: true
   web: false
-  background_image: assets/bg.png
-  image:  assets/logo.png
+  color: "#322653"
+  color_dark: "#322653"
+  image: "assets/oraahyo_icon.png"
   fullscreen: true
   android_12:
-    image: assets/logo.png
-    background_image: assets/bg.png
-    icon_background_color: "#101636"
+    image: "assets/oraahyo_icon.png"
   
 
 dev_dependencies:
@@ -57,7 +56,8 @@ dev_dependencies:
   permission_handler: ^10.4.3
   lottie: ^2.6.0
   flutter_lints: ^2.0.0
-
+  image_picker: ^1.0.7
+  flutter_colorpicker: ^1.0.3
 
 
 

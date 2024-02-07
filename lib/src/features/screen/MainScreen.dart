@@ -3,13 +3,14 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:oraah_app/src/features/controllers/User/user_controller.dart';
 import 'package:oraah_app/src/features/controllers/others/deviceSpecController.dart';
 import 'package:oraah_app/src/features/controllers/others/themeController.dart';
-import 'package:oraah_app/src/services/api/auth_services.dart';
+import 'package:oraah_app/src/features/controllers/quotes/favorite_controller.dart';
+import 'package:oraah_app/src/repository/services/api/auth_services.dart';
 import 'package:oraah_app/src/utils/theme/theme.dart';
 import 'package:get/get.dart';
 import '../../constants/text_strings.dart';
-import 'User/Users.dart';
+import 'Favorites/favorites_screen.dart';
 import 'Home/Home.dart';
-import 'Home/Status.dart';
+import 'Create Oraah/create_oraah.dart';
 import 'Home/home_widgets/navigation_drawer.dart';
 import 'Categories/Categories.dart';
 
@@ -22,13 +23,14 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int index = 0;
-  final Screens = const [Home(), Categories(), CreateOraah(), User()];
+  final screens =  [ const Home(), const Categories(), const CreateOraah(),  FavoriteScreen()];
   final ThemeController themeController = Get.put(ThemeController());
-  final  authService  = AuthService();
+  // final  authService  = AuthService();
   @override
   void initState() {
     super.initState();
-    authService.getUser(context: context);
+    AuthService().getUser(context: context);
+    // Get.put<FavoriteController>(FavoriteController());
   }
 
   bool isDark = false;
@@ -49,7 +51,7 @@ class _MainScreenState extends State<MainScreen> {
             centerTitle: true,
             actions: [
               Container(
-                margin: EdgeInsets.only(right: 16, top: 7),
+                margin: const EdgeInsets.only(right: 16, top: 7),
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(10)),
                 child: IconButton(
@@ -65,22 +67,22 @@ class _MainScreenState extends State<MainScreen> {
             ],
           ),
           drawer: const NavigationsDrawer(),
-          body: Screens[index],
+          body: screens[index],
           bottomNavigationBar: NavigationBarTheme(
             data: NavigationBarThemeData(
                 indicatorColor: Colors.blue.shade100,
-                labelTextStyle: MaterialStateProperty.all(
-                    TextStyle(fontSize: 14, fontWeight: FontWeight.w500))),
+                labelTextStyle:  MaterialStateProperty.all(
+                    const TextStyle(fontSize: 14, fontWeight: FontWeight.w500))),
             child: NavigationBar(
               backgroundColor: Colors.transparent,
               height: 60,
               labelBehavior:
                   NavigationDestinationLabelBehavior.onlyShowSelected,
-              animationDuration: Duration(seconds: 3),
+              animationDuration: const Duration(seconds: 3),
               selectedIndex: index,
               onDestinationSelected: (index) =>
                   setState(() => this.index = index),
-              destinations: [
+              destinations: const [
                 NavigationDestination(
                   icon: Icon(Icons.home_outlined),
                   label: "Home",
@@ -94,8 +96,8 @@ class _MainScreenState extends State<MainScreen> {
                   label: "Create Oraah",
                 ),
                 NavigationDestination(
-                  icon: Icon(Icons.person),
-                  label: "User",
+                  icon: Icon(Icons.favorite_rounded),
+                  label: "Favourite",
                 ),
               ],
             ),

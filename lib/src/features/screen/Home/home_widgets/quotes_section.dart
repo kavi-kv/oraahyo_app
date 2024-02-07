@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:oraah_app/src/features/controllers/others/deviceSpecController.dart';
+import 'package:oraah_app/src/features/controllers/quotes/favorite_controller.dart';
 import 'package:oraah_app/src/features/controllers/quotes/quotes_controller.dart';
 import 'package:oraah_app/src/features/screen/Home/home_widgets/quotes_card.dart';
 // import 'package:screenshot/screenshot.dart';
@@ -23,6 +24,7 @@ class QuotesSection extends StatelessWidget {
   final QuotesController _quotesController;
   final Brightness brightness;
   final QuotesImageController imageController;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,8 @@ class QuotesSection extends StatelessWidget {
     // final QuotesImageController _quotesImageController =
     //     Get.find<QuotesImageController>();
     final deviceSpacController = Get.put(DeviceSpacController(context));
+    
+    
     // final height = deviceSpacController.deviceHeight * 0.98;
     // double width = deviceSpacController.deiceWidth * 0.95;
 
