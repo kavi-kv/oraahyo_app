@@ -7,7 +7,7 @@ import 'package:oraah_app/src/features/controllers/quotes/quotes_controller.dart
 import 'package:oraah_app/src/features/model/quotes/quotesModel.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
-import '../../../repository/quotes_repo/dio_service.dart';
+import '../../../repository/quotes_repo/image_repo.dart';
 import '../../model/image/image_model.dart';
 // import 'package:screenshot/screenshot.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';

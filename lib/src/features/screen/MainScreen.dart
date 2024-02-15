@@ -23,7 +23,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int index = 0;
-  final screens =  [ const Home(), const Categories(), const CreateOraah(),  FavoriteScreen()];
+  final screens =  [ const Home(), const Categories(), CreateOraah(),  FavoriteScreen()];
   final ThemeController themeController = Get.put(ThemeController());
   // final  authService  = AuthService();
   @override

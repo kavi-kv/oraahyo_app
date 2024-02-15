@@ -4,6 +4,7 @@ import 'package:oraah_app/src/features/controllers/User/user_controller.dart';
 import 'package:oraah_app/src/features/controllers/auth/auth_controller.dart';
 import 'package:oraah_app/src/features/controllers/others/navigation_controller.dart';
 import 'package:oraah_app/src/features/controllers/others/themeController.dart';
+import 'package:oraah_app/src/features/controllers/quotes/create_oraah_controller.dart';
 import 'package:oraah_app/src/features/controllers/quotes/favorite_controller.dart';
 import 'package:oraah_app/src/features/controllers/quotes/quotes_controller.dart';
 import 'package:oraah_app/src/features/controllers/quotes/quotes_image_controller.dart';
@@ -19,7 +20,7 @@ void main() async {
   // WidgetsFlutterBinding.ensureInitialized();
   // Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   Get.put<AuthController>(AuthController());
   Get.put<NavigationController>(NavigationController());
   Get.put<QuotesController>(QuotesController());
@@ -29,8 +30,7 @@ void main() async {
   Get.put<QuotesRepository>(QuotesRepository());
   await checkInitialLoginStatus();
 
-  // Get.put<FavoriteController>(FavoriteController());
-  
+  Get.put<CreateOraahController>(CreateOraahController());
 
   runApp(const MyApp());
 }
@@ -39,15 +39,10 @@ Future<void> checkInitialLoginStatus() async {
   var authService = AuthService();
   bool isLoggedIn = await authService.validateToken();
   var userController = Get.find<UserController>();
-  // if (isLoggedIn) {
-    // var userData = await AuthService().getUser();
-    // userController.setUser(userData);
-    // userController.initializeFavoriteController();
-  // }
-
-  userController.setLoggedIn(isLoggedIn);
-  userController.setIsLoading(isLoggedIn);
-  
+  if (isLoggedIn) {
+    userController.setLoggedIn(isLoggedIn);
+    userController.setIsLoading(isLoggedIn);
+  }
 }
 
 class MyApp extends StatelessWidget {

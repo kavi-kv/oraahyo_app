@@ -15,7 +15,7 @@ class TElevatedButtonTheme {
     style: ElevatedButton.styleFrom(
       elevation: 0,
       foregroundColor: tWhiteColor,
-      backgroundColor: tDarkBlue,
+      backgroundColor: taAccentColor,
       side: const BorderSide(color: tDarkBlue),
       shape: const RoundedRectangleBorder(),
       padding: const EdgeInsets.symmetric(vertical: tButtonHeight),

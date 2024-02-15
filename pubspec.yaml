@@ -58,6 +58,8 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   image_picker: ^1.0.7
   flutter_colorpicker: ^1.0.3
+  anim_search_bar: ^2.0.3
+  
 
 
 
@@ -68,6 +70,39 @@ flutter:
     - assets/logo/
     - assets/images/
     - assets/lottie/
+    - assets/icons/
+
+  fonts: 
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+    - family: OpenSans
+      fonts:
+        - asset: assets/fonts/OpenSans-Italic-VariableFont_wdth,wght.ttf
+    - family: BreeSerif 
+      fonts:
+        - asset: assets/fonts/BreeSerif-Regular.ttf
+    - family: Lato
+      fonts:
+        - asset: assets/fonts/Lato-italic.ttf
+    - family: Lobster
+      fonts:
+        - asset: assets/fonts/Lobster-Regular.ttf
+    - family: Prozalibre
+      fonts:
+        - asset: assets/fonts/Prozalibre-Regular.ttf
+    - family: Fraunces
+      fonts:
+        - asset: assets/fonts/Fraunces-Italic-VariableFont_SOFT,WONK,opsz,wght.ttf
+    - family: GreatVibes
+      fonts:
+        - asset: assets/fonts/GreatVibes-Regular.ttf
+    - family: Pacifico
+      fonts:
+        - asset: assets/fonts/Pacifico-Regular.ttf
+    - family: Orbitron
+      fonts:
+        - asset: assets/fonts/Orbitron-VariableFont_wght.ttf
 
 
 

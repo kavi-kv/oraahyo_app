@@ -1,16 +1,43 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:oraah_app/src/features/controllers/others/deviceSpecController.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:oraah_app/src/features/controllers/quotes/create_oraah_controller.dart';
 import 'package:oraah_app/src/features/screen/Create%20Oraah/edit_icons_func.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:oraah_app/src/features/screen/Create%20Oraah/unsplash_page.dart';
 
 class CreateOraah extends StatelessWidget {
-  const CreateOraah({super.key});
+  CreateOraah({super.key});
 
+  final createOraahController = Get.find<CreateOraahController>();
+  // final deviceController = Get.find<DeviceSpacController>();
   @override
   Widget build(BuildContext context) {
-    double sliderValue = 16.0;
+    Brightness platformBrightness = MediaQuery.of(context).platformBrightness;
+    bool isDark = platformBrightness == Brightness.dark;
+    // bool isLight = platformBrightness == Brightness.light;
+    // final fontSize = createOraahController.sliderValue.value;
+    // final opacityValue = createOraahController.opacityValue.value;
+    // final textColor = createOraahController.textColor.value;
+    // final fontFamily = createOraahController.fontFamily.value;
+    // List<String> fontsNames = [
+    //   'Roboto',
+    //   'OpenSans',
+    //   'Lato',
+    //   'Lobster',
+    //   'Fraunces',
+    //   'Lato',
+    //   'GreatVibes',
+    //   'Orbitron',
+    //   'BreeSerif',
+    //   'Prozalibre'
+    // ];
+
     List<EditIconFunc> iconList = [
       EditIconFunc(
           icon: Icons.image,
@@ -30,7 +57,8 @@ class CreateOraah extends StatelessWidget {
                             width: 100,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: Colors.grey[200],
+                              color:
+                                  !isDark ? Colors.grey[200] : Colors.black12,
                             ),
                             child: Column(
                               children: [
@@ -51,12 +79,17 @@ class CreateOraah extends StatelessWidget {
                             width: 100,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: Colors.grey[200],
+                              color:
+                                  !isDark ? Colors.grey[200] : Colors.black12,
                             ),
                             child: Column(
                               children: [
                                 IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      createOraahController
+                                          .pickImageFromGallery();
+                                      // print("File Name: ${createOraahController.selectedGalleryImage}");
+                                    },
                                     icon: const Icon(
                                       Icons.photo_outlined,
                                       size: 25,
@@ -67,26 +100,34 @@ class CreateOraah extends StatelessWidget {
                                 )
                               ],
                             )),
-                        Container(
-                          height: 75,
-                          width: 100,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.grey[200],
-                          ),
-                          child: Column(
-                            children: [
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(
-                                    Icons.logo_dev_sharp,
-                                    size: 25,
-                                  )),
-                              Text(
-                                "Unsplash",
-                                style: Theme.of(context).textTheme.bodySmall,
-                              )
-                            ],
+                        InkWell(
+                          onTap: () {
+                            Get.to(() => const UnsplashPage());
+                          },
+                          child: Container(
+                            height: 75,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color:
+                                  !isDark ? Colors.grey[200] : Colors.black12,
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/icons/unsplash_icon.png',
+                                  scale: 3,
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  "Unsplash",
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -107,14 +148,18 @@ class CreateOraah extends StatelessWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Slider(
-                        value: sliderValue,
-                        max: 100,
-                        divisions: 5,
-                        label: sliderValue.round().toString(),
-                        onChanged: (val) {
-                          sliderValue = val;
-                        }),
+                    Obx(
+                      () => Slider(
+                          value: createOraahController.sliderValue.value,
+                          max: 25,
+                          divisions: 20,
+                          label: createOraahController.sliderValue.value
+                              .round()
+                              .toString(),
+                          onChanged: (val) {
+                            createOraahController.sliderValue.value = val;
+                          }),
+                    ),
                     const SizedBox(
                       child: Text("Size"),
                       // alignment: Alignment.bottomCenter,
@@ -122,20 +167,111 @@ class CreateOraah extends StatelessWidget {
                   ],
                 ));
           }),
-      EditIconFunc(icon: Icons.color_lens, label: 'Background', onTap: () {}),
       EditIconFunc(
-          icon: Icons.format_paint_sharp, label: 'Text Color', onTap: () {}),
-      EditIconFunc(icon: Icons.text_fields, label: 'Font', onTap: () {}),
-      EditIconFunc(icon: Icons.opacity_sharp, label: 'Opacity', onTap: () {}),
+          icon: Icons.color_lens,
+          label: 'Background',
+          onTap: () {
+            pickColol(context, "Pick Background Color");
+          }),
+      EditIconFunc(
+          icon: Icons.format_paint_sharp,
+          label: 'Text Color',
+          onTap: () {
+            pickColol(context, "Pick Text Color");
+          }),
+      EditIconFunc(
+          icon: Icons.text_fields,
+          label: 'Font',
+          onTap: () {
+            displayBottomSheet(
+                context,
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: createOraahController.fontsNames.length,
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    createOraahController.fontFamily.value =
+                                        createOraahController.fontsNames[index];
+                                  },
+                                  child: Container(
+                                      height: 50,
+                                      width: 75,
+                                      margin: const EdgeInsets.only(
+                                          left: 10, right: 10),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.white54,
+                                      ),
+                                      child: Center(
+                                        child: Text("Aa",
+                                            style: TextStyle(
+                                                fontFamily:
+                                                    createOraahController
+                                                        .fontsNames[index],
+                                                fontSize: 16,
+                                                color: Colors.black)),
+                                      )),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(
+                      child: Text("Fonts"),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                ));
+          }),
+      EditIconFunc(
+          icon: Icons.opacity_sharp,
+          label: 'Opacity',
+          onTap: () {
+            displayBottomSheet(
+                context,
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Slider(
+                        value: createOraahController.opacityValue.value,
+                        max: 1,
+                        divisions: 5,
+                        label: createOraahController.opacityValue.value
+                            .round()
+                            .toString(),
+                        onChanged: (val) {
+                          createOraahController.opacityValue.value = val;
+                        }),
+                    const SizedBox(
+                      child: Text("Opacity"),
+                      // alignment: Alignment.bottomCenter,
+                    )
+                  ],
+                ));
+          }),
       EditIconFunc(icon: Icons.save, label: 'Save', onTap: () {}),
       EditIconFunc(
           icon: Icons.branding_watermark, label: 'Watermark', onTap: () {}),
     ];
 
-    String fsQuote = quotes.first["Text"] ?? "No Quote";
-    String fsAuther = quotes.first["author"] ?? "No Author";
+    // String fsQuote = createOraahController.quotes.first["Text"] ?? "No Quote";
+    // String fsAuther = createOraahController.quotes.first["author"] ?? "No Author";
     final deviceController = DeviceSpacController(context);
-    bool isDarkMode = deviceController.brightnessLight == Brightness.dark;
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -150,15 +286,38 @@ class CreateOraah extends StatelessWidget {
                   height: 350,
                   width: MediaQuery.of(context).size.width * 0.96,
                   child: Card(
-                    elevation: 2,
-                    // color: Colors.white,
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.zero),
-                    child: Image.network(
-                      'https://images.unsplash.com/photo-1682686581220-689c34afb6ef?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                      elevation: 2,
+                      // color: Colors.white,
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero),
+                      child: Obx(
+                        () => Opacity(
+                          opacity: createOraahController.opacityValue.value,
+                          child: createOraahController
+                                      .selectedGalleryImage.value !=
+                                  null
+                              ? Image.file(
+                                  createOraahController
+                                      .selectedGalleryImage.value!,
+                                  fit: BoxFit.cover,
+                                )
+                              : createOraahController.isLoading.value
+                                  ? const Center(
+                                      child: CircularProgressIndicator())
+                                  : createOraahController
+                                              .backgorundImage.value ==
+                                          ""
+                                      ? Image.network(
+                                          'https://images.unsplash.com/photo-1682686581220-689c34afb6ef?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Image.network(
+                                          createOraahController
+                                              .backgorundImage.value,
+                                          fit: BoxFit.cover,
+                                        ),
+                        ),
+                      )),
                 ),
               ),
               Positioned(
@@ -166,7 +325,6 @@ class CreateOraah extends StatelessWidget {
                 left: 28,
                 child: Center(
                   child: Container(
-                    // height: MediaQuery.of(context).size.height * 0.25,
                     width: MediaQuery.of(context).size.width * 0.85,
                     alignment: Alignment.center,
                     padding: const EdgeInsets.only(top: 16, left: 10),
@@ -176,22 +334,30 @@ class CreateOraah extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         //? => Oraah Text
-                        GestureDetector(
-                          onTap: () {},
-                          child: AutoSizeText(
-                            fsQuote,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.apply(color: Colors.white, heightDelta: 0.5),
-                            maxLines: 10,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
+                        Obx(() => GestureDetector(
+                              onTap: () {},
+                              child: AutoSizeText(
+                                  createOraahController.fsQuote.value,
+                                  style: TextStyle(
+                                      fontSize: createOraahController
+                                          .sliderValue.value,
+                                      fontFamily: createOraahController
+                                          .fontFamily.value,
+                                      color:
+                                          createOraahController.textColor.value,
+                                      height: 1.8)),
+                            )),
                         //? => Authror of the Oraah Text
                         GestureDetector(
-                          child: const Text(''),
-                        ),
+                            child: Obx(
+                          () => Text(createOraahController.fsAuthor.value,
+                              style: TextStyle(
+                                  fontSize:
+                                      createOraahController.sliderValue.value,
+                                  color: createOraahController.textColor.value,
+                                  fontFamily:
+                                      createOraahController.fontFamily.value)),
+                        )),
                       ],
                     ),
                   ),
@@ -247,6 +413,37 @@ class CreateOraah extends StatelessWidget {
       ),
     );
   }
+
+  // Color color = createOraahController.textColor.value;
+  Widget buildColorPicker() => ColorPicker(
+        pickerColor: createOraahController.textColor.value,
+        labelTypes: const [],
+        onColorChanged: (color) =>
+            createOraahController.textColor.value = color,
+      );
+
+  void pickColol(BuildContext context, String title) => showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: Text(
+              title,
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                buildColorPicker(),
+                TextButton(
+                  child: Text(
+                    "Select",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          ));
 
   Future displayBottomSheet(BuildContext context, Widget content) async {
     return showModalBottomSheet(

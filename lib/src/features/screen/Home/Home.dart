@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:oraah_app/src/features/controllers/quotes/create_oraah_controller.dart';
 import 'package:oraah_app/src/features/controllers/quotes/favorite_controller.dart';
 import '../../../constants/text_strings.dart';
 import '../../controllers/others/deviceSpecController.dart';
@@ -19,6 +20,7 @@ class Home extends StatelessWidget {
      final imageController = Get.put(QuotesImageController());
       final tabController = Get.put(PageTabControllers());
       Get.lazyPut(()=> FavoriteController());
+      // Get.lazyPut(()=> CreateOraahController());
 
      final deviceController = Get.put(DeviceSpacController(context));
     final mediaQuey = MediaQuery.of(context);

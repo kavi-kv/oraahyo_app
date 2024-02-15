@@ -9,6 +9,6 @@ const tDarkPurple = Color(0xFF171123);
 const tBabbyPowder = Color(0xFFFDFFF7);
 const tWhiteSnow= Color(0xFFF5F5F5);
 const tGreySnow= Color(0xFF8B889B);
-
+const taAccentColor = Color(0xFF001BFF);
 
 

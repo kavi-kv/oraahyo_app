@@ -12,10 +12,4 @@ class EditIconFunc {
 
 
 
-List<Map<String, String>> quotes = [
-  {
-    "Text":
-        "The real test is not whether you avoid this failure, because you won't. It's whether you let it harden or shame you into inaction, or whether you learn from it; whether you choose to persevere",
-    "author": "Barack Obama"
-  },
-];
+
