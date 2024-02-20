@@ -72,7 +72,8 @@ class _HomeState extends State<Home> {
             //   style: Theme.of(context).textTheme.titleLarge,
             // ),
             elevation: 0,
-            backgroundColor: Colors.transparent,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+
             pinned: true,
             centerTitle: true,
             expandedHeight: 250.0,
@@ -90,12 +91,23 @@ class _HomeState extends State<Home> {
                     height: 200,
                     width: MediaQuery.of(context).size.width * 0.85,
                     child: Swiper(
-                      itemHeight: 50,
+                      itemHeight: 400,
                       itemWidth: MediaQuery.of(context).size.width * 0.7,
                       loop: true,
                       autoplay: true,
-                      duration: 1200,
+                      autoplayDelay: 10000,
+                      duration: 1500,
                       scrollDirection: Axis.horizontal,
+                      pagination: const SwiperPagination(
+                          margin: EdgeInsets.only(bottom: 20),
+                          alignment: Alignment.bottomCenter,
+                          builder: DotSwiperPaginationBuilder(
+                            color: Colors.grey,
+                            activeColor: Colors.blue,
+                            size: 10,
+                            activeSize: 12,
+                          )),
+                      // control: const SwiperControl(),
                       itemBuilder: (context, index) {
                         if (imageController.storyPhotos.isNotEmpty &&
                             quotesController.storyQuotes.isNotEmpty) {
@@ -132,8 +144,11 @@ class _HomeState extends State<Home> {
                                             child: Container(
                                               // margin:
                                               //     const EdgeInsets.symmetric(horizontal: 5),
-                                              child: Opacity(
-                                                opacity: 0.5,
+                                              child: ColorFiltered(
+                                                colorFilter: ColorFilter.mode(
+                                                    const Color(0xFF000000)
+                                                        .withOpacity(0.5),
+                                                    BlendMode.darken),
                                                 child: Image.network(
                                                   imageUrl,
                                                   fit: BoxFit.cover,
@@ -150,27 +165,32 @@ class _HomeState extends State<Home> {
                                     child: Column(
                                       children: [
                                         Container(
-                                          height: 80,
+                                          // color: Colors.amber,
+                                          alignment: Alignment.center,
+                                          height: 120,
                                           width: MediaQuery.of(context)
                                                   .size
                                                   .width *
                                               0.80,
                                           margin: const EdgeInsets.only(
-                                              right: 16, top: 10, left: 10),
+                                              right: 16, top: 10, left: 5),
                                           padding: const EdgeInsets.only(
                                             right: 16,
                                             top: 5,
                                           ),
-                                          child: Text(
-                                            txtUrl,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium
-                                                ?.apply(
-                                                    color: Colors.white,
-                                                    heightDelta: 0.15),
-                                            maxLines: 10,
-                                            overflow: TextOverflow.ellipsis,
+                                          child: Center(
+                                            child: AutoSizeText(
+                                              txtUrl,
+                                              textAlign: TextAlign.center,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium
+                                                  ?.apply(
+                                                      color: Colors.white,
+                                                      heightDelta: 0.15),
+                                              maxLines: 10,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -183,6 +203,7 @@ class _HomeState extends State<Home> {
                         }
                       },
                       itemCount: imageController.storyPhotos.length,
+                      layout: SwiperLayout.DEFAULT,
                     ),
                   ),
                 ),
