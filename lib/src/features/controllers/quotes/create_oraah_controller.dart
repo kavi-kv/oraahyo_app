@@ -44,11 +44,22 @@ class CreateOraahController extends GetxController {
       "Nature,Cat,Palletes,Country Side, Deep Blue Ocean, Lonely".obs;
   final apiKeys = ApiKeys();
   RxString backgorundImage = "".obs;
+  RxBool isEditingText = false.obs;
+  late TextEditingController textEditingController;
+  RxString initialText = "Oraahdada Halkan ku qor.".obs;
+  RxBool editorVisibility = true.obs;
 
   void selectBackgroundImage(String image) {
     isLoading.value = true;
     backgorundImage.value = image;
     isLoading.value = false;
+  }
+
+  Future pickImageFromGallery() async {
+    final returnedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (returnedImage == null) return;
+    selectedGalleryImage.value = File(returnedImage.path);
   }
 
   void updateSearchQueryString(String newQuery) {
@@ -62,25 +73,36 @@ class CreateOraahController extends GetxController {
           .toList();
       searchResults.value = filteredList;
     }
-  }
-
-  Future pickImageFromGallery() async {
-    final returnedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (returnedImage == null) return;
-    selectedGalleryImage.value = File(returnedImage.path);
+    getInternetImages();
   }
 
   Future<void> getInternetImages() async {
     try {
       isLoading.value = true;
-      images.value = await imageRepo.getImagesFromInternet(
-          queries.value, 20, apiKeys.quoteApiKeyUnsplash_2);
-      log("Internet Images inside Function $images");
-      isLoading.value = false;
+      if (searchQuery.isEmpty) {
+        images.value = await imageRepo.getImagesFromInternet(
+            queries.value, 20, apiKeys.quoteApiKeyUnsplash_2);
+        log("Internet Images inside Function $images");
+       
+      }
+      else{
+        images.value = await imageRepo.getImagesFromInternet(
+            searchQuery.value, 20, apiKeys.quoteApiKeyUnsplash_2);
+        log("Internet Images inside Function $images");
+      
+      }
+        isLoading.value = false;
+      
     } catch (err) {
       log("Error while fetching images(inside createOraah): $err");
     }
+  }
+
+  void toggleEditing() {
+    isEditingText.value = !isEditingText.value;
+    Future.delayed(const Duration(seconds: 2), () {
+      editorVisibility.value = !editorVisibility.value;
+    });
   }
 
   @override
@@ -88,6 +110,14 @@ class CreateOraahController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     getInternetImages();
-    log("Internet Images $images");
+    // log("Internet Images $images");
+    textEditingController = TextEditingController(text: initialText.value);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    textEditingController.dispose();
+    super.dispose();
   }
 }

@@ -4,6 +4,9 @@ import 'package:oraah_app/src/features/controllers/User/user_controller.dart';
 import 'package:oraah_app/src/features/controllers/others/deviceSpecController.dart';
 import 'package:oraah_app/src/features/controllers/others/themeController.dart';
 import 'package:oraah_app/src/features/controllers/quotes/favorite_controller.dart';
+import 'package:oraah_app/src/features/controllers/quotes/quotes_controller.dart';
+import 'package:oraah_app/src/features/controllers/quotes/quotes_image_controller.dart';
+import 'package:oraah_app/src/features/screen/Home/home_widgets/custom_appbar.dart';
 import 'package:oraah_app/src/repository/services/api/auth_services.dart';
 import 'package:oraah_app/src/utils/theme/theme.dart';
 import 'package:get/get.dart';
@@ -23,7 +26,13 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int index = 0;
-  final screens =  [ const Home(), const Categories(), CreateOraah(),  FavoriteScreen()];
+  
+  final screens = [
+    const KeyedSubtree(key: ValueKey('Home'), child: Home()),
+    const KeyedSubtree(key: ValueKey('Categories'), child: Categories()),
+     KeyedSubtree(key: const ValueKey('CreateOraah'), child: CreateOraah()),
+     KeyedSubtree(key: const ValueKey('FavoriteScreen'), child: FavoriteScreen()),
+  ];
   final ThemeController themeController = Get.put(ThemeController());
   // final  authService  = AuthService();
   @override
@@ -41,38 +50,51 @@ class _MainScreenState extends State<MainScreen> {
       isDark = themeController.isDarkMode.value;
       return SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            title: Text(
-              oAppTitle,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            centerTitle: true,
-            actions: [
-              Container(
-                margin: const EdgeInsets.only(right: 16, top: 7),
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                child: IconButton(
-                    onPressed: () {
-                      themeController.toggleTheme();
-                    },
-                    icon: Icon(
-                      // themeController.isDarkMode.value ? LineAwesomeIcons.sun : LineAwesomeIcons.moon,
-                      themeController.isDarkMode.value ? LineAwesomeIcons.sun : LineAwesomeIcons.moon,
-                      color: themeController.isDarkMode.value ? Colors.white : Colors.black,
-                    )),
-              )
-            ],
-          ),
+          // appBar: AppBar(
+          //   title: Text(
+          //     oAppTitle,
+          //     style: Theme.of(context).textTheme.titleLarge,
+          //   ),
+          //   backgroundColor: Colors.transparent,
+          //   elevation: 0,
+          //   centerTitle: true,
+          //   actions: [
+          //     Container(
+          //       margin: const EdgeInsets.only(right: 16, top: 7),
+          //       decoration:
+          //           BoxDecoration(borderRadius: BorderRadius.circular(10)),
+          //       child: IconButton(
+          //           onPressed: () {
+          //             themeController.toggleTheme();
+          //           },
+          //           icon: Icon(
+          //             // themeController.isDarkMode.value ? LineAwesomeIcons.sun : LineAwesomeIcons.moon,
+          //             themeController.isDarkMode.value
+          //                 ? LineAwesomeIcons.sun
+          //                 : LineAwesomeIcons.moon,
+          //             color: themeController.isDarkMode.value
+          //                 ? Colors.white
+          //                 : Colors.black,
+          //           )),
+          //     )
+          //   ],
+          // ),
           drawer: const NavigationsDrawer(),
-          body: screens[index],
+          body: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 1000),
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
+            child: screens[index]
+          ),
           bottomNavigationBar: NavigationBarTheme(
             data: NavigationBarThemeData(
                 indicatorColor: Colors.blue.shade100,
-                labelTextStyle:  MaterialStateProperty.all(
-                    const TextStyle(fontSize: 14, fontWeight: FontWeight.w500))),
+                labelTextStyle: MaterialStateProperty.all(const TextStyle(
+                    fontSize: 14, fontWeight: FontWeight.w500))),
             child: NavigationBar(
               backgroundColor: Colors.transparent,
               height: 60,

@@ -32,7 +32,7 @@ class AuthService {
       );
 
       var response = await dio.post(
-        '${Constants.uri}/api/signup',
+        '${Constants.ethIpV4}/api/signup',
         data: user.toJson(),
         options: Options(contentType: Headers.jsonContentType),
       );
@@ -55,7 +55,7 @@ class AuthService {
       required Function(String) onError}) async {
     try {
       var response = await dio.post(
-        '${Constants.uri}/api/signin',
+        '${Constants.ethIpV4}/api/signin',
         data: {'email': email, 'password': password},
         options: Options(contentType: Headers.jsonContentType),
       );
@@ -87,7 +87,7 @@ class AuthService {
       String? token = prefs.getString('x-auth-token');
 
       var tokenRes = await dio.post(
-        '${Constants.uri}/tokenIsValid',
+        '${Constants.ethIpV4}/tokenIsValid',
         options: Options(
           contentType: Headers.jsonContentType,
           headers: {
@@ -99,7 +99,7 @@ class AuthService {
       var response = tokenRes.data;
 
       if (response == true) {
-        var userRes = await dio.get('${Constants.uri}/',
+        var userRes = await dio.get('${Constants.ethIpV4}/',
             options: Options(
               contentType: Headers.jsonContentType,
               headers: {'x-auth-token': token},
@@ -119,7 +119,7 @@ class AuthService {
 
     try {
       var response = await dio.post(
-        '${Constants.uri}/tokenIsValid',
+        '${Constants.ethIpV4}/tokenIsValid',
         options: Options(
           contentType: Headers.jsonContentType,
           headers: {

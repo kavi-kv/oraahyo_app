@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:oraah_app/src/features/controllers/quotes/create_oraah_controller.dart';
 import 'package:oraah_app/src/features/screen/Create%20Oraah/create_oraah.dart';
-import 'package:oraah_app/src/utils/widget_themes/elevated_button_themes.dart';
 
 class ImageView extends StatelessWidget {
    ImageView({super.key, required this.image});
@@ -69,7 +68,7 @@ class ImageView extends StatelessWidget {
                   ),
                   onPressed: () {
                     createOraahController.backgorundImage(image);
-                    Get.to(() => CreateOraah());
+                    Get.off(() => CreateOraah());
                   },
                   child: Text(
                     "Select this image",

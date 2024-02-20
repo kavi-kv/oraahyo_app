@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/scheduler/ticker.dart';
@@ -11,6 +12,9 @@ import 'package:oraah_app/src/features/model/quotes/authorsModel.dart';
 import 'package:oraah_app/src/repository/quotes_repo/quotes_repo.dart';
 // import 'package:screenshot/screenshot.dart';
 import '../../model/quotes/quotesModel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:developer';
+import 'dart:io';
 
 class QuotesController extends GetxController {
   static QuotesController get instance => Get.find();
@@ -18,9 +22,10 @@ class QuotesController extends GetxController {
   RxList<QuoteModel> quotes = <QuoteModel>[].obs;
   RxList<QuoteModel> quotesByCategory = <QuoteModel>[].obs;
   RxList<QuoteModel> quotesByAuthor = <QuoteModel>[].obs;
+  RxList<QuoteModel> storyQuotes = <QuoteModel>[].obs;
   RxList<AuthorsModel> listOfAuthors = <AuthorsModel>[].obs;
   RxBool isCategoryValid = false.obs;
-  RxString authorName = ''.obs ;
+  RxString authorName = ''.obs;
   RxBool isCardClicked = false.obs;
   RxBool isLoading = true.obs;
   RxBool isAuthersLoading = false.obs;
@@ -38,22 +43,81 @@ class QuotesController extends GetxController {
     "Latest",
   ].obs;
 
-  
+  @override
+  void onInit() {
+    super.onInit();
+    fetchQuotes();
+    fetchListOfAuthers();
+    // checkAndFetchQuotes();
+    fetchStoryQuotes();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // fetchQuotes();
+  }
 
   /* Controll quotes icon visibilty */
   void IconsVisibilityState(int itemCount) {
     isIconVisibleList.assignAll(List.generate(itemCount, (index) => false.obs));
   }
 
-  
-  
+  // Future<void> checkAndFetchQuotes() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String? lastFetchTimeString = prefs.getString('lastFetchTime');
+
+  //   DateTime lastTime;
+
+  //   if (lastFetchTimeString != null) {
+  //     lastTime = DateTime.parse(lastFetchTimeString);
+  //   } else {
+  //     lastTime = DateTime.now().subtract(const Duration(days: 1));
+  //   }
+
+  //   DateTime now = DateTime.now();
+  //   if (now.difference(lastTime).inHours >= 24) {
+  //     await fetchStoryQuotes();
+  //   }
+  // }
+
+  Future<void> fetchStoryQuotes() async {
+    try {
+      isLoading.value = true;
+      List<QuoteModel> allQuotes = await repository.fetchQuotes();
+
+      if (allQuotes.isNotEmpty) {
+        Set<int> index = {};
+        int numOfQuotesToFetch = min(5, allQuotes.length);
+        while (index.length < numOfQuotesToFetch) {
+          int randomIndex = random.nextInt(allQuotes.length);
+          index.add(randomIndex);
+        }
+
+        List<QuoteModel> randomQuotes =
+            index.map((quote) => allQuotes[quote]).toList();
+        storyQuotes.value = randomQuotes;
+      }
+      else{
+        print("No Available Quotes");
+      }
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('lastFetchTime', DateTime.now().toIso8601String());
+    } catch (error) {
+      if (kDebugMode) {
+        print("Error on fetching Daily quotes");
+      }
+    }
+    isLoading.value = false;
+  }
+
   Future<void> fetchQuotes() async {
-    
-    try{
+    try {
       isLoading.value = true;
       quotes.value = await repository.fetchQuotes();
       IconsVisibilityState(quotes.length);
-    } catch(err){
+    } catch (err) {
       print("Error: $err");
     }
     isLoading.value = false;
@@ -63,34 +127,32 @@ class QuotesController extends GetxController {
 
   Future<void> fetchQuotesByCategory(String category) async {
     isLoading.value = true;
-    try{
+    try {
       quotesByCategory.value = await repository.byCategory(category);
-    }
-    catch(error) {
+    } catch (error) {
       print("Error $error");
     }
     isLoading.value = false;
   }
 
-  Future<void> fetchListOfAuthers() async{
+  Future<void> fetchListOfAuthers() async {
     isLoading.value = true;
-    try{
+    try {
       listOfAuthors.value = await repository.authorsList();
       print("Authers Fetched successfully");
-    }
-    catch(err) {
+    } catch (err) {
       print("Error $err");
     }
 
-     isLoading.value = false;
+    isLoading.value = false;
   }
+
   Future<void> fetchByAuthor(String authorName) async {
     isLoading.value = true;
-    try{
+    try {
       quotesByAuthor.value = await repository.byAuthor(authorName);
       print("Successfully fetched autherName: $authorName by quotes");
-    }
-    catch(err){
+    } catch (err) {
       print("Error: $err");
     }
     isLoading.value = false;
@@ -98,14 +160,13 @@ class QuotesController extends GetxController {
 
   Future<void> isCategoryExists() async {
     isLoading.value = true;
-    try{
+    try {
       isCategoryValid.value = await repository.isCategoryExists();
-    }
-    catch(err){
+    } catch (err) {
       print("Error: $err");
     }
   }
-  
+
   void copyTextToClipboard(String quote) {
     Clipboard.setData(ClipboardData(text: quote));
 
@@ -124,20 +185,6 @@ class QuotesController extends GetxController {
             color: Colors.white,
           ),
         ));
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-    fetchQuotes();
-    fetchListOfAuthers();
-    // fetchByAuthor(authorName.value);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    fetchQuotes();
   }
 
   Color randomColor(Brightness brightness) {

@@ -38,7 +38,7 @@ class TTextTheme {
   ),
     headlineSmall : GoogleFonts.poppins(
     color: Colors.white,
-    fontWeight: FontWeight.w100,
+    fontWeight: FontWeight.normal,
     fontSize: 12
   ),
   titleLarge : GoogleFonts.poppins(

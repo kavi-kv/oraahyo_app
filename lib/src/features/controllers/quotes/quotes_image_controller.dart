@@ -1,4 +1,5 @@
-import 'dart:typed_data';
+import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -18,6 +19,7 @@ import 'dart:typed_data';
 class QuotesImageController extends GetxController {
   QuotesController quotesController = Get.find<QuotesController>();
   RxList<PhotosModel> photos = RxList();
+  RxList<PhotosModel> storyPhotos = RxList();
   late final int imagesLength;
   RxBool isLoading = true.obs;
   RxString orderBy = "popular".obs;
@@ -31,6 +33,23 @@ class QuotesImageController extends GetxController {
     "oldest",
     "views",
   ];
+  List<String> dailyQuoteQueryType = [
+    "Moon, Dark, Deep Ocean, Ocean, Cities, Cities, Clouds",
+    "Doom, Lonely, Stars, Gallaxy, Streets",
+    "Wisdom, Island, Milkway, Deep Sorrow",
+  ];
+
+  Future<void> getStoryImages() async {
+    try{
+      isLoading.value = true;
+      storyPhotos.value = await repository.getImages(queryType.value, 5);
+      log("Successfully Fetched Story Quotes: $storyPhotos");
+    }
+    catch(error){
+        log("Status Code is ");
+    }
+    isLoading.value = false;
+  }
 
   Future<void> getPictureData() async {
     try {
@@ -118,6 +137,7 @@ class QuotesImageController extends GetxController {
   void onInit() {
     super.onInit();
     imagesLength = quotesController.quotes.length;
+    getStoryImages();
     getPictureData();
   }
 
@@ -125,5 +145,6 @@ class QuotesImageController extends GetxController {
   void dispose() {
     super.dispose();
     getPictureData();
+    // getStoryImages();
   }
 }

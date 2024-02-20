@@ -6,16 +6,25 @@ class NetworkController extends GetxController {
   final Connectivity _connectivity = Connectivity();
   RxString connectivtyType = "".obs;
   final connTypeResult = Connectivity().checkConnectivity();
+  final String ethIpV4 = "192.168.48.75";
+  final String wIpV4 = "192.168.100.7";
 
   @override
   Future<void> onInit() async {
     super.onInit();
-    
-      _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
-      // _updateConnectionStatus(await _connectivity.checkConnectivity());
-    
+
+    _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+    // _updateConnectionStatus(await _connectivity.checkConnectivity());
 
     // connTypeResult;
+  }
+
+  Future<String?> checkConnectionType() async {
+    var endPoints = null;
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if(connectivityResult == ConnectivityResult.ethernet) { ethIpV4;}
+    else if(connectivityResult == ConnectivityResult.ethernet) {return wIpV4;}
+    else{ return "There Is No Connection"; }
   }
 
   void _updateConnectionStatus(ConnectivityResult connectivityResult) {
@@ -48,4 +57,6 @@ class NetworkController extends GetxController {
     }
     return connectivtyType;
   }
+
+  
 }

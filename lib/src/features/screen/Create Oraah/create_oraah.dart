@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
-import 'package:oraah_app/src/features/controllers/others/deviceSpecController.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:oraah_app/src/features/controllers/quotes/create_oraah_controller.dart';
 import 'package:oraah_app/src/features/screen/Create%20Oraah/edit_icons_func.dart';
@@ -15,28 +13,12 @@ class CreateOraah extends StatelessWidget {
   CreateOraah({super.key});
 
   final createOraahController = Get.find<CreateOraahController>();
+  // final myAnimationController = Get.put(MyAnimationController());
   // final deviceController = Get.find<DeviceSpacController>();
   @override
   Widget build(BuildContext context) {
     Brightness platformBrightness = MediaQuery.of(context).platformBrightness;
     bool isDark = platformBrightness == Brightness.dark;
-    // bool isLight = platformBrightness == Brightness.light;
-    // final fontSize = createOraahController.sliderValue.value;
-    // final opacityValue = createOraahController.opacityValue.value;
-    // final textColor = createOraahController.textColor.value;
-    // final fontFamily = createOraahController.fontFamily.value;
-    // List<String> fontsNames = [
-    //   'Roboto',
-    //   'OpenSans',
-    //   'Lato',
-    //   'Lobster',
-    //   'Fraunces',
-    //   'Lato',
-    //   'GreatVibes',
-    //   'Orbitron',
-    //   'BreeSerif',
-    //   'Prozalibre'
-    // ];
 
     List<EditIconFunc> iconList = [
       EditIconFunc(
@@ -100,9 +82,11 @@ class CreateOraah extends StatelessWidget {
                                 )
                               ],
                             )),
-                        InkWell(
+                        GestureDetector(
                           onTap: () {
-                            Get.to(() => const UnsplashPage());
+                            Get.off(() => UnsplashPage(),
+                                transition: Transition.circularReveal,
+                                duration: const Duration(seconds: 1));
                           },
                           child: Container(
                             height: 75,
@@ -132,10 +116,7 @@ class CreateOraah extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Container(
-                      child: const Text("Image"),
-                      // alignment: Alignment.bottomCenter,
-                    )
+                    const Text("Image")
                   ],
                 ));
           }),
@@ -247,16 +228,18 @@ class CreateOraah extends StatelessWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Slider(
-                        value: createOraahController.opacityValue.value,
-                        max: 1,
-                        divisions: 5,
-                        label: createOraahController.opacityValue.value
-                            .round()
-                            .toString(),
-                        onChanged: (val) {
-                          createOraahController.opacityValue.value = val;
-                        }),
+                    Obx(
+                      () => Slider(
+                          value: createOraahController.opacityValue.value,
+                          max: 1,
+                          divisions: 5,
+                          label: createOraahController.opacityValue.value
+                              .round()
+                              .toString(),
+                          onChanged: (val) {
+                            createOraahController.opacityValue.value = val;
+                          }),
+                    ),
                     const SizedBox(
                       child: Text("Opacity"),
                       // alignment: Alignment.bottomCenter,
@@ -271,7 +254,7 @@ class CreateOraah extends StatelessWidget {
 
     // String fsQuote = createOraahController.quotes.first["Text"] ?? "No Quote";
     // String fsAuther = createOraahController.quotes.first["author"] ?? "No Author";
-    final deviceController = DeviceSpacController(context);
+    // final deviceController = DeviceSpacController(context);
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -279,6 +262,45 @@ class CreateOraah extends StatelessWidget {
         children: [
           //? => Oraah Area
           const Spacer(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.format_align_left),
+                onPressed: () {},
+                color: Colors.grey,
+              ),
+              IconButton(
+                icon: const Icon(Icons.format_align_right),
+                onPressed: () {},
+                color: Colors.grey,
+              ),
+              IconButton(
+                icon: const Icon(Icons.format_align_center),
+                onPressed: () {},
+                color: Colors.grey,
+              ),
+              Obx(
+                () => IconButton(
+                  icon: Icon(
+                    createOraahController.isEditingText.value
+                        ? Icons.check
+                        : Icons.edit_document,
+                    color: Colors.grey,
+                  ),
+                  onPressed: () {
+                    createOraahController.toggleEditing();
+                    if (!createOraahController.isEditingText.value) {
+                      FocusScope.of(context).unfocus();
+                    }
+                  },
+                ),
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 12,
+          ),
           Stack(
             children: [
               Center(
@@ -334,30 +356,57 @@ class CreateOraah extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         //? => Oraah Text
-                        Obx(() => GestureDetector(
-                              onTap: () {},
-                              child: AutoSizeText(
-                                  createOraahController.fsQuote.value,
-                                  style: TextStyle(
-                                      fontSize: createOraahController
-                                          .sliderValue.value,
-                                      fontFamily: createOraahController
-                                          .fontFamily.value,
-                                      color:
-                                          createOraahController.textColor.value,
-                                      height: 1.8)),
-                            )),
+                        Obx(() => createOraahController.isEditingText.value
+                            ? TextField(
+                                controller:
+                                    createOraahController.textEditingController,
+                                onSubmitted: (newValue) {
+                                  createOraahController.initialText.value =
+                                      newValue;
+                                  createOraahController.isEditingText.value =
+                                      true;
+                                },
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                ),
+                                style: const TextStyle(color: Colors.white),
+                                // maxLength: 50,
+                                maxLines: 8,
+                              )
+                            : Obx(() => InkWell(
+                                  onTap: () {
+                                    createOraahController.isEditingText.value =
+                                        true;
+                                    createOraahController
+                                        .editorVisibility.value = false;
+                                    // createOraahController.toggleEditing();
+                                  },
+                                  child: AutoSizeText(
+                                      createOraahController.textEditingController.text,
+                                      style: TextStyle(
+                                        fontSize: createOraahController
+                                            .sliderValue.value,
+                                        fontFamily: createOraahController
+                                            .fontFamily.value,
+                                        color: createOraahController
+                                            .textColor.value,
+                                        height: 1.8,
+                                      )),
+                                ))),
                         //? => Authror of the Oraah Text
-                        GestureDetector(
-                            child: Obx(
-                          () => Text(createOraahController.fsAuthor.value,
-                              style: TextStyle(
-                                  fontSize:
-                                      createOraahController.sliderValue.value,
-                                  color: createOraahController.textColor.value,
-                                  fontFamily:
-                                      createOraahController.fontFamily.value)),
-                        )),
+                        // GestureDetector(
+                        //     child: Obx(
+                        //   () => Text(createOraahController.fsAuthor.value,
+                        //       style: TextStyle(
+                        //           fontSize:
+                        //               createOraahController.sliderValue.value,
+                        //           color:
+                        //               createOraahController.textColor.value,
+                        //           fontFamily: createOraahController
+                        //               .fontFamily.value)),
+                        // )),
                       ],
                     ),
                   ),
@@ -367,48 +416,58 @@ class CreateOraah extends StatelessWidget {
           ),
           //? => Editting Area
           const Spacer(),
-          Stack(
-            children: [
-              SizedBox(
-                  height: 150,
-                  width: MediaQuery.of(context).size.width * 0.96,
-                  child: const Card(
-                    elevation: 12,
-                  )),
-              Positioned(
-                top: 0,
-                right: 3,
-                left: 3,
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.only(left: 12, right: 12),
-                  child: Wrap(
-                    spacing: 8.0,
-                    runSpacing: 4.0,
-                    // alignment: WrapAlignment.spaceBetween,
-                    children: iconList
-                        .map((editIconFunc) => Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  IconButton(
-                                    icon: Icon(editIconFunc.icon, size: 28),
-                                    onPressed: editIconFunc.onTap,
-                                  ),
-                                  Text(
-                                    editIconFunc.label,
-                                    style: const TextStyle(fontSize: 9),
-                                  ),
-                                ],
-                              ),
-                            ))
-                        .toList(),
+          Obx(() => AnimatedOpacity(
+                opacity:
+                    createOraahController.editorVisibility.value ? 1.0 : 0.0,
+                duration: const Duration(seconds: 3),
+                child: Visibility(
+                  visible: createOraahController.editorVisibility.value,
+                  child: Stack(
+                    children: [
+                      SizedBox(
+                          height: 150,
+                          width: MediaQuery.of(context).size.width * 0.96,
+                          child: const Card(
+                            elevation: 12,
+                          )),
+                      Positioned(
+                        top: 0,
+                        right: 3,
+                        left: 3,
+                        child: Container(
+                          height: 120,
+                          width: MediaQuery.of(context).size.width,
+                          padding: const EdgeInsets.only(left: 12, right: 12),
+                          child: Wrap(
+                            spacing: 8.0,
+                            runSpacing: 4.0,
+                            // alignment: WrapAlignment.spaceBetween,
+                            children: iconList
+                                .map((editIconFunc) => Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          IconButton(
+                                            icon: Icon(editIconFunc.icon,
+                                                size: 28),
+                                            onPressed: editIconFunc.onTap,
+                                          ),
+                                          Text(
+                                            editIconFunc.label,
+                                            style: const TextStyle(fontSize: 9),
+                                          ),
+                                        ],
+                                      ),
+                                    ))
+                                .toList(),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
-              )
-            ],
-          )
+              ))
         ],
       ),
     );

@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:oraah_app/src/common_widgets/api_address.dart';
 import 'package:oraah_app/src/constants/constant.dart';
+import 'package:oraah_app/src/features/controllers/connection/network_controller.dart';
 import 'package:oraah_app/src/features/model/quotes/authorsModel.dart';
 import 'package:oraah_app/src/features/model/quotes/favoriteModel.dart';
 import 'package:oraah_app/src/features/model/quotes/quotesModel.dart';
@@ -12,8 +13,9 @@ import 'package:get/get.dart';
 class QuotesRepository {
   final dio = Dio();
 
-  final urlEndPoints = WIpV4;
-  // final urlEndPoints = EthIpV4;
+  // final urlEndPoints = NetworkController().connectivtyType;
+  final urlEndPoints = EthIpV4;
+  // final urlEndPoints = WIpV4;
 
   Future<List<QuoteModel>> fetchQuotes() async {
     List<QuoteModel> quotes = [];
@@ -145,7 +147,7 @@ class QuotesRepository {
   Future<void> removeFromFav(quoteId, userId) async {
     try {
       var response =
-          await dio.delete('${Constants.uri}/api/removeFav/$quoteId/$userId');
+          await dio.delete('${Constants.ethIpV4}/api/removeFav/$quoteId/$userId');
       if (response.statusCode != 200) {
         throw Exception(
             'Error from removing favorites: ${response.statusCode}');
@@ -160,7 +162,7 @@ class QuotesRepository {
 
   Future<List<FavoriteModel>> getFavorites(String userId) async {
     try {
-      var response = await dio.get('${Constants.uri}/api/readFav/$userId');
+      var response = await dio.get('${Constants.ethIpV4}/api/readFav/$userId');
       if (response.statusCode != 200) {
         throw Exception('Error fetching favorites: ${response.statusCode}');
       }
@@ -192,7 +194,7 @@ class QuotesRepository {
           id: '', quoteTxt: quoteTxt, imgUrl: imgUrl, author: author, quoteId: quoteId);
 
       var response = await dio.post(
-        '${Constants.uri}/api/addfav',
+        '${Constants.ethIpV4}/api/addfav',
         data: {'quoteId': quoteId, 'userId': userId, ...fav.toJson()},
         options: Options(contentType: Headers.jsonContentType),
       );

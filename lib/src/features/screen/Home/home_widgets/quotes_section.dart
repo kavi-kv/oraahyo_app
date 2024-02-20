@@ -8,6 +8,7 @@ import 'package:oraah_app/src/features/controllers/quotes/quotes_controller.dart
 import 'package:oraah_app/src/features/screen/Home/home_widgets/quotes_card.dart';
 // import 'package:screenshot/screenshot.dart';
 import '../../../controllers/quotes/quotes_image_controller.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class QuotesSection extends StatelessWidget {
   const QuotesSection({
@@ -24,7 +25,6 @@ class QuotesSection extends StatelessWidget {
   final QuotesController _quotesController;
   final Brightness brightness;
   final QuotesImageController imageController;
-  
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +32,7 @@ class QuotesSection extends StatelessWidget {
     // final QuotesImageController _quotesImageController =
     //     Get.find<QuotesImageController>();
     final deviceSpacController = Get.put(DeviceSpacController(context));
-    
-    
+
     // final height = deviceSpacController.deviceHeight * 0.98;
     // double width = deviceSpacController.deiceWidth * 0.95;
 
@@ -41,33 +40,47 @@ class QuotesSection extends StatelessWidget {
       () => SizedBox(
         height: deviceSpacController.deviceHeight * 0.95,
         // width: deviceSpacController.deiceWidth * 0.85,
-        child: ListView.builder(
-          itemCount: _quotesController.quotes.length,
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
-          itemBuilder: (context, index) {
-            // ScreenshotController screenshotController = ScreenshotController();
-            return SizedBox(
-              height: 250,
-              width: 150,
-              child: Center(
-                child: Container(
-                  width: deviceScreenWidth,
-                  child: QuotesCard(
-                    index: index,
-                    imageController: imageController,
-                    quotesController: _quotesController,
-                    deviceScreenHeight: deviceScreenHeight,
-                    deviceScreenWidth: deviceScreenWidth,
-                    categoryAuthor: _quotesController.quotes[index].quoteAuther,
-                    category: _quotesController.quotes[index].quoteText,
-                    // quotesLength: _quotesController.quotes.length,
-                    // screenshotController: screenshotController,
+        child: AnimationLimiter(
+          child: ListView.builder(
+            itemCount: _quotesController.quotes.length,
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            itemBuilder: (context, index) {
+              // ScreenshotController screenshotController = ScreenshotController();
+              return AnimationConfiguration.staggeredGrid(
+                position: index,
+                columnCount: 2,
+                duration: const Duration(milliseconds: 500),
+                child: SizedBox(
+                  height: 250,
+                  width: 150,
+                  child: Center(
+                    child: SlideAnimation(
+                      verticalOffset: 50,
+                      // scale: 500,
+                      // curve: Curves.bounceIn,
+                      delay: const Duration(milliseconds: 275),
+                      child: Container(
+                        width: deviceScreenWidth,
+                        child: QuotesCard(
+                          index: index,
+                          imageController: imageController,
+                          quotesController: _quotesController,
+                          deviceScreenHeight: deviceScreenHeight,
+                          deviceScreenWidth: deviceScreenWidth,
+                          categoryAuthor:
+                              _quotesController.quotes[index].quoteAuther,
+                          category: _quotesController.quotes[index].quoteText,
+                          // quotesLength: _quotesController.quotes.length,
+                          // screenshotController: screenshotController,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );

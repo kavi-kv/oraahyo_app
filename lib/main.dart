@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:oraah_app/src/Home.dart';
 import 'package:oraah_app/src/features/controllers/User/user_controller.dart';
+import 'package:oraah_app/src/features/controllers/animations/animation_controller.dart';
 import 'package:oraah_app/src/features/controllers/auth/auth_controller.dart';
+import 'package:oraah_app/src/features/controllers/connection/network_controller.dart';
 import 'package:oraah_app/src/features/controllers/others/navigation_controller.dart';
 import 'package:oraah_app/src/features/controllers/others/themeController.dart';
 import 'package:oraah_app/src/features/controllers/quotes/create_oraah_controller.dart';
@@ -21,6 +24,7 @@ void main() async {
   // Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Get.put<NetworkController>(NetworkController());
   Get.put<AuthController>(AuthController());
   Get.put<NavigationController>(NavigationController());
   Get.put<QuotesController>(QuotesController());
@@ -31,6 +35,7 @@ void main() async {
   await checkInitialLoginStatus();
 
   Get.put<CreateOraahController>(CreateOraahController());
+  // Get.put<MyAnimationController>(MyAnimationController());
 
   runApp(const MyApp());
 }
