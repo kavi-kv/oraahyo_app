@@ -15,6 +15,7 @@ Oraahyo is designed to be adaptable and welcomes your contributions!
 - Request new features: Share your ideas for enhancements or functionality you'd like to see.
 - Join the community: Connect with other users and enthusiasts to discuss Somali language, culture, and the significance of these expressions.
 
+![Screen Record](assets/screenshots/oraah_gif.gif)
 
 ![ScreenShots 🏠](assets/screenshots/scr_1.jpg)
 ![ScreenShots ⭕](assets/screenshots/scr_2.jpg)

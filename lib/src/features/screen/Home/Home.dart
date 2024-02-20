@@ -5,6 +5,7 @@ import 'package:oraah_app/src/features/controllers/quotes/create_oraah_controlle
 import 'package:oraah_app/src/features/controllers/quotes/favorite_controller.dart';
 import 'package:oraah_app/src/features/screen/Home/home_widgets/app_bar.dart';
 import 'package:oraah_app/src/features/screen/Home/home_widgets/daily_quotes.dart';
+import 'package:oraah_app/src/features/screen/Home/home_widgets/gradient_text.dart';
 import 'package:oraah_app/src/features/screen/Home/home_widgets/navigation_drawer.dart';
 import 'package:oraah_app/src/features/screen/Home/home_widgets/quotes_card.dart';
 import 'package:oraah_app/src/features/screen/Home/home_widgets/quotes_section.dart';
@@ -67,13 +68,18 @@ class _HomeState extends State<Home> {
                     )),
               )
             ],
-            // title: Text(
-            //   oAppTitle,
-            //   style: Theme.of(context).textTheme.titleLarge,
-            // ),
+            title: GradientText(
+              text: oAppTitle,
+              gradient: LinearGradient(
+                colors: [
+                  themeController.isDarkMode.value ? Colors.white : Colors.redAccent,
+                  themeController.isDarkMode.value ? Colors.blue : Colors.blue,
+                ],
+              ),
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
             elevation: 0,
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-
             pinned: true,
             centerTitle: true,
             expandedHeight: 250.0,
