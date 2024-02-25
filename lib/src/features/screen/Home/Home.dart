@@ -72,7 +72,9 @@ class _HomeState extends State<Home> {
               text: oAppTitle,
               gradient: LinearGradient(
                 colors: [
-                  themeController.isDarkMode.value ? Colors.white : Colors.redAccent,
+                  themeController.isDarkMode.value
+                      ? Colors.white
+                      : Colors.redAccent,
                   themeController.isDarkMode.value ? Colors.blue : Colors.blue,
                 ],
               ),
@@ -96,146 +98,159 @@ class _HomeState extends State<Home> {
                   child: SizedBox(
                     height: 200,
                     width: MediaQuery.of(context).size.width * 0.85,
-                    child: Swiper(
-                      itemHeight: 400,
-                      itemWidth: MediaQuery.of(context).size.width * 0.7,
-                      loop: true,
-                      autoplay: true,
-                      autoplayDelay: 10000,
-                      duration: 1500,
-                      scrollDirection: Axis.horizontal,
-                      pagination: const SwiperPagination(
-                          margin: EdgeInsets.only(bottom: 20),
-                          alignment: Alignment.bottomCenter,
-                          builder: DotSwiperPaginationBuilder(
-                            color: Colors.grey,
-                            activeColor: Colors.blue,
-                            size: 10,
-                            activeSize: 12,
-                          )),
-                      // control: const SwiperControl(),
-                      itemBuilder: (context, index) {
-                        if (imageController.storyPhotos.isNotEmpty &&
-                            quotesController.storyQuotes.isNotEmpty) {
-                          String imageUrl =
-                              imageController.storyPhotos[index].urls?['small'];
-                          String txtUrl =
-                              quotesController.storyQuotes[index].quoteText;
-                          return Stack(
-                            children: [
-                              Obx(
-                                () => quotesController.isLoading.value
-                                    ? Center(
-                                        child: LoadingAnimationWidget.flickr(
-                                          rightDotColor: Colors.black,
-                                          leftDotColor: const Color(0xfffd0079),
-                                          size: 30,
-                                        ),
-                                      )
-                                    : Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            horizontal: 5),
+                    child: Obx(() => Swiper(
+                          itemHeight: 400,
+                          itemWidth: MediaQuery.of(context).size.width * 0.7,
+                          loop: true,
+                          autoplay: true,
+                          autoplayDelay: 10000,
+                          duration: 1500,
+                          scrollDirection: Axis.horizontal,
+                          pagination: const SwiperPagination(
+                              margin: EdgeInsets.only(bottom: 20),
+                              alignment: Alignment.bottomCenter,
+                              builder: DotSwiperPaginationBuilder(
+                                color: Colors.grey,
+                                activeColor: Colors.blue,
+                                size: 10,
+                                activeSize: 12,
+                              )),
+                          // control: const SwiperControl(),
+                          itemBuilder: (context, index) {
+                            if (imageController.storyPhotos.isNotEmpty &&
+                                quotesController.storyQuotes.isNotEmpty) {
+                              String imageUrl = imageController
+                                  .storyPhotos[index].urls?['small'];
+                              String txtUrl =
+                                  quotesController.storyQuotes[index].quoteText;
+                              return Stack(
+                                children: [
+                                  Obx(
+                                    () => quotesController.isLoading.value
+                                        ? Center(
+                                            child:
+                                                LoadingAnimationWidget.flickr(
+                                              rightDotColor: Colors.black,
+                                              leftDotColor:
+                                                  const Color(0xfffd0079),
+                                              size: 30,
+                                            ),
+                                          )
+                                        : Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 5),
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.90,
+                                            height: 150,
+                                            decoration: BoxDecoration(
+                                                // image: NetworkImage(imageUrl),),
+                                                // color: Colors.amber,
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                child: Container(
+                                                  // margin:
+                                                  //     const EdgeInsets.symmetric(horizontal: 5),
+                                                  child: ColorFiltered(
+                                                    colorFilter:
+                                                        ColorFilter.mode(
+                                                            const Color(
+                                                                    0xFF000000)
+                                                                .withOpacity(
+                                                                    0.5),
+                                                            BlendMode.darken),
+                                                    child: Image.network(
+                                                      imageUrl,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                ))),
+                                  ),
+                                  Positioned(
+                                      top: 10,
+                                      left: 16,
+                                      child: SizedBox(
                                         width:
                                             MediaQuery.of(context).size.width *
-                                                0.90,
-                                        height: 150,
-                                        decoration: BoxDecoration(
-                                            // image: NetworkImage(imageUrl),),
-                                            // color: Colors.amber,
-                                            borderRadius:
-                                                BorderRadius.circular(20)),
-                                        child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            child: Container(
-                                              // margin:
-                                              //     const EdgeInsets.symmetric(horizontal: 5),
-                                              child: ColorFiltered(
-                                                colorFilter: ColorFilter.mode(
-                                                    const Color(0xFF000000)
-                                                        .withOpacity(0.5),
-                                                    BlendMode.darken),
-                                                child: Image.network(
-                                                  imageUrl,
-                                                  fit: BoxFit.cover,
+                                                0.80,
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              // color: Colors.amber,
+                                              alignment: Alignment.center,
+                                              height: 120,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.80,
+                                              margin: const EdgeInsets.only(
+                                                  right: 16, top: 10, left: 5),
+                                              padding: const EdgeInsets.only(
+                                                right: 16,
+                                                top: 5,
+                                              ),
+                                              child: Center(
+                                                child: AutoSizeText(
+                                                  txtUrl,
+                                                  textAlign: TextAlign.center,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyMedium
+                                                      ?.apply(
+                                                          color: Colors.white,
+                                                          heightDelta: 0.15),
+                                                  maxLines: 10,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                 ),
                                               ),
-                                            ))),
-                              ),
-                              Positioned(
-                                  top: 10,
-                                  left: 16,
-                                  child: SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.80,
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          // color: Colors.amber,
-                                          alignment: Alignment.center,
-                                          height: 120,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.80,
-                                          margin: const EdgeInsets.only(
-                                              right: 16, top: 10, left: 5),
-                                          padding: const EdgeInsets.only(
-                                            right: 16,
-                                            top: 5,
-                                          ),
-                                          child: Center(
-                                            child: AutoSizeText(
-                                              txtUrl,
-                                              textAlign: TextAlign.center,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyMedium
-                                                  ?.apply(
-                                                      color: Colors.white,
-                                                      heightDelta: 0.15),
-                                              maxLines: 10,
-                                              overflow: TextOverflow.ellipsis,
                                             ),
-                                          ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  ))
-                            ],
-                          );
-                        } else {
-                          return const Text("Data IS empty");
-                        }
-                      },
-                      itemCount: imageController.storyPhotos.length,
-                      layout: SwiperLayout.DEFAULT,
-                    ),
+                                      ))
+                                ],
+                              );
+                            } else {
+                              return const Text("Data IS empty");
+                            }
+                          },
+                          itemCount: imageController.storyPhotos.length,
+                          layout: SwiperLayout.DEFAULT,
+                        )),
                   ),
                 ),
               ),
             )),
           ),
           SliverList(
-            delegate: SliverChildBuilderDelegate(((context, index) {
-              return Obx(() => SizedBox(
-                    height: 250,
-                    width: 150,
-                    child: QuotesCard(
-                      index: index,
-                      imageController: imageController,
-                      quotesController: quotesController,
-                      deviceScreenHeight: deviceScreenHeight,
-                      deviceScreenWidth: deviceScreenWidth,
-                      categoryAuthor:
-                          quotesController.quotes[index].quoteAuther,
-                      category: quotesController.quotes[index].quoteText,
-                      // quotesLength: _quotesController.quotes.length,
-                      // screenshotController: screenshotController,
-                    ),
-                  ));
-            })),
-          )
+              delegate: SliverChildBuilderDelegate(
+            (context, index) => Obx(
+              () => SizedBox(
+                height: 250,
+                width: 150,
+                child: QuotesCard(
+                  index: index,
+                  imageController: imageController,
+                  quotesController: quotesController,
+                  deviceScreenHeight: deviceScreenHeight,
+                  deviceScreenWidth: deviceScreenWidth,
+                  categoryAuthor: index < quotesController.quotes.length
+                      ? quotesController.quotes[index].quoteAuther
+                      : "Default Author",
+                  category: index < quotesController.quotes.length
+                      ? quotesController.quotes[index].quoteText
+                      : "Default Quote",
+                  // quotesLength: _quotesController.quotes.length,
+                  // screenshotController: screenshotController,
+                ),
+              ),
+            ),
+            childCount: quotesController.quotes.length,
+          ))
         ],
       ),
     );

@@ -14,6 +14,7 @@ import 'package:oraah_app/src/features/controllers/quotes/quotes_image_controlle
 import 'package:oraah_app/src/features/screen/Categories/category_navigations/navigation_layout.dart';
 import 'package:oraah_app/src/features/screen/Favorites/favorites_screen.dart';
 import 'package:oraah_app/src/features/screen/MainScreen.dart';
+import 'package:oraah_app/src/features/screen/others/no_internet_screen.dart';
 import 'package:oraah_app/src/features/screen/splash_screen.dart';
 import 'package:oraah_app/src/repository/quotes_repo/quotes_repo.dart';
 import 'package:oraah_app/src/repository/services/api/auth_services.dart';
@@ -24,7 +25,7 @@ void main() async {
   // Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Get.put<NetworkController>(NetworkController());
+  Get.put<MobileNetworkController>(MobileNetworkController());
   Get.put<AuthController>(AuthController());
   Get.put<NavigationController>(NavigationController());
   Get.put<QuotesController>(QuotesController());
@@ -32,6 +33,7 @@ void main() async {
   Get.put<ThemeController>(ThemeController());
   Get.put<UserController>(UserController());
   Get.put<QuotesRepository>(QuotesRepository());
+  // Get.lazyPut<QuotesRepository>(() => QuotesRepository());
   await checkInitialLoginStatus();
 
   Get.put<CreateOraahController>(CreateOraahController());
@@ -56,6 +58,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeController themeController = Get.find<ThemeController>();
+    final MobileNetworkController networkController =
+        Get.find<MobileNetworkController>();
     return Obx(() {
       return GetMaterialApp(
         initialRoute: '/',
@@ -73,7 +77,9 @@ class MyApp extends StatelessWidget {
         theme: TAppTheme.lightTheme,
         darkTheme: TAppTheme.darkTheme,
         debugShowCheckedModeBanner: false,
-        home: const Splash(),
+        home: networkController.isConnected
+            ? const Splash()
+            : const NoInternetScreen(),
       );
     });
   }

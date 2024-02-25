@@ -46,7 +46,7 @@ class QuotesController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchQuotes();
+    // fetchQuotes();
     fetchListOfAuthers();
     // checkAndFetchQuotes();
     fetchStoryQuotes();

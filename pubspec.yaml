@@ -25,6 +25,7 @@ dependencies:
   get: ^4.6.6
   flutter_swiper_view: ^1.1.8
   flutter_staggered_animations: ^1.1.1
+  network_info_plus: ^4.1.0+1
   
 
 flutter_native_splash:

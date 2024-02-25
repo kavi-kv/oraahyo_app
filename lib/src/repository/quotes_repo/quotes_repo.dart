@@ -16,11 +16,12 @@ class QuotesRepository {
   // final urlEndPoints = NetworkController().connectivtyType;
   final urlEndPoints = EthIpV4;
   // final urlEndPoints = WIpV4;
+  String url = Get.find<MobileNetworkController>().ulr;
 
   Future<List<QuoteModel>> fetchQuotes() async {
     List<QuoteModel> quotes = [];
     try {
-      var response = await dio.get("http://$urlEndPoints:5005/xikmado/quotes");
+      var response = await dio.get("$url/xikmado/quotes");
 
       if (response.statusCode != 200) {
         Future.error({
@@ -33,8 +34,6 @@ class QuotesRepository {
         return QuoteModel.fromJson(quote);
       }).toList();
 
-      // print("Data is: ${quotes}");
-      // print("The Connection Type is ${depIn}");
       return quotes;
     } on DioException catch (err) {
       return Future.error({
@@ -48,7 +47,7 @@ class QuotesRepository {
     List<QuoteModel> quotes = [];
     try {
       var response = await dio
-          .get("http://$urlEndPoints:5005/xikmado/byCategory/$category");
+          .get("$url/xikmado/byCategory/$category");
       if (response.statusCode != 200) {
         Future.error({
           "error": "Something went unexpected ${response.statusCode}",
@@ -73,7 +72,7 @@ class QuotesRepository {
     List<QuoteModel> quotes = [];
     try {
       var response =
-          await dio.get("http://$urlEndPoints:5005/xikmado/byAuther/$author");
+          await dio.get("$url/xikmado/byAuther/$author");
       if (response.statusCode != 200) {
         return Future.error({
           "error": "Error: ${response.statusCode}",
@@ -97,7 +96,7 @@ class QuotesRepository {
     List<AuthorsModel> authors = [];
     try {
       final response =
-          await dio.get("http://$urlEndPoints:5005/xikmado/authorsList");
+          await dio.get("$url/xikmado/authorsList");
       if (response.statusCode != 200) {
         return Future.error({
           "error": "Internal error occured ${response.statusCode}",
@@ -119,7 +118,7 @@ class QuotesRepository {
     final bool isExist;
     try {
       final response =
-          await dio.get("http://$urlEndPoints:5005/xikmado/isCatExist/Farxad");
+          await dio.get("$url/xikmado/isCatExist/Farxad");
       if (response.statusCode != 200) {
         return Future.error({
           "error": "Internal error occured ${response.statusCode}",
@@ -147,7 +146,7 @@ class QuotesRepository {
   Future<void> removeFromFav(quoteId, userId) async {
     try {
       var response =
-          await dio.delete('${Constants.ethIpV4}/api/removeFav/$quoteId/$userId');
+          await dio.delete('$url/api/removeFav/$quoteId/$userId');
       if (response.statusCode != 200) {
         throw Exception(
             'Error from removing favorites: ${response.statusCode}');
@@ -162,7 +161,7 @@ class QuotesRepository {
 
   Future<List<FavoriteModel>> getFavorites(String userId) async {
     try {
-      var response = await dio.get('${Constants.ethIpV4}/api/readFav/$userId');
+      var response = await dio.get('$url/api/readFav/$userId');
       if (response.statusCode != 200) {
         throw Exception('Error fetching favorites: ${response.statusCode}');
       }
@@ -194,7 +193,7 @@ class QuotesRepository {
           id: '', quoteTxt: quoteTxt, imgUrl: imgUrl, author: author, quoteId: quoteId);
 
       var response = await dio.post(
-        '${Constants.ethIpV4}/api/addfav',
+        '$url/api/addfav',
         data: {'quoteId': quoteId, 'userId': userId, ...fav.toJson()},
         options: Options(contentType: Headers.jsonContentType),
       );

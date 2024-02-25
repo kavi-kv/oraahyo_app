@@ -46,146 +46,158 @@ class QuotesCard extends StatelessWidget {
     final GlobalKey repaintBoundaryKey = GlobalKey();
 
     return SizedBox(
-        height: 250,
-        width: 150,
-        child: Stack(
-          children: [
-            Obx(
-              () => imageController.isLoading.value
-                  ? Center(
-                      child: LoadingAnimationWidget.flickr(
-                        rightDotColor: Colors.black,
-                        leftDotColor: const Color(0xfffd0079),
-                        size: 30,
-                      ),
-                    )
-                  : GestureDetector(
-                      onTap: () => {
-                        _quotesController.isIconVisibleList[index].value =
-                            !_quotesController.isIconVisibleList[index].value
-                      },
-                      child: Card(
-                        margin:
-                            const EdgeInsets.only(left: 10, top: 20, right: 10),
-                        elevation: 2,
-                        child: Stack(
-                          children: [
-                            // Screenshot(
-                            //   controller: screenshotController,
-                            RepaintBoundary(
-                              key: repaintBoundaryKey,
-                              child: Stack(
-                                children: [
-                                  SizedBox(
-                                    height: deviceScreenHeight * 0.30,
-                                    width: deviceScreenWidth * 0.98,
-                                    // decoration: BoxDecoration(color: Colors.redAccent),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(5),
-                                      child: ColorFiltered(
-                                        colorFilter: ColorFilter.mode(
-                                            const Color(0xFF000000).withOpacity(0.5),
-                                            BlendMode.darken),
-                                        child: Image.network(
-                                          imageController
-                                              .photos[index].urls?["small"],
-                                          fit: BoxFit.cover,
-                                          height: deviceScreenHeight * 0.25,
-                                          width: deviceScreenWidth * 0.95,
-                                        ),
+      height: 250,
+      width: 150,
+      child: Obx(
+        () => imageController.photos.isEmpty || _quotesController.quotes.isEmpty
+            ? Center(
+                child: LoadingAnimationWidget.flickr(
+                  rightDotColor: Colors.black,
+                  leftDotColor: const Color(0xfffd0079),
+                  size: 30,
+                ),
+              )
+            : Stack(
+                children: [
+                  GestureDetector(
+                    onTap: () => {
+                      _quotesController.isIconVisibleList[index].value =
+                          !_quotesController.isIconVisibleList[index].value
+                    },
+                    child: Card(
+                      margin:
+                          const EdgeInsets.only(left: 10, top: 20, right: 10),
+                      elevation: 2,
+                      child: Stack(
+                        children: [
+                          RepaintBoundary(
+                            key: repaintBoundaryKey,
+                            child: Stack(
+                              children: [
+                                SizedBox(
+                                  height: deviceScreenHeight * 0.30,
+                                  width: deviceScreenWidth * 0.98,
+                                  // decoration: BoxDecoration(color: Colors.redAccent),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(5),
+                                    child: ColorFiltered(
+                                      colorFilter: ColorFilter.mode(
+                                          const Color(0xFF000000)
+                                              .withOpacity(0.5),
+                                          BlendMode.darken),
+                                      child: Image.network(
+                                        imageController
+                                            .photos[index].urls?["small"],
+                                        fit: BoxFit.cover,
+                                        height: deviceScreenHeight * 0.25,
+                                        width: deviceScreenWidth * 0.95,
                                       ),
                                     ),
                                   ),
-                                  Positioned(
-                                    left: 16,
-                                    top: 0,
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
-                                          width: deviceScreenWidth * 0.95,
-                                          child: Container(
+                                ),
+                                Positioned(
+                                  left: 16,
+                                  top: 0,
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        width: deviceScreenWidth * 0.95,
+                                        child: Container(
                                             height: deviceScreenHeight * 0.20,
                                             width: deviceScreenWidth * 0.95,
                                             alignment: Alignment.center,
                                             padding: const EdgeInsets.only(
                                                 left: 16, right: 25, top: 5),
-                                            child: Obx(
-                                              () => !imageController
-                                                      .isLoading.value
-                                                  ? AutoSizeText(
-                                                      " \" $category\" ",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyMedium
-                                                          ?.apply(
-                                                              color:
-                                                                  Colors.white),
-                                                      maxLines: 10,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                    )
-                                                  : Container(),
+                                            child:
+                                                // Obx(
+                                                //   () => !imageController
+                                                //               .isLoading.value |
+                                                //           !_quotesController
+                                                //               .isLoading.value
+                                                //       ?
+                                                AutoSizeText(
+                                              " \" $category\" ",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium
+                                                  ?.apply(color: Colors.white),
+                                              maxLines: 10,
+                                              overflow: TextOverflow.ellipsis,
+                                            )
+                                            // : Center(
+                                            //     child:
+                                            //         LoadingAnimationWidget
+                                            //             .flickr(
+                                            //       rightDotColor:
+                                            //           Colors.black,
+                                            //       leftDotColor: const Color(
+                                            //           0xfffd0079),
+                                            //       size: 30,
+                                            //     ),
+                                            //   ),
+
                                             ),
-                                          ),
+                                      ),
+                                      Container(
+                                        width: deviceScreenWidth * 0.90,
+                                        padding: const EdgeInsets.only(
+                                            left: 10, top: 5),
+                                        alignment: Alignment.bottomLeft,
+                                        child: Obx(
+                                          () => !imageController.isLoading.value
+                                              ? Text(
+                                                  " - $categoryAuthor ",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headlineSmall,
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                )
+                                              : const Text(""),
                                         ),
-                                        Container(
-                                          width: deviceScreenWidth * 0.90,
-                                          padding: const EdgeInsets.only(
-                                              left: 10, top: 5),
-                                          alignment: Alignment.bottomLeft,
-                                          child: Obx(
-                                            () =>
-                                                !imageController.isLoading.value
-                                                    ? Text(
-                                                        " - $categoryAuthor ",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .headlineSmall,
-                                                        maxLines: 1,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                      )
-                                                    : const Text(""),
-                                          ),
-                                        )
-                                      ],
-                                    ),
+                                      )
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                            // ),
-                            _quotesController.isIconVisibleList[index].value
-                                ? Positioned(
-                                    bottom: 0,
-                                    right: 10,
-                                    child: Row(
-                                      children: [
-                                        IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(Icons.share,
-                                              color: Colors.white),
-                                        ),
-                                        IconButton(
-                                          onPressed: () {
-                                            // imageController.saveImgToGalary(context);
-                                            // imageController.saveImgToGalary(
-                                            //     screenshotController);
-                                            imageController.captureAndSaveImage(
-                                                repaintBoundaryKey);
-                                          },
-                                          icon: const Icon(Icons.download,
-                                              color: Colors.white),
-                                        ),
-                                        IconButton(
-                                          onPressed: () {
-                                            var quoteId = _quotesController.quotes[index].quoteId;
-                                            if(favoriteController.isFavorite(_quotesController.quotes[index].quoteId)){
-                                              print("Quote With the Id: $quoteId already exists.");
-                                              return;
-                                            }
-                                            else{
-                                              favoriteController.addQuotesToFav(
+                          ),
+                          // ),
+                          _quotesController.isIconVisibleList[index].value
+                              ? Positioned(
+                                  bottom: 0,
+                                  right: 10,
+                                  child: Row(
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(Icons.share,
+                                            color: Colors.white),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          // imageController.saveImgToGalary(context);
+                                          // imageController.saveImgToGalary(
+                                          //     screenshotController);
+                                          imageController.captureAndSaveImage(
+                                              repaintBoundaryKey);
+                                        },
+                                        icon: const Icon(Icons.download,
+                                            color: Colors.white),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          var quoteId = _quotesController
+                                              .quotes[index].quoteId;
+                                          if (favoriteController.isFavorite(
+                                              _quotesController
+                                                  .quotes[index].quoteId)) {
+                                            print(
+                                                "Quote With the Id: $quoteId already exists.");
+                                            return;
+                                          } else {
+                                            favoriteController.addQuotesToFav(
                                                 _quotesController
                                                     .quotes[index].quoteId,
                                                 userController.user.id,
@@ -196,52 +208,51 @@ class QuotesCard extends StatelessWidget {
                                                 _quotesController.quotes[index]
                                                         .quoteAuther ??
                                                     "Unknown");
-                                            }
-                                            
-                                            print(
-                                                'Quote ID: ${_quotesController.quotes[index].quoteId}');
-                                            print(
-                                                'User Id Saved: ${userController.user.id}');
-                                            print(
-                                                'Quote Text: ${_quotesController.quotes[index].quoteText} \n Author: ${_quotesController.quotes[index].quoteAuther}');
-                                          },
-                                          icon: Icon(Icons.favorite,
-                                              color:
-                                                  favoriteController.isFavorite(
-                                                          _quotesController
-                                                              .quotes[index]
-                                                              .quoteId)
-                                                      ? Colors.red
-                                                      : Colors.white),
-                                        ),
-                                        IconButton(
-                                          onPressed: () {
-                                            _quotesController
-                                                .copyTextToClipboard(
-                                                    _quotesController
-                                                        .quotes[index]
-                                                        .quoteText);
+                                          }
 
-                                            // favoriteController.readFav(
-                                            //     userController.user.id);
-                                            // print(
-                                            //     "Favorite Data: ${favoriteController.favorites[index].quoteTxt}");
-                                            // print(
-                                            //     "UserId In Quotes Card: ${userController.user.id}");
-                                          },
-                                          icon: const Icon(Icons.copy,
-                                              color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : const SizedBox.shrink(),
-                          ],
-                        ),
+                                          print(
+                                              'Quote ID: ${_quotesController.quotes[index].quoteId}');
+                                          print(
+                                              'User Id Saved: ${userController.user.id}');
+                                          print(
+                                              'Quote Text: ${_quotesController.quotes[index].quoteText} \n Author: ${_quotesController.quotes[index].quoteAuther}');
+                                        },
+                                        icon: Icon(Icons.favorite,
+                                            color:
+                                                favoriteController.isFavorite(
+                                                        _quotesController
+                                                            .quotes[index]
+                                                            .quoteId)
+                                                    ? Colors.red
+                                                    : Colors.white),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          _quotesController.copyTextToClipboard(
+                                              _quotesController
+                                                  .quotes[index].quoteText);
+
+                                          // favoriteController.readFav(
+                                          //     userController.user.id);
+                                          // print(
+                                          //     "Favorite Data: ${favoriteController.favorites[index].quoteTxt}");
+                                          // print(
+                                          //     "UserId In Quotes Card: ${userController.user.id}");
+                                        },
+                                        icon: const Icon(Icons.copy,
+                                            color: Colors.white),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
+                        ],
                       ),
                     ),
-            ),
-          ],
-        ));
+                  ),
+                ],
+              ),
+      ),
+    );
   }
 }

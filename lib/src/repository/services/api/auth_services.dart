@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:oraah_app/src/constants/constant.dart';
 import 'package:oraah_app/src/features/controllers/User/user_controller.dart';
+import 'package:oraah_app/src/features/controllers/connection/network_controller.dart';
 import 'package:oraah_app/src/features/model/user/user.dart';
 import 'package:get/get.dart';
 import 'package:oraah_app/src/features/screen/Auth/login_screen.dart';
@@ -13,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   Dio dio = Dio();
+  String url = Get.find<MobileNetworkController>().ulr;
 
   Future<void> signUpUser(
       {
@@ -32,7 +34,7 @@ class AuthService {
       );
 
       var response = await dio.post(
-        '${Constants.ethIpV4}/api/signup',
+        '$url/api/signup',
         data: user.toJson(),
         options: Options(contentType: Headers.jsonContentType),
       );
@@ -55,7 +57,7 @@ class AuthService {
       required Function(String) onError}) async {
     try {
       var response = await dio.post(
-        '${Constants.ethIpV4}/api/signin',
+        '$url/api/signin',
         data: {'email': email, 'password': password},
         options: Options(contentType: Headers.jsonContentType),
       );
@@ -87,7 +89,7 @@ class AuthService {
       String? token = prefs.getString('x-auth-token');
 
       var tokenRes = await dio.post(
-        '${Constants.ethIpV4}/tokenIsValid',
+        '$url/tokenIsValid',
         options: Options(
           contentType: Headers.jsonContentType,
           headers: {
@@ -99,7 +101,7 @@ class AuthService {
       var response = tokenRes.data;
 
       if (response == true) {
-        var userRes = await dio.get('${Constants.ethIpV4}/',
+        var userRes = await dio.get('$url/',
             options: Options(
               contentType: Headers.jsonContentType,
               headers: {'x-auth-token': token},
@@ -119,7 +121,7 @@ class AuthService {
 
     try {
       var response = await dio.post(
-        '${Constants.ethIpV4}/tokenIsValid',
+        '$url/tokenIsValid',
         options: Options(
           contentType: Headers.jsonContentType,
           headers: {

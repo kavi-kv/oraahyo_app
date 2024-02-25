@@ -1,62 +1,48 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:network_info_plus/network_info_plus.dart';
 import 'package:get/get.dart';
 
-class NetworkController extends GetxController {
+class MobileNetworkController extends GetxController {
   final Connectivity _connectivity = Connectivity();
   RxString connectivtyType = "".obs;
+  RxString endPoints = "".obs;
   final connTypeResult = Connectivity().checkConnectivity();
-  final String ethIpV4 = "192.168.48.75";
+  final RxBool _connected = false.obs;
+  final String ethIpV4 = "192.168.11.56";
   final String wIpV4 = "192.168.100.7";
+  final String ulr = "https://oraahyo-backend.onrender.com";
+  bool get isConnected => _connected.value;
 
   @override
-  Future<void> onInit() async {
+  void onInit() {
     super.onInit();
-
-    _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
-    // _updateConnectionStatus(await _connectivity.checkConnectivity());
-
-    // connTypeResult;
+    checkConnectivity();
+    _connectivity.onConnectivityChanged.listen((event) {
+      _connected.value = event != ConnectivityResult.none;
+      updateConnectivity(event);
+    });
   }
 
-  Future<String?> checkConnectionType() async {
-    var endPoints = null;
-    var connectivityResult = await Connectivity().checkConnectivity();
-    if(connectivityResult == ConnectivityResult.ethernet) { ethIpV4;}
-    else if(connectivityResult == ConnectivityResult.ethernet) {return wIpV4;}
-    else{ return "There Is No Connection"; }
+  Future<void> checkConnectivity() async {
+    ConnectivityResult result = await _connectivity.checkConnectivity();
+    _connected.value = result != ConnectivityResult.none;
+    updateConnectivity(result);
   }
 
-  void _updateConnectionStatus(ConnectivityResult connectivityResult) {
-    if (connectivityResult == ConnectivityResult.none) {
-      Get.rawSnackbar(
-          messageText: const Text('PLEASE CONNECT TO THE INTERNET',
-              style: TextStyle(color: Colors.white, fontSize: 14)),
-          isDismissible: false,
-          duration: const Duration(days: 1),
-          backgroundColor: Colors.red[400]!,
-          icon: const Icon(
-            Icons.wifi_off,
-            color: Colors.white,
-            size: 35,
-          ),
-          margin: EdgeInsets.zero,
-          snackStyle: SnackStyle.GROUNDED);
-    } else {
-      if (Get.isSnackbarOpen) {
-        Get.closeCurrentSnackbar();
-      }
+  void updateConnectivity(ConnectivityResult result) {
+    switch(result){
+      case ConnectivityResult.wifi:
+        endPoints.value = wIpV4;
+        break;
+      case ConnectivityResult.ethernet:
+        endPoints.value = ethIpV4;
+        break;
+      default:
+        endPoints.value = "No internet connection";
+        break;
     }
   }
-
-  RxString connResult() {
-    if (connTypeResult == ConnectivityResult.mobile) {
-      connectivtyType = "Mobile Data".obs;
-    } else {
-      connectivtyType = "Wifi".obs;
-    }
-    return connectivtyType;
-  }
-
-  
+ 
 }

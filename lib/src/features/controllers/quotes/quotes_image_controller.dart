@@ -39,6 +39,8 @@ class QuotesImageController extends GetxController {
     "Wisdom, Island, Milkway, Deep Sorrow",
   ];
 
+  // int quoteNum = Get.find<QuotesController>().quotes.length;
+
   Future<void> getStoryImages() async {
     try{
       isLoading.value = true;
@@ -54,7 +56,19 @@ class QuotesImageController extends GetxController {
   Future<void> getPictureData() async {
     try {
       isLoading.value = true;
-      photos.value = await repository.getImages(queryType.value, 30);
+      await Get.find<QuotesController>().fetchQuotes();
+      int quoteNum = Get.find<QuotesController>().quotes.length;
+      print("Length of quotes: $quoteNum");
+      if(quoteNum > 0){
+        photos.value = await repository.getImages(queryType.value, 27);
+        print("length of images ${photos.length}");
+      }
+      else{
+        log("No quotes available to match number of images");
+        print("length of images $photos");
+      }
+      
+      
     } catch (e) {
       print("error us $e");
     }
