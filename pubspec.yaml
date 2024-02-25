@@ -26,6 +26,7 @@ dependencies:
   flutter_swiper_view: ^1.1.8
   flutter_staggered_animations: ^1.1.1
   network_info_plus: ^4.1.0+1
+  flutter_launcher_icons: ^0.13.1
   
 
 flutter_native_splash:
@@ -38,6 +39,16 @@ flutter_native_splash:
   fullscreen: true
   android_12:
     image: "assets/oraahyo_icon.png"
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: "AppIcon"
+  image_path: "assets/app_icons/android_icon.png"
+  min_sdk_android: 21 
+  remove_alpha_ios: true
+
+
+
   
 
 dev_dependencies:
@@ -106,7 +117,6 @@ flutter:
     - family: Orbitron
       fonts:
         - asset: assets/fonts/Orbitron-VariableFont_wght.ttf
-
 
 
 

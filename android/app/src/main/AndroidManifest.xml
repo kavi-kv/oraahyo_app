@@ -5,10 +5,10 @@
 
 
     <application
-        android:label="oraah_app"
+        android:label="Oraahyo"
         android:name="${applicationName}"
         android:requestLegacyExternalStorage="true"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:exported="true"
