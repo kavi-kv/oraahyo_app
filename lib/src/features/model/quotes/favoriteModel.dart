@@ -7,7 +7,7 @@ class FavoriteModel {
   final String quoteTxt;
   final String imgUrl;
   final String author;
-
+  
   FavoriteModel({
     required this.id,
     required this.quoteId,

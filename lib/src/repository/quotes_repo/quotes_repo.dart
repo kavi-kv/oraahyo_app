@@ -14,7 +14,7 @@ class QuotesRepository {
   final dio = Dio();
 
   // final urlEndPoints = NetworkController().connectivtyType;
-  final urlEndPoints = EthIpV4;
+  // final urlEndPoints = EthIpV4;
   // final urlEndPoints = WIpV4;
   String url = Get.find<MobileNetworkController>().ulr;
 
@@ -167,9 +167,6 @@ class QuotesRepository {
       }
       List<dynamic> responseData = response.data;
 
-      // List<Map<String, dynamic>> favQuotesAsJson = responseData.map((quoteData) {
-      //   return FavoriteModel.fromJson(Map<String, dynamic>.from(quoteData)).toJson();
-      // }).toList();
 
       List<FavoriteModel> favQuotes = responseData.map((quoteData) {
         return FavoriteModel.fromJson(Map<String, dynamic>.from(quoteData));

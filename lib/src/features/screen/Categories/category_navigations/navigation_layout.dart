@@ -14,16 +14,16 @@ import 'package:lottie/lottie.dart';
 
 class NavigationLayout extends StatelessWidget {
   NavigationLayout({super.key});
-
+  final QuotesController _quotesController = Get.find<QuotesController>();
+  final QuotesImageController _quotesImageController =
+      Get.find<QuotesImageController>();
   @override
   Widget build(BuildContext context) {
-    final QuotesController _quotesController = Get.find<QuotesController>();
-    final QuotesImageController _quotesImageController =
-        Get.find<QuotesImageController>();
     final deviceSpacController = Get.put(DeviceSpacController(context));
     final height = deviceSpacController.deviceHeight * 0.98;
     double width = deviceSpacController.deiceWidth * 0.95;
-    final selectedRoute = Get.find<NavigationController>().selectedRoute.value;
+    final navController = Get.find<NavigationController>();
+    final selectedRoute = navController.selectedRoute.value;
     final brightness = MediaQuery.of(context).platformBrightness;
     return Scaffold(
         appBar: AppBar(
@@ -42,7 +42,7 @@ class NavigationLayout extends StatelessWidget {
             final route = Get.find<NavigationController>().selectedRoute.value;
             switch (route) {
               case "Qoraayasha":
-                return Obx(() => _quotesController.isLoading.value
+                return Obx(() => navController.isLoading.value
                     ? Center(
                         child: LoadingAnimationWidget.flickr(
                           rightDotColor: Colors.black,

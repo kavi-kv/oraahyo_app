@@ -35,7 +35,7 @@ class _HomeState extends State<Home> {
     final quotesController = Get.put(QuotesController());
     final imageController = Get.put(QuotesImageController());
     final tabController = Get.put(PageTabControllers());
-    Get.lazyPut(() => FavoriteController());
+    // Get.lazyPut(() => FavoriteController());
     // Get.lazyPut(()=> CreateOraahController());
 
     final deviceController = Get.put(DeviceSpacController(context));
@@ -233,20 +233,20 @@ class _HomeState extends State<Home> {
                 height: 250,
                 width: 150,
                 child: QuotesCard(
-                  index: index,
-                  imageController: imageController,
-                  quotesController: quotesController,
-                  deviceScreenHeight: deviceScreenHeight,
-                  deviceScreenWidth: deviceScreenWidth,
-                  categoryAuthor: index < quotesController.quotes.length
-                      ? quotesController.quotes[index].quoteAuther
-                      : "Default Author",
-                  category: index < quotesController.quotes.length
-                      ? quotesController.quotes[index].quoteText
-                      : "Default Quote",
-                  // quotesLength: _quotesController.quotes.length,
-                  // screenshotController: screenshotController,
-                ),
+                        index: index,
+                        imageController: imageController,
+                        quotesController: quotesController,
+                        deviceScreenHeight: deviceScreenHeight,
+                        deviceScreenWidth: deviceScreenWidth,
+                        categoryAuthor: index < quotesController.quotes.length
+                            ? quotesController.quotes[index].quoteAuther
+                            : "Default Author",
+                        category: index < quotesController.quotes.length
+                            ? quotesController.quotes[index].quoteText
+                            : "Default Quote",
+                        // quotesLength: _quotesController.quotes.length,
+                        // screenshotController: screenshotController,
+                      ),
               ),
             ),
             childCount: quotesController.quotes.length,

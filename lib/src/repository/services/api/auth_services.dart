@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:oraah_app/src/common_widgets/api_address.dart';
 import 'package:oraah_app/src/constants/constant.dart';
 import 'package:oraah_app/src/features/controllers/User/user_controller.dart';
 import 'package:oraah_app/src/features/controllers/connection/network_controller.dart';
@@ -15,6 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthService {
   Dio dio = Dio();
   String url = Get.find<MobileNetworkController>().ulr;
+  // final urlEndPoints = WIpV4;
 
   Future<void> signUpUser(
       {
@@ -34,7 +36,7 @@ class AuthService {
       );
 
       var response = await dio.post(
-        '$url/api/signup',
+        '$url/api/signupAsUser',
         data: user.toJson(),
         options: Options(contentType: Headers.jsonContentType),
       );
@@ -57,7 +59,7 @@ class AuthService {
       required Function(String) onError}) async {
     try {
       var response = await dio.post(
-        '$url/api/signin',
+        '$url/api/signinAsUser',
         data: {'email': email, 'password': password},
         options: Options(contentType: Headers.jsonContentType),
       );
@@ -129,8 +131,7 @@ class AuthService {
           },
         ),
       );
-      return response.data ==
-          true; 
+      return response.data == true;
     } catch (e) {
       print('validationTokenError Error: ${e.toString()}');
       return false;

@@ -32,7 +32,7 @@ class CategoryCards extends StatelessWidget {
                 width: deviceController.deiceWidth * 0.5,
                 child: Card(
                   margin: EdgeInsets.all(10),
-                  color: Colors.amberAccent,
+                  color: Colors.cyanAccent,
                 ),
               ),
             ),

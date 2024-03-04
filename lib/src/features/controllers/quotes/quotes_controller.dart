@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:math';
+import 'package:animated_snack_bar/animated_snack_bar.dart';
+import 'package:animated_snack_bar/animated_snack_bar.dart';
+import 'package:elegant_notification/resources/arrays.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,8 +16,10 @@ import 'package:oraah_app/src/repository/quotes_repo/quotes_repo.dart';
 // import 'package:screenshot/screenshot.dart';
 import '../../model/quotes/quotesModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:developer';
+import 'dart:developer' as flutter;
 import 'dart:io';
+import 'package:elegant_notification/elegant_notification.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class QuotesController extends GetxController {
   static QuotesController get instance => Get.find();
@@ -97,17 +102,14 @@ class QuotesController extends GetxController {
         List<QuoteModel> randomQuotes =
             index.map((quote) => allQuotes[quote]).toList();
         storyQuotes.value = randomQuotes;
-      }
-      else{
-        print("No Available Quotes");
+      } else {
+        flutter.log("No Available Quotes");
       }
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('lastFetchTime', DateTime.now().toIso8601String());
     } catch (error) {
-      if (kDebugMode) {
-        print("Error on fetching Daily quotes");
-      }
+      flutter.log("Error on fetching Daily quotes");
     }
     isLoading.value = false;
   }
@@ -118,7 +120,7 @@ class QuotesController extends GetxController {
       quotes.value = await repository.fetchQuotes();
       IconsVisibilityState(quotes.length);
     } catch (err) {
-      print("Error: $err");
+      flutter.log("Error: $err");
     }
     isLoading.value = false;
   }
@@ -130,7 +132,7 @@ class QuotesController extends GetxController {
     try {
       quotesByCategory.value = await repository.byCategory(category);
     } catch (error) {
-      print("Error $error");
+      flutter.log("Error $error");
     }
     isLoading.value = false;
   }
@@ -139,9 +141,9 @@ class QuotesController extends GetxController {
     isLoading.value = true;
     try {
       listOfAuthors.value = await repository.authorsList();
-      print("Authers Fetched successfully");
+      flutter.log("Authers Fetched successfully");
     } catch (err) {
-      print("Error $err");
+      flutter.log("Error $err");
     }
 
     isLoading.value = false;
@@ -151,9 +153,9 @@ class QuotesController extends GetxController {
     isLoading.value = true;
     try {
       quotesByAuthor.value = await repository.byAuthor(authorName);
-      print("Successfully fetched autherName: $authorName by quotes");
+      flutter.log("Successfully fetched autherName: $authorName by quotes");
     } catch (err) {
-      print("Error: $err");
+      flutter.log("Error: $err");
     }
     isLoading.value = false;
   }
@@ -163,28 +165,23 @@ class QuotesController extends GetxController {
     try {
       isCategoryValid.value = await repository.isCategoryExists();
     } catch (err) {
-      print("Error: $err");
+      flutter.log("Error: $err");
     }
   }
 
-  void copyTextToClipboard(String quote) {
+  void copyTextToClipboard(String quote, BuildContext context) {
     Clipboard.setData(ClipboardData(text: quote));
 
-    Get.snackbar("", "",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.transparent,
-        colorText: Colors.white,
-        duration: Duration(seconds: 3),
-        barBlur: 0.0,
-        snackStyle: SnackStyle.GROUNDED,
-        margin: const EdgeInsets.all(16.0),
-        messageText: const Text(
-          "Copied to Clipboard",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ));
+    ElegantNotification.success(
+      description: const AutoSizeText(
+        "Copied to clipboard",
+        style: TextStyle(color: Colors.black, fontWeight: FontWeight.w300),
+      ),
+      height: 60,
+      animation: AnimationType.fromRight,
+      showProgressIndicator: false,
+      displayCloseButton: false,
+    ).show(context);
   }
 
   Color randomColor(Brightness brightness) {

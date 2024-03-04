@@ -1,3 +1,7 @@
+
+
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oraah_app/src/Home.dart';
@@ -21,35 +25,38 @@ import 'package:oraah_app/src/repository/services/api/auth_services.dart';
 import 'src/utils/theme/theme.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   WidgetsFlutterBinding.ensureInitialized();
 
-  Get.put<MobileNetworkController>(MobileNetworkController());
+  Get.put<MobileNetworkController>(MobileNetworkController(), permanent: false);
   Get.put<AuthController>(AuthController());
-  Get.put<NavigationController>(NavigationController());
+  Get.lazyPut<NavigationController>(() => NavigationController());
   Get.put<QuotesController>(QuotesController());
+
+  Get.lazyPut<ThemeController>(() => ThemeController());
   Get.put<QuotesImageController>(QuotesImageController());
-  Get.put<ThemeController>(ThemeController());
+
   Get.put<UserController>(UserController());
-  Get.put<QuotesRepository>(QuotesRepository());
-  // Get.lazyPut<QuotesRepository>(() => QuotesRepository());
+  Get.put<QuotesRepository>(QuotesRepository(), permanent: false);
+
   await checkInitialLoginStatus();
 
-  Get.put<CreateOraahController>(CreateOraahController());
-  // Get.put<MyAnimationController>(MyAnimationController());
+  Get.put<CreateOraahController>(CreateOraahController(), permanent: false);
 
   runApp(const MyApp());
 }
 
 Future<void> checkInitialLoginStatus() async {
-  var authService = AuthService();
-  bool isLoggedIn = await authService.validateToken();
   var userController = Get.find<UserController>();
+  userController.userIsLoading.value = true;
+  var authService = AuthService();
+
+  bool isLoggedIn = await authService.validateToken();
+  // userController.setIsLoading(isLoggedIn);
   if (isLoggedIn) {
     userController.setLoggedIn(isLoggedIn);
-    userController.setIsLoading(isLoggedIn);
   }
+  userController.userIsLoading.value = false;
+  log("Inside checkInLogin: => $isLoggedIn");
 }
 
 class MyApp extends StatelessWidget {

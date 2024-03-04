@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:oraah_app/src/common_widgets/custom_text_field.dart';
+import 'package:oraah_app/src/constants/color.dart';
 import 'package:oraah_app/src/features/controllers/auth/auth_controller.dart';
 import 'package:oraah_app/src/features/controllers/others/deviceSpecController.dart';
 import 'package:oraah_app/src/repository/services/api/auth_services.dart';
@@ -11,24 +12,33 @@ import 'package:get/get.dart';
 import 'login_screen.dart';
 
 class Registration extends StatefulWidget {
-  Registration({super.key});
+  const Registration({super.key});
 
   @override
   State<Registration> createState() => _RegistrationState();
 }
 
 class _RegistrationState extends State<Registration> {
+  final AuthController authController = Get.find<AuthController>();
   final emailTxtController = TextEditingController();
-
   final fullNameTxtController = TextEditingController();
-
   final passwordTxtController = TextEditingController();
-
   final confirmPasswordTxtController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    emailTxtController.dispose();
+    passwordTxtController.dispose();
+    fullNameTxtController.dispose();
+    confirmPasswordTxtController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final deviceSpacController = Get.put(DeviceSpacController(context));
+    final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
 
     void signupUser() {
       AuthController.instance.registerUser(emailTxtController.text,
@@ -39,7 +49,9 @@ class _RegistrationState extends State<Registration> {
       return _formKey.currentState?.validate() ?? false;
     }
 
+
     return Scaffold(
+      backgroundColor: isDark ? tDarkBlue : tWhiteSnow,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Form(
@@ -61,7 +73,10 @@ class _RegistrationState extends State<Registration> {
                     children: [
                       Text(
                         regTitle,
-                        style: Theme.of(context).textTheme.headlineMedium,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium
+                            ?.copyWith(color: isDark ? tWhiteSnow : tDarkBlue),
                       ),
                       const SizedBox(
                         height: 20.0,
@@ -134,20 +149,37 @@ class _RegistrationState extends State<Registration> {
                         height: 20,
                       ),
                       SizedBox(
-                        width: deviceSpacController.deiceWidth * 0.95,
-                        child: ElevatedButton(
+                        width: deviceSpacController.deiceWidth * 0.90,
+                        height: 60,
+                        child: TextButton(
                           onPressed: () {
                             if (isFormValid()) {
                               signupUser();
                             }
                           },
-                          style: ElevatedButton.styleFrom(
+                          style: TextButton.styleFrom(
+                              elevation: 5,
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10))),
-                          child: Text(
-                            registerBtn,
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
+                                borderRadius: BorderRadius.circular(10),
+                                side: const BorderSide(
+                                    color: Colors.transparent, width: 0),
+                              ),
+                              backgroundColor: isDark ? tWhiteSnow : tDarkBlue),
+                          child: Obx(() => authController.isLoading.value
+                              ? const Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : Text(
+                                  registerBtn,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge
+                                      ?.copyWith(
+                                          color:
+                                              isDark ? tDarkBlue : tWhiteSnow,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600),
+                                )),
                         ),
                       ),
                       const SizedBox(
@@ -170,30 +202,51 @@ class _RegistrationState extends State<Registration> {
                                 onPressed: () {},
                                 label: Text(
                                   tSignInWithGoogle.toUpperCase(),
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                )),
-                          ),
-                          TextButton(
-                            onPressed: () => Get.to(() => const LoginScreen()),
-                            child: Text.rich(
-                              TextSpan(
-                                  text: tAlreadyHaveAnAccount.toUpperCase(),
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium
-                                      ?.copyWith(fontSize: 12.0),
-                                  children: const [
-                                    TextSpan(
-                                      text: tLogin,
-                                      style: TextStyle(color: Colors.blue),
-                                    ),
-                                    TextSpan(
-                                      text: tLogin,
-                                      style: TextStyle(color: Colors.blue),
-                                    ),
-                                  ]),
+                                      ?.copyWith(
+                                        color: isDark ? tWhiteSnow : tDarkBlue,
+                                      ),
+                                )),
+                          ),
+                          const SizedBox(
+                            height: 7,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Get.to(() => const LoginScreen());
+                            },
+                            child: Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: tAlreadyHaveAnAccount.toUpperCase(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          fontSize: 12.0,
+                                          color:
+                                              isDark ? tWhiteSnow : tDarkBlue,
+                                        ),
+                                  ),
+                                  const WidgetSpan(
+                                    child: SizedBox(
+                                        width: 5.0), // Adjust width as needed
+                                  ),
+                                  TextSpan(
+                                    text: tLogin,
+                                    style: TextStyle(
+                                        color: isDark ? tWhiteSnow : tDarkBlue,
+                                        decoration: TextDecoration.underline,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
                             ),
-                          )
+                          ),
                         ],
                       )
                     ],

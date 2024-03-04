@@ -45,6 +45,12 @@ class TTextTheme {
     color: Colors.black,
     fontWeight: FontWeight.w400
   ),
+
+  labelMedium: GoogleFonts.orbitron(
+    color: Colors.black,
+    fontWeight: FontWeight.w400,
+    fontSize: 25
+  )
   );
   
   static TextTheme darkTextTheme = TextTheme(
@@ -92,5 +98,10 @@ class TTextTheme {
     color: Colors.white,
     fontWeight: FontWeight.w400
   ),
+  labelMedium: GoogleFonts.orbitron(
+    color: Colors.white,
+    fontWeight: FontWeight.w400,
+    fontSize: 25
+  )
   );
 }

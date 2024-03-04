@@ -9,6 +9,7 @@ import 'package:oraah_app/src/features/controllers/User/user_controller.dart';
 import 'package:oraah_app/src/features/controllers/auth/auth_controller.dart';
 import 'package:oraah_app/src/features/controllers/others/deviceSpecController.dart';
 import 'package:oraah_app/src/features/screen/Auth/login_screen.dart';
+import 'package:oraah_app/src/features/screen/Auth/registration.dart';
 import 'package:oraah_app/src/features/screen/profile/user_profile.dart';
 import 'package:oraah_app/src/repository/services/api/auth_services.dart';
 
@@ -30,10 +31,8 @@ class _NavigationsDrawerState extends State<NavigationsDrawer> {
   void initState() {
     super.initState();
     userController = Get.find<UserController>();
-    
+    print("Inside Drawer Widget=> ${userController.isLoggedIn}");
   }
-
-
 
   void signOutUser() {
     AuthService().signOut();
@@ -48,7 +47,14 @@ class _NavigationsDrawerState extends State<NavigationsDrawer> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            userController.isLoading ? const Center(child: CircularProgressIndicator()) : userController.isLoggedIn ? const _buildLoggedInUserHeader() : const _buildLoggedOutUserHeader(),
+            Obx(() {
+              if (userController.userIsLoading.value) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (userController.isLoggedIn) {
+                return const BuildLoggedInUserHeader();
+              }
+              return const BuildLoggedOutUserHeader();
+            }),
             // FutureBuilder<bool>(
             //   future: AuthService().validateToken(),
             //   builder: (context, snapshot) {
@@ -115,16 +121,37 @@ class _NavigationsDrawerState extends State<NavigationsDrawer> {
               ),
               trailing: const Icon(LineAwesomeIcons.angle_right),
             ),
-            GestureDetector(
-              onTap: signOutUser,
-              child: ListTile(
-                leading: const Icon(Icons.logout_outlined),
-                title: Text(
-                  "Logout",
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ),
-            ),
+            Obx(() => userController.user.token.isEmpty
+                ? InkWell(
+                    child: ListTile(
+                      leading: const Icon(Icons.login),
+                      title: Text(
+                        "Login",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ),
+                  )
+                : userController.user.token.isNotEmpty
+                    ? InkWell(
+                        onTap: signOutUser,
+                        child: ListTile(
+                          leading: const Icon(Icons.logout_outlined),
+                          title: Text(
+                            "Logout",
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ),
+                      )
+                    : InkWell(
+                        child: ListTile(
+                          leading: const Icon(Icons.person),
+                          title: Text(
+                            "Profile",
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          trailing: const Icon(LineAwesomeIcons.angle_right),
+                        ),
+                      )),
           ],
         ),
       ),
@@ -132,8 +159,8 @@ class _NavigationsDrawerState extends State<NavigationsDrawer> {
   }
 }
 
-class _buildLoggedOutUserHeader extends StatelessWidget {
-  const _buildLoggedOutUserHeader({
+class BuildLoggedOutUserHeader extends StatelessWidget {
+  const BuildLoggedOutUserHeader({
     super.key,
   });
 
@@ -152,7 +179,9 @@ class _buildLoggedOutUserHeader extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(() => const Registration());
+                  },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -164,7 +193,9 @@ class _buildLoggedOutUserHeader extends StatelessWidget {
                 width: 10,
               ),
               ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(() => const LoginScreen());
+                  },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -183,12 +214,11 @@ class _buildLoggedOutUserHeader extends StatelessWidget {
                   ),
                   onPressed: () {},
                   style: OutlinedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    ),
-                    backgroundColor: tDarkBlue,
-                    side: const BorderSide(color: tWhiteSnow)
-                  ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      backgroundColor: tDarkBlue,
+                      side: const BorderSide(color: tWhiteSnow)),
                   label: Text(
                     "",
                     style: Theme.of(context).textTheme.bodyMedium,
@@ -201,79 +231,79 @@ class _buildLoggedOutUserHeader extends StatelessWidget {
   }
 }
 
-class _buildLoggedInUserHeader extends StatelessWidget {
-  const _buildLoggedInUserHeader({
+class BuildLoggedInUserHeader extends StatelessWidget {
+  const BuildLoggedInUserHeader({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          height: 120,
-          color: tDarkBlue,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: ClipRRect(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Image.asset(user_icon),
-                  const SizedBox(
-                    height: 10,
+    return Obx(() => Stack(
+          children: [
+            Container(
+              height: 120,
+              color: tDarkBlue,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: ClipRRect(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Image.asset(user_icon),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              UserController.instance.user.name,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelLarge
+                                  ?.copyWith(color: tBabbyPowder),
+                            ),
+                            // const SizedBox(height: 5,),
+                            Text(
+                              UserController.instance.user.email,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelSmall
+                                  ?.copyWith(
+                                      color: tBabbyPowder,
+                                      fontWeight: FontWeight.w300),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          UserController.instance.user.name,
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelLarge
-                              ?.copyWith(color: tBabbyPowder),
-                        ),
-                        // const SizedBox(height: 5,),
-                        Text(
-                          UserController.instance.user.email,
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelSmall
-                              ?.copyWith(
-                                  color: tBabbyPowder,
-                                  fontWeight: FontWeight.w300),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
+                ),
               ),
             ),
-          ),
-        ),
-        Positioned(
-          right: 5,
-          top: 5,
-          child: Container(
-            decoration: const BoxDecoration(
-              color: tGreySnow,
-              shape: BoxShape.circle,
-            ),
-            child: IconButton(
-              onPressed: () {
-                Get.to(const UserProfile());
-              },
-              icon: const Icon(
-                Icons.edit,
+            Positioned(
+              right: 5,
+              top: 5,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: tGreySnow,
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    Get.to(const UserProfile());
+                  },
+                  icon: const Icon(
+                    Icons.edit,
+                  ),
+                  color: tBabbyPowder,
+                ),
               ),
-              color: tBabbyPowder,
             ),
-          ),
-        ),
-      ],
-    );
+          ],
+        ));
   }
 }

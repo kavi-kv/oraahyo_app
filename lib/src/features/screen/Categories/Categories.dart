@@ -22,7 +22,7 @@ class Categories extends StatelessWidget {
           children: [
             Container(
               padding: EdgeInsets.only(left: 10),
-              child: Text("Categories",style: Theme.of(context).textTheme.titleLarge,)),
+              child: Center(child: Text("Categories",style: Theme.of(context).textTheme.titleLarge,))),
             SizedBox(height: 10,),
             CategoryCards(categoriesList: categoryController.categoriesList, deviceController: deviceController),
           ],

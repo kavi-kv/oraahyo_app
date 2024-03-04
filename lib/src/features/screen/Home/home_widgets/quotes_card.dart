@@ -102,43 +102,40 @@ class QuotesCard extends StatelessWidget {
                                       SizedBox(
                                         width: deviceScreenWidth * 0.95,
                                         child: Container(
-                                          height: deviceScreenHeight * 0.20,
-                                          width: deviceScreenWidth * 0.95,
-                                          alignment: Alignment.center,
-                                          padding: const EdgeInsets.only(
-                                              left: 16, right: 25, top: 5),
-                                          child: 
-                                          // Obx(
-                                          //   () => !imageController
-                                          //               .isLoading.value |
-                                          //           !_quotesController
-                                          //               .isLoading.value
-                                          //       ? 
+                                            height: deviceScreenHeight * 0.20,
+                                            width: deviceScreenWidth * 0.95,
+                                            alignment: Alignment.center,
+                                            padding: const EdgeInsets.only(
+                                                left: 16, right: 25, top: 5),
+                                            child:
+                                                // Obx(
+                                                //   () => !imageController
+                                                //               .isLoading.value |
+                                                //           !_quotesController
+                                                //               .isLoading.value
+                                                //       ?
                                                 AutoSizeText(
-                                                    " \" $category\" ",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyMedium
-                                                        ?.apply(
-                                                            color:
-                                                                Colors.white),
-                                                    maxLines: 10,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  )
-                                                // : Center(
-                                                //     child:
-                                                //         LoadingAnimationWidget
-                                                //             .flickr(
-                                                //       rightDotColor:
-                                                //           Colors.black,
-                                                //       leftDotColor: const Color(
-                                                //           0xfffd0079),
-                                                //       size: 30,
-                                                //     ),
-                                                //   ),
-                                          
-                                        ),
+                                              " \" $category\" ",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium
+                                                  ?.apply(color: Colors.white),
+                                              maxLines: 10,
+                                              overflow: TextOverflow.ellipsis,
+                                            )
+                                            // : Center(
+                                            //     child:
+                                            //         LoadingAnimationWidget
+                                            //             .flickr(
+                                            //       rightDotColor:
+                                            //           Colors.black,
+                                            //       leftDotColor: const Color(
+                                            //           0xfffd0079),
+                                            //       size: 30,
+                                            //     ),
+                                            //   ),
+
+                                            ),
                                       ),
                                       Container(
                                         width: deviceScreenWidth * 0.90,
@@ -173,15 +170,15 @@ class QuotesCard extends StatelessWidget {
                                   child: Row(
                                     children: [
                                       IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          imageController.captureAndShareImage(
+                                              repaintBoundaryKey);
+                                        },  
                                         icon: const Icon(Icons.share,
                                             color: Colors.white),
                                       ),
                                       IconButton(
                                         onPressed: () {
-                                          // imageController.saveImgToGalary(context);
-                                          // imageController.saveImgToGalary(
-                                          //     screenshotController);
                                           imageController.captureAndSaveImage(
                                               repaintBoundaryKey);
                                         },
@@ -232,7 +229,8 @@ class QuotesCard extends StatelessWidget {
                                         onPressed: () {
                                           _quotesController.copyTextToClipboard(
                                               _quotesController
-                                                  .quotes[index].quoteText);
+                                                  .quotes[index].quoteText,
+                                              context);
 
                                           // favoriteController.readFav(
                                           //     userController.user.id);

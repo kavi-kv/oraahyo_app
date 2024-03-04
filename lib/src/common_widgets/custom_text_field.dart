@@ -29,7 +29,7 @@ class CustomTextField extends StatelessWidget {
         obscureText: obscureText,
         
         style: TextStyle(
-          color: Colors.grey[400],
+          color: Colors.grey[700],
           fontSize: 20
         ),
         decoration: InputDecoration(

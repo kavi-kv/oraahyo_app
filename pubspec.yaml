@@ -27,6 +27,9 @@ dependencies:
   flutter_staggered_animations: ^1.1.1
   network_info_plus: ^4.1.0+1
   flutter_launcher_icons: ^0.13.1
+  animated_snack_bar: ^0.4.0
+  elegant_notification: ^1.13.0
+  share_plus: ^7.2.2
   
 
 flutter_native_splash:
@@ -64,8 +67,7 @@ dev_dependencies:
   auto_size_text: ^3.0.0
   path_provider: ^2.1.0
   clipboard: ^0.1.3
-  share_plus: ^7.1.0
-#  screenshot: ^2.1.0
+
   image_gallery_saver: ^2.0.3
   permission_handler: ^10.4.3
   lottie: ^2.6.0

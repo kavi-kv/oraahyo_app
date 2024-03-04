@@ -15,6 +15,7 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:ui' as ui;
 import 'dart:typed_data';
+import 'package:share_plus/share_plus.dart';
 
 class QuotesImageController extends GetxController {
   QuotesController quotesController = Get.find<QuotesController>();
@@ -42,13 +43,12 @@ class QuotesImageController extends GetxController {
   // int quoteNum = Get.find<QuotesController>().quotes.length;
 
   Future<void> getStoryImages() async {
-    try{
+    try {
       isLoading.value = true;
       storyPhotos.value = await repository.getImages(queryType.value, 5);
       log("Successfully Fetched Story Quotes: $storyPhotos");
-    }
-    catch(error){
-        log("Status Code is ");
+    } catch (error) {
+      log("Status Code is ");
     }
     isLoading.value = false;
   }
@@ -59,16 +59,13 @@ class QuotesImageController extends GetxController {
       await Get.find<QuotesController>().fetchQuotes();
       int quoteNum = Get.find<QuotesController>().quotes.length;
       print("Length of quotes: $quoteNum");
-      if(quoteNum > 0){
+      if (quoteNum > 0) {
         photos.value = await repository.getImages(queryType.value, 27);
         print("length of images ${photos.length}");
-      }
-      else{
+      } else {
         log("No quotes available to match number of images");
         print("length of images $photos");
       }
-      
-      
     } catch (e) {
       print("error us $e");
     }
@@ -99,10 +96,10 @@ class QuotesImageController extends GetxController {
                 snackPosition: SnackPosition.TOP,
                 backgroundColor: Colors.transparent,
                 colorText: Colors.white,
-                duration: Duration(seconds: 3),
+                duration: const Duration(seconds: 3),
                 barBlur: 0.0,
                 snackStyle: SnackStyle.GROUNDED,
-                margin: EdgeInsets.all(16.0),
+                margin: const EdgeInsets.all(16.0),
                 messageText: const Text(
                   "Successfully image saved to gallary",
                   textAlign: TextAlign.center,
@@ -110,8 +107,7 @@ class QuotesImageController extends GetxController {
                     color: Colors.white,
                   ),
                 ));
-          }
-          else{
+          } else {
             Get.snackbar("", "",
                 snackPosition: SnackPosition.TOP,
                 backgroundColor: Colors.transparent,
@@ -133,7 +129,29 @@ class QuotesImageController extends GetxController {
     }
   }
 
-  
+  Future<void> captureAndShareImage(GlobalKey key) async {
+    RenderRepaintBoundary? boundary =
+        key.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+    if (boundary != null) {
+      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+      ByteData? byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
+      if (byteData != null) {
+        Uint8List pngBytes = byteData.buffer.asUint8List();
+
+        if (await requestPermission(Permission.storage)) {
+          // final result = await ImageGallerySaver.saveImage(pngBytes);
+          final temp = await getTemporaryDirectory();
+          final path = '${temp.path}/image.png';
+          print(path);
+          File(path).writeAsBytesSync(pngBytes);
+          await Share.shareXFiles([XFile(path)],text: 'Image', subject: 'Share Oraah😊');
+          
+        }
+      }
+    }
+  }
+
   Future<bool> requestPermission(Permission permission) async {
     if (await permission.isGranted) {
       return true;

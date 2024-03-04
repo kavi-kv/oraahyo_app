@@ -47,7 +47,7 @@ class _ByAuthorsState extends State<ByAuthors> {
     final deviceSpacController = Get.put(DeviceSpacController(context));
     final height = deviceSpacController.deviceHeight * 0.98;
     double width = deviceSpacController.deiceWidth * 0.95;
-    // final futureFunct = quotesController.fetchByAuthor(widget.name);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.name),
@@ -55,24 +55,21 @@ class _ByAuthorsState extends State<ByAuthors> {
         elevation: 0,
         centerTitle: true,
       ),
-      body: Obx(() => SizedBox(
-            height: height * 0.88,
-            child: ListView.builder(
-                itemCount: quotesController.quotesByAuthor.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  //!:
-                  // ScreenshotController screenshotController =
-                  //     ScreenshotController();
-                  return quotesController.isLoading.value
-                      ? Center(
-                          child: LoadingAnimationWidget.flickr(
-                            rightDotColor: Colors.black,
-                            leftDotColor: const Color(0xfffd0079),
-                            size: 30,
-                          ),
-                        )
-                      : Center(
+      body: Obx(() => quotesController.isLoading.value
+              ? Center(
+                  child: LoadingAnimationWidget.flickr(
+                    rightDotColor: Colors.black,
+                    leftDotColor: const Color(0xfffd0079),
+                    size: 30,
+                  ),
+                )
+              : SizedBox(
+                  height: height * 0.88,
+                  child: ListView.builder(
+                      itemCount: quotesController.quotesByAuthor.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return Center(
                           child: SizedBox(
                             width: width,
                             child: QuotesCard(
@@ -85,13 +82,13 @@ class _ByAuthorsState extends State<ByAuthors> {
                                   .quotesByAuthor[index].quoteAuther,
                               category: quotesController
                                   .quotesByAuthor[index].quoteText,
-                              //!:
-                              // screenshotController: screenshotController,
                             ),
                           ),
                         );
-                }),
-          )),
+                      }),
+                )
+          // ),
+          ),
     );
   }
 }
