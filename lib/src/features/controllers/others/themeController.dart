@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ThemeController extends GetxController {
   // RxBool isDarkMode = RxBool (Brightness.dark == Brightness.dark);
   RxBool isDarkMode = false.obs;
-
+  
   @override
   void onInit() {
     super.onInit();

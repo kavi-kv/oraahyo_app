@@ -15,7 +15,7 @@ class QuotesRepository {
 
   // final urlEndPoints = NetworkController().connectivtyType;
   // final urlEndPoints = EthIpV4;
-  // final urlEndPoints = WIpV4;
+  final urlEndPoints = WIpV4;
   String url = Get.find<MobileNetworkController>().ulr;
 
   Future<List<QuoteModel>> fetchQuotes() async {
@@ -46,8 +46,7 @@ class QuotesRepository {
   Future<List<QuoteModel>> byCategory(String category) async {
     List<QuoteModel> quotes = [];
     try {
-      var response = await dio
-          .get("$url/xikmado/byCategory/$category");
+      var response = await dio.get("$url/xikmado/byCategory/$category");
       if (response.statusCode != 200) {
         Future.error({
           "error": "Something went unexpected ${response.statusCode}",
@@ -71,8 +70,7 @@ class QuotesRepository {
   Future<List<QuoteModel>> byAuthor(String author) async {
     List<QuoteModel> quotes = [];
     try {
-      var response =
-          await dio.get("$url/xikmado/byAuther/$author");
+      var response = await dio.get("$url/xikmado/byAuther/$author");
       if (response.statusCode != 200) {
         return Future.error({
           "error": "Error: ${response.statusCode}",
@@ -95,8 +93,7 @@ class QuotesRepository {
   Future<List<AuthorsModel>> authorsList() async {
     List<AuthorsModel> authors = [];
     try {
-      final response =
-          await dio.get("$url/xikmado/authorsList");
+      final response = await dio.get("$url/xikmado/authorsList");
       if (response.statusCode != 200) {
         return Future.error({
           "error": "Internal error occured ${response.statusCode}",
@@ -117,8 +114,7 @@ class QuotesRepository {
   Future<bool> isCategoryExists() async {
     final bool isExist;
     try {
-      final response =
-          await dio.get("$url/xikmado/isCatExist/Farxad");
+      final response = await dio.get("$url/xikmado/isCatExist/Farxad");
       if (response.statusCode != 200) {
         return Future.error({
           "error": "Internal error occured ${response.statusCode}",
@@ -145,8 +141,7 @@ class QuotesRepository {
 
   Future<void> removeFromFav(quoteId, userId) async {
     try {
-      var response =
-          await dio.delete('$url/api/removeFav/$quoteId/$userId');
+      var response = await dio.delete('$url/api/removeFav/$quoteId/$userId');
       if (response.statusCode != 200) {
         throw Exception(
             'Error from removing favorites: ${response.statusCode}');
@@ -159,6 +154,25 @@ class QuotesRepository {
     }
   }
 
+  Future<List<FavoriteModel>> getFavoritesById(String favId) async {
+    try {
+      var response = await dio.get('$WIpV4/api/$favId');
+      if (response.statusCode != 200) {
+        throw Exception('Error fetching favs: ${response.statusCode}');
+      }
+
+      List<dynamic> responseData = response.data;
+
+      List<FavoriteModel> favQuote = responseData.map((quote) {
+        return FavoriteModel.fromJson(Map<String, dynamic>.from(quote));
+      }).toList();
+
+      return favQuote;
+    } on DioException catch (error) {
+      throw Exception('Dio error: ${error.message}');
+    }
+  }
+
   Future<List<FavoriteModel>> getFavorites(String userId) async {
     try {
       var response = await dio.get('$url/api/readFav/$userId');
@@ -166,7 +180,6 @@ class QuotesRepository {
         throw Exception('Error fetching favorites: ${response.statusCode}');
       }
       List<dynamic> responseData = response.data;
-
 
       List<FavoriteModel> favQuotes = responseData.map((quoteData) {
         return FavoriteModel.fromJson(Map<String, dynamic>.from(quoteData));
@@ -187,7 +200,11 @@ class QuotesRepository {
   }) async {
     try {
       FavoriteModel fav = FavoriteModel(
-          id: '', quoteTxt: quoteTxt, imgUrl: imgUrl, author: author, quoteId: quoteId);
+          id: '',
+          quoteTxt: quoteTxt,
+          imgUrl: imgUrl,
+          author: author,
+          quoteId: quoteId);
 
       var response = await dio.post(
         '$url/api/addfav',

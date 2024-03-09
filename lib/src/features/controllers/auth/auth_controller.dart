@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -12,18 +12,28 @@ import 'dart:developer' as flutter;
 
 class AuthController extends GetxController {
   static AuthController get instance => Get.find();
+  // final favoriteController = FavoriteController();
   final email = TextEditingController();
   final name = TextEditingController();
   final password = TextEditingController();
 
   RxBool isLoggedIn = false.obs;
   RxBool isLoading = false.obs;
+  var authService = AuthService();
+  var userController = Get.find<UserController>();
 
-  void checkLoginStatus() async {
-    var authService = AuthService();
-    isLoggedIn.value = await authService.validateToken();
-
-    isLoading = false.obs;
+  void checkIsUserLoggedIn() async {
+    try {
+      userController.userIsLoading.value = true;
+      bool isLoggedIn = await authService.tokenValidy();
+      if (isLoggedIn) {
+        userController.setLoggedIn(isLoggedIn);
+      }
+      userController.setIsLoading(false);
+      log("Inside checkInLogin: => $isLoggedIn");
+    } catch (err) {
+      log("Error on checking token validty");
+    }
   }
 
   void signIn(String email, String pass, BuildContext context) async {
@@ -33,15 +43,12 @@ class AuthController extends GetxController {
         email: email,
         password: pass,
         onSuccess: () async {
-          var authService = AuthService();
-          var userController = UserController();
-          bool isLoggedIn = await authService.validateToken();
-          if (isLoggedIn) {
-            userController.setLoggedIn(isLoggedIn);
-          }
-          // AuthController.instance.isLoggedIn(isLoggedIn);
+          // var userController = UserController();
+          UserController.instance.setLoggedIn(true);
           Get.offAll(() => const MainScreen());
+          FavoriteController.instance.readFav(userController.user.id);
           isLoading.value = false;
+          log('Inside SigIn function: [Is Logged in is =>] ${UserController.instance.isLoggedIn}');
         },
         onError: (message) {
           showSnackBar(context, message);
@@ -66,27 +73,41 @@ class AuthController extends GetxController {
         });
   }
 
-  void getUser(BuildContext context) {
-    AuthService().getUser(context: context);
-  }
-
-  void validateToken() {
-    isLoading.value = true;
+  void getUser() async {
     try {
-      AuthService().validateToken();
+      isLoading.value = true;
+      AuthService().validateAndFetchUser();
+      bool checkIfUserIsLoggedIn = await AuthService().tokenValidy();
+      userController.setLoggedIn(checkIfUserIsLoggedIn);
       isLoading.value = false;
-    } catch (err) {
-      flutter.log("Error Token Validity $err");
+      userController.userIsLoading(false);
+    } catch (error) {
+      log('Error on getting userDetails');
       isLoading.value = false;
+      userController.userIsLoading(false);
     }
   }
+
+  // void validateToken() {
+  //   isLoading.value = true;
+  //   try {
+  //     AuthService().validateToken();
+  //     isLoading.value = false;
+  //   } catch (err) {
+  //     flutter.log("Error Token Validity $err");
+  //     isLoading.value = false;
+  //   }
+  // }
 
   void logOut() {
     try {
       isLoading.value = true;
       AuthService().signOut();
       FavoriteController.instance.favorites.clear();
+      log('Favorites Data: ${FavoriteController.instance.favoriteQuotes.length}');
+      // log('Favorites List (Inside Logout): ${favoriteController.favorites.length} ');
       isLoading.value = false;
+      
     } catch (error) {
       flutter.log('Error on LoginOut: $error');
       isLoading.value = false;
@@ -96,6 +117,6 @@ class AuthController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    validateToken();
+    getUser();
   }
 }

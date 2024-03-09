@@ -17,6 +17,7 @@ import 'Home/Home.dart';
 import 'Create Oraah/create_oraah.dart';
 import 'Home/home_widgets/navigation_drawer.dart';
 import 'Categories/Categories.dart';
+import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -40,8 +41,9 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    AuthService().getUser(context: context);
-    Get.lazyPut<FavoriteController>(() => FavoriteController());
+    AuthService().validateAndFetchUser();
+    // Get.put<QuotesController>(QuotesController(), permanent: true);
+    // Get.lazyPut<FavoriteController>(() => FavoriteController());
   }
 
   bool isDark = false;
@@ -52,7 +54,43 @@ class _MainScreenState extends State<MainScreen> {
       isDark = themeController.isDarkMode.value;
       return SafeArea(
         child: Scaffold(
-          // drawer: const NavigationsDrawer(),
+          drawer: const NavigationsDrawer(),
+          appBar: AppBar(
+            // backgroundColor: Colors.transparent,
+            elevation: 0,
+            actions: [
+              Container(
+                margin: const EdgeInsets.only(right: 16, top: 7),
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                child: Obx(() => IconButton(
+                    onPressed: () {
+                      themeController.toggleTheme();
+                    },
+                    icon: Icon(
+                      themeController.isDarkMode.value
+                          ? LineAwesomeIcons.sun
+                          : LineAwesomeIcons.moon,
+                      color: themeController.isDarkMode.value
+                          ? Colors.white
+                          : Colors.black,
+                    ))),
+              )
+            ],
+            centerTitle: true,
+            title: GradientText(
+              text: oAppTitle,
+              gradient: LinearGradient(
+                colors: [
+                  themeController.isDarkMode.value
+                      ? Colors.white
+                      : Colors.redAccent,
+                  themeController.isDarkMode.value ? Colors.blue : Colors.blue,
+                ],
+              ),
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+          ),
           backgroundColor: Colors.transparent,
           body: AnimatedSwitcher(
               duration: const Duration(milliseconds: 1000),

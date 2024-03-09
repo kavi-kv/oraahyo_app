@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:oraah_app/src/features/controllers/quotes/favorite_controller.dart';
 import 'package:oraah_app/src/features/model/user/user.dart';
@@ -14,32 +16,26 @@ class UserController extends GetxController {
     email: '',
     token: '',
     password: '',
+    favorites: [],
   ).obs;
 
   @override
   void onInit() {
     super.onInit();
-    // print("Islaoding=> $isLoading");
+    log("Insdie UserController");
   }
 
+  //?: -> Getters
+  bool get isLoading => _isLoading.value;
   User get user => _user.value;
+  bool get isLoggedIn => _isLoggedIn.value;
 
-  // void initializeFavoriteController(){
-  //   if(user.id.isNotEmpty){
-  //      Get.put<FavoriteController>(FavoriteController());
-  //   }
-  // }
-
+  //? -> Setters
+  setLoggedIn(bool value) => _isLoggedIn.value = value;
+  setIsLoading(bool isLogged) => _isLoading.value = isLogged;
   void setUser(String userJson) {
     _user.value = User.fromJson(userJson);
   }
-
-  bool get isLoading => _isLoading.value;
-
-  setLoggedIn(bool value) => _isLoggedIn.value = value;
-  bool get isLoggedIn => _isLoggedIn.value;
-
-  setIsLoading(bool isLogged) => _isLoading.value = isLogged;
 
   void setUserFromModel(User user) {
     _user.value = user;

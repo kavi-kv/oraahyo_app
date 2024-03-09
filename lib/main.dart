@@ -1,5 +1,3 @@
-
-
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -26,37 +24,22 @@ import 'src/utils/theme/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  Get.put<MobileNetworkController>(MobileNetworkController(), permanent: false);
-  Get.put<AuthController>(AuthController());
-  Get.lazyPut<NavigationController>(() => NavigationController());
+  Get.put<MobileNetworkController>(MobileNetworkController(), permanent: true);
   Get.put<QuotesController>(QuotesController());
+  Get.put<QuotesImageController>(QuotesImageController());
+  Get.put<UserController>(UserController());
+  Get.put<AuthController>(AuthController());
+
+  Get.lazyPut<FavoriteController>(() => FavoriteController());
+  Get.lazyPut<QuotesRepository>(() => QuotesRepository());
+
+  Get.lazyPut<NavigationController>(() => NavigationController());
 
   Get.lazyPut<ThemeController>(() => ThemeController());
-  Get.put<QuotesImageController>(QuotesImageController());
-
-  Get.put<UserController>(UserController());
-  Get.put<QuotesRepository>(QuotesRepository(), permanent: false);
-
-  await checkInitialLoginStatus();
 
   Get.put<CreateOraahController>(CreateOraahController(), permanent: false);
 
   runApp(const MyApp());
-}
-
-Future<void> checkInitialLoginStatus() async {
-  var userController = Get.find<UserController>();
-  userController.userIsLoading.value = true;
-  var authService = AuthService();
-
-  bool isLoggedIn = await authService.validateToken();
-  // userController.setIsLoading(isLoggedIn);
-  if (isLoggedIn) {
-    userController.setLoggedIn(isLoggedIn);
-  }
-  userController.userIsLoading.value = false;
-  log("Inside checkInLogin: => $isLoggedIn");
 }
 
 class MyApp extends StatelessWidget {
@@ -72,12 +55,6 @@ class MyApp extends StatelessWidget {
         initialRoute: '/',
         getPages: [
           GetPage(name: '/navigation-layout', page: () => NavigationLayout()),
-          // GetPage(
-          //     name: '/favorite',
-          //     page: () => const FavoriteScreen(),
-          //     binding: BindingsBuilder(() {
-          //       Get.put(FavoriteController());
-          //     }))
         ],
         themeMode:
             themeController.isDarkMode.value ? ThemeMode.dark : ThemeMode.light,

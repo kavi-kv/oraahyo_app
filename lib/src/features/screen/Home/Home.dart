@@ -44,44 +44,43 @@ class _HomeState extends State<Home> {
     final deviceScreenHeight = mediaQuey.size.height;
     // final brightness = mediaQuey.platformBrightness;
     return Scaffold(
-      drawer: const NavigationsDrawer(),
+      // drawer: const NavigationsDrawer(),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            actions: [
-              Container(
-                margin: const EdgeInsets.only(right: 16, top: 7),
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                child: IconButton(
-                    onPressed: () {
-                      themeController.toggleTheme();
-                    },
-                    icon: Icon(
-                      // themeController.isDarkMode.value ? LineAwesomeIcons.sun : LineAwesomeIcons.moon,
-                      themeController.isDarkMode.value
-                          ? LineAwesomeIcons.sun
-                          : LineAwesomeIcons.moon,
-                      color: themeController.isDarkMode.value
-                          ? Colors.white
-                          : Colors.black,
-                    )),
-              )
-            ],
-            title: GradientText(
-              text: oAppTitle,
-              gradient: LinearGradient(
-                colors: [
-                  themeController.isDarkMode.value
-                      ? Colors.white
-                      : Colors.redAccent,
-                  themeController.isDarkMode.value ? Colors.blue : Colors.blue,
-                ],
-              ),
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
+          //   actions: [
+          //     Container(
+          //       margin: const EdgeInsets.only(right: 16, top: 7),
+          //       decoration:
+          //           BoxDecoration(borderRadius: BorderRadius.circular(10)),
+          //       child: IconButton(
+          //           onPressed: () {
+          //             themeController.toggleTheme();
+          //           },
+          //           icon: Icon(
+          //             themeController.isDarkMode.value
+          //                 ? LineAwesomeIcons.sun
+          //                 : LineAwesomeIcons.moon,
+          //             color: themeController.isDarkMode.value
+          //                 ? Colors.white
+          //                 : Colors.black,
+          //           )),
+          //     )
+          //   ],
+          //   title: GradientText(
+          //     text: oAppTitle,
+          //     gradient: LinearGradient(
+          //       colors: [
+          //         themeController.isDarkMode.value
+          //             ? Colors.white
+          //             : Colors.redAccent,
+            //       themeController.isDarkMode.value ? Colors.blue : Colors.blue,
+            //     ],
+            //   ),
+            //   style: Theme.of(context).textTheme.titleLarge,
+            // ),
             elevation: 0,
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            backgroundColor: Colors.transparent,
             pinned: true,
             centerTitle: true,
             expandedHeight: 250.0,
@@ -96,13 +95,13 @@ class _HomeState extends State<Home> {
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: SizedBox(
-                    height: 200,
+                    height: 250,
                     width: MediaQuery.of(context).size.width * 0.85,
                     child: Obx(() => Swiper(
                           itemHeight: 400,
                           itemWidth: MediaQuery.of(context).size.width * 0.7,
                           loop: true,
-                          autoplay: true,
+                          autoplay: imageController.photos.isNotEmpty ? true : false,
                           autoplayDelay: 10000,
                           duration: 1500,
                           scrollDirection: Axis.horizontal,
@@ -113,7 +112,7 @@ class _HomeState extends State<Home> {
                                 color: Colors.grey,
                                 activeColor: Colors.blue,
                                 size: 10,
-                                activeSize: 12,
+                                activeSize: 10,
                               )),
                           // control: const SwiperControl(),
                           itemBuilder: (context, index) {
@@ -143,7 +142,7 @@ class _HomeState extends State<Home> {
                                                     .size
                                                     .width *
                                                 0.90,
-                                            height: 150,
+                                            height: 200,
                                             decoration: BoxDecoration(
                                                 // image: NetworkImage(imageUrl),),
                                                 // color: Colors.amber,
@@ -182,7 +181,7 @@ class _HomeState extends State<Home> {
                                             Container(
                                               // color: Colors.amber,
                                               alignment: Alignment.center,
-                                              height: 120,
+                                              height: 150,
                                               width: MediaQuery.of(context)
                                                       .size
                                                       .width *
@@ -215,7 +214,9 @@ class _HomeState extends State<Home> {
                                 ],
                               );
                             } else {
-                              return const Text("Data IS empty");
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
                             }
                           },
                           itemCount: imageController.storyPhotos.length,
@@ -232,7 +233,11 @@ class _HomeState extends State<Home> {
               () => SizedBox(
                 height: 250,
                 width: 150,
-                child: QuotesCard(
+                child: quotesController.quotes.isEmpty
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : QuotesCard(
                         index: index,
                         imageController: imageController,
                         quotesController: quotesController,
@@ -244,8 +249,6 @@ class _HomeState extends State<Home> {
                         category: index < quotesController.quotes.length
                             ? quotesController.quotes[index].quoteText
                             : "Default Quote",
-                        // quotesLength: _quotesController.quotes.length,
-                        // screenshotController: screenshotController,
                       ),
               ),
             ),

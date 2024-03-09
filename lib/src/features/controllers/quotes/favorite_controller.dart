@@ -11,24 +11,27 @@ class FavoriteController extends GetxController {
   RxList<FavoriteModel> favorites = <FavoriteModel>[].obs;
   RxBool isLoading = true.obs;
   late final QuotesRepository quotesRepository;
-  final userController = Get.find<UserController>();
+  final userController = UserController();
+  RxList<FavoriteModel> favoriteQuotes = <FavoriteModel>[].obs;
   FavoriteController() {
     quotesRepository = Get.find<QuotesRepository>();
-    // userController = Get.find<UserController>();
   }
 
   bool isFavorite(String quoteId) {
     return favorites.any((fav) => fav.quoteId == quoteId);
   }
 
+  bool isUserLoggedIn() {
+    return userController.user.token.isEmpty || userController.user.id.isEmpty;
+  }
+
   Future readFav(String userId) async {
     isLoading.value = true;
     if (userId.isEmpty) {
-      if (kDebugMode) {
-        print('Error the User Id is empty');
-      }
-      return;
+      log('Error the is no user available');
+      isLoading.value = false;
     }
+
     try {
       var favData = await quotesRepository.getFavorites(userId);
       // List<FavoriteModel> favModels = favData.map<FavoriteModel>((json) => FavoriteModel.fromJson(json)).toList();
@@ -38,9 +41,8 @@ class FavoriteController extends GetxController {
       log("FavData in readFav func: ${favorites.toJson().toString()}");
     } catch (e) {
       log('Error occurred while fetching favorites: $e');
-      // Handle the error appropriately
+      isLoading.value = false;
     }
-    isLoading.value = false;
   }
 
   Future<void> removeFav(quoteId, userId) async {
@@ -72,6 +74,20 @@ class FavoriteController extends GetxController {
       isLoading.value = false;
     } catch (error) {
       log("Error while fetching quotes $error");
+      isLoading.value = false;
+    }
+  }
+
+  Future readFavById(String favId) async {
+    try {
+      isLoading.value = true;
+      if (UserController.instance.user.id != '' ||
+          UserController.instance.user.id.isNotEmpty) {
+        var res = await quotesRepository.getFavoritesById(favId);
+        favoriteQuotes.value = res;
+      }
+    } catch (error) {
+      log('Error for reading favorite by ID: $error');
     }
   }
 
@@ -79,11 +95,13 @@ class FavoriteController extends GetxController {
   void onInit() {
     super.onInit();
     log("Inside FavScreen");
-    String userId = userController.user.id;
+    String userId = UserController.instance.user.id;
+    String userIdE = userController.user.id;
     if (userId.isNotEmpty) {
-      log("UserId in favController: ${userController.user.id}");
-      readFav(userController.user.id).then((_) => isLoading.value = false);
+      log("UserId in favController: $userId");
+      readFav(userId).then((_) => isLoading.value = false);
       log("Favorite Data: ${favorites.toJson().toString()}");
     }
+    isLoading.value = false;
   }
 }

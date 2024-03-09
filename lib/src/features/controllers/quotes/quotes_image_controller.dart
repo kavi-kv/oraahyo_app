@@ -56,18 +56,20 @@ class QuotesImageController extends GetxController {
   Future<void> getPictureData() async {
     try {
       isLoading.value = true;
-      await Get.find<QuotesController>().fetchQuotes();
-      int quoteNum = Get.find<QuotesController>().quotes.length;
-      print("Length of quotes: $quoteNum");
+       await Get.find<QuotesController>().fetchQuotes();
+      int quoteNum = quotesController.quotes.length;
+      log("Length of quotes: $quoteNum");
       if (quoteNum > 0) {
-        photos.value = await repository.getImages(queryType.value, 27);
-        print("length of images ${photos.length}");
+        photos.value = await repository.getImages(queryType.value, quoteNum);
+        log("length of images ${photos.length}");
+        isLoading.value = false;
       } else {
         log("No quotes available to match number of images");
-        print("length of images $photos");
+        log("length of images $photos");
+        isLoading.value = false;
       }
     } catch (e) {
-      print("error us $e");
+      log("error us $e");
     }
     isLoading.value = false;
     // log("Status Code is "+response.statusCode.toString());
@@ -176,7 +178,7 @@ class QuotesImageController extends GetxController {
   @override
   void dispose() {
     super.dispose();
-    getPictureData();
+    // getPictureData();
     // getStoryImages();
   }
 }

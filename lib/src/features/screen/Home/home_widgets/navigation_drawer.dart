@@ -24,6 +24,7 @@ class NavigationsDrawer extends StatefulWidget {
 
 class _NavigationsDrawerState extends State<NavigationsDrawer> {
   late UserController userController;
+  final authController = AuthController();
   bool isLoggedIn = false;
   bool isLoading = true;
 
@@ -36,6 +37,10 @@ class _NavigationsDrawerState extends State<NavigationsDrawer> {
 
   void signOutUser() {
     AuthService().signOut();
+  }
+
+  void logOut(){
+    authController.logOut();
   }
 
   // UserController get userController => Get.find<UserController>();
@@ -124,7 +129,7 @@ class _NavigationsDrawerState extends State<NavigationsDrawer> {
             Obx(() => userController.user.token.isEmpty
                 ? InkWell(
                     child: ListTile(
-                      leading: const Icon(Icons.login),
+                      leading: const Icon(Icons.login_outlined),
                       title: Text(
                         "Login",
                         style: Theme.of(context).textTheme.bodyMedium,
@@ -133,7 +138,7 @@ class _NavigationsDrawerState extends State<NavigationsDrawer> {
                   )
                 : userController.user.token.isNotEmpty
                     ? InkWell(
-                        onTap: signOutUser,
+                        onTap: logOut,
                         child: ListTile(
                           leading: const Icon(Icons.logout_outlined),
                           title: Text(

@@ -7,15 +7,14 @@ class User {
   final String email;
   final String token;
   final String password;
-  
-
+  final List<String>? favorites;
   User({
     required this.id,
     required this.name,
     required this.email,
     required this.token,
     required this.password,
-   
+    this.favorites,
   });
 
   Map<String, dynamic> toMap() {
@@ -24,22 +23,36 @@ class User {
       'email': email,
       'token': token,
       'password': password,
+      'favorites': favorites
     };
   }
 
   factory User.fromMap(Map<String, dynamic> map) {
+    return User(
+        id: map['_id'] as String,
+        name: map['name'] as String,
+        email: map['email'] as String,
+        token: map['token'] as String,
+        password: map['password'] as String,
+        favorites: (map['favorites'] != null)
+            ? List<String>.from(
+                map['favorites'],
+              )
+            : null);
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory User.fromJson(String source) {
+    Map<String, dynamic> map = json.decode(source) as Map<String, dynamic>;
     return User(
       id: map['_id'] as String,
       name: map['name'] as String,
       email: map['email'] as String,
       token: map['token'] as String,
       password: map['password'] as String,
-     
+      favorites:
+          map['favorites'] != null ? List<String>.from(map['favorites']) : null,
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory User.fromJson(String source) =>
-      User.fromMap(json.decode(source) as Map<String, dynamic>);
 }

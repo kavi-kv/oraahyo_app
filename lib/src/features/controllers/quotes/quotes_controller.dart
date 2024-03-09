@@ -52,9 +52,10 @@ class QuotesController extends GetxController {
   void onInit() {
     super.onInit();
     // fetchQuotes();
+    fetchStoryQuotes();
+    // fetchQuotes();
     fetchListOfAuthers();
     // checkAndFetchQuotes();
-    fetchStoryQuotes();
   }
 
   @override
@@ -121,6 +122,7 @@ class QuotesController extends GetxController {
       IconsVisibilityState(quotes.length);
     } catch (err) {
       flutter.log("Error: $err");
+      isLoading.value = false;
     }
     isLoading.value = false;
   }

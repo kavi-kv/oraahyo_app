@@ -39,7 +39,7 @@ flutter_native_splash:
   color: "#322653"
   color_dark: "#322653"
   image: "assets/oraahyo_icon.png"
-  fullscreen: true
+  fullscreen: false
   android_12:
     image: "assets/oraahyo_icon.png"
 

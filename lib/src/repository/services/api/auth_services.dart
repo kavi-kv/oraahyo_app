@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:oraah_app/src/common_widgets/api_address.dart';
@@ -84,39 +84,7 @@ class AuthService {
     }
   }
 
-  void getUser({required BuildContext context}) async {
-    try {
-      var userController = Get.find<UserController>();
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? token = prefs.getString('x-auth-token');
-
-      var tokenRes = await dio.post(
-        '$url/tokenIsValid',
-        options: Options(
-          contentType: Headers.jsonContentType,
-          headers: {
-            'x-auth-token': token!,
-          },
-        ),
-      );
-
-      var response = tokenRes.data;
-
-      if (response == true) {
-        var userRes = await dio.get('$url/',
-            options: Options(
-              contentType: Headers.jsonContentType,
-              headers: {'x-auth-token': token},
-            ));
-        userController.setUser(jsonEncode(userRes.data));
-      }
-    } catch (e) {
-      print('getUser Error: ${e.toString()}');
-      showSnackBar(context, e.toString());
-    }
-  }
-
-  Future<bool> validateToken() async {
+  Future<bool> tokenValidy() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('x-auth-token');
     if (token == null) return false;
@@ -133,14 +101,38 @@ class AuthService {
       );
       return response.data == true;
     } catch (e) {
-      print('validationTokenError Error: ${e.toString()}');
+      log('validationTokenError Error: ${e.toString()}');
       return false;
+    }
+  }
+
+  void validateAndFetchUser() async {
+    try {
+      var userController = Get.find<UserController>();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('x-auth-token');
+      if (token == null) return;
+
+      bool tokenRes = await tokenValidy();
+      log('Token: $tokenRes');
+      var response = tokenRes;
+
+      if (response == true) {
+        var userRes = await dio.get('$url/',
+            options: Options(
+              contentType: Headers.jsonContentType,
+              headers: {'x-auth-token': token},
+            ));
+        userController.setUser(jsonEncode(userRes.data));
+      }
+    } catch (e) {
+      log('getUser Error: ${e.toString()}');
     }
   }
 
   void signOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('x-auth-token', '');
-    Get.offAll(const LoginScreen());
+    Get.offAll(() => const LoginScreen());
   }
 }
